@@ -1,0 +1,69 @@
+def setCommitStatus(String status) {
+    sh "curl -X POST https://api.github.com/repos/kojote-git/order-system/statuses/$env.GIT_COMMIT " +
+            '-H "Content-Type: application/json" ' +
+            '-H "Authorization: token $GIT_ACCESS_TOKEN" ' +
+            '-H "Accept: application/vnd.github.v3+json" ' +
+            '-d \'{' +
+                '"state":"'+ status + '",' +
+                '"context":"continuous-integration/jenkins",' +
+                '"description": "Jenkins",' +
+                '"target_url": "' + "$env.BUILD_URL" + '"' +
+            '}\''
+}
+
+def updateSonarProject() {
+    sh 'mvn sonar:sonar ' +
+            '-Dsonar.host.url=http://ec2-18-157-180-97.eu-central-1.compute.amazonaws.com:9000 ' +
+            '-Dsonar.projectKey=ORDER_SYSTEM ' +
+            '-Dsonar.projectName=ORDER_SYSTEM ' +
+            '-Dsonar.login=$SONAR_TOKEN'
+}
+
+pipeline {
+    agent any
+
+    tools {
+        maven 'maven-3.8.5'
+    }
+
+    options {
+        timeout(time: 15, unit: 'MINUTES')
+    }
+
+    environment {
+        GIT_ACCESS_TOKEN = credentials('github-token')
+        SONAR_TOKEN = credentials('sonar-token')
+    }
+
+    stages {
+        stage('Set Commit Status: Pending') {
+            steps {
+                setCommitStatus('pending')
+            }
+        }
+
+        stage('Build-Test') {
+            steps {
+                sh 'mvn clean test'
+            }
+        }
+    }
+
+    post {
+        always {
+            script {
+                if (env.BRANCH_NAME == 'master') {
+                    updateSonarProject()
+                }
+            }
+        }
+
+        success {
+            setCommitStatus('success')
+        }
+
+        failure {
+            setCommitStatus('failure')
+        }
+    }
+}
