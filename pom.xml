@@ -64,6 +64,12 @@
             <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.liquibase/liquibase-core -->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -79,6 +85,7 @@
                         </exclude>
                     </excludes>
                 </configuration>
+                <version>${project.parent.version}</version>
             </plugin>
 
             <plugin>
