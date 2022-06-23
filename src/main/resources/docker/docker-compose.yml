@@ -1,0 +1,27 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+
+  db:
+    container_name: pg_order_base
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: pass
+      POSTGRES_USER: postgres
+      POSTGRES_DB: orders_db
+    ports: 
+      - 5432:5432
+    volumes:
+      - /var/lib/postgresql
+
+  adminer:
+    container_name: pg_adminer
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: pass 
+    ports:
+      - "5050:80"
