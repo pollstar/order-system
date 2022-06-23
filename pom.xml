@@ -85,7 +85,6 @@
                         </exclude>
                     </excludes>
                 </configuration>
-                <version>${project.parent.version}</version>
             </plugin>
 
             <plugin>
