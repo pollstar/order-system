@@ -15,7 +15,7 @@
             </column>
         </createTable>
 
-        <createTable tableName="order">
+        <createTable tableName="orders">
             <column name="orderId" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
@@ -56,7 +56,7 @@
             </column>
         </createTable>
 
-        <createTable tableName="user">
+        <createTable tableName="users">
             <column name="userId" type="bigint">
                 <constraints primaryKey="true"/>
             </column>
@@ -84,8 +84,8 @@
             <column name="jobId" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="clientPrice" type="double"/>
-            <column name="workerPrice" type="double"/>
+            <column name="clientPrice" type="bigint"/>
+            <column name="workerPrice" type="bigint"/>
             <column name="dateSince" type="date">
                 <constraints nullable="false"/>
             </column>
@@ -112,12 +112,12 @@
     </changeSet>
 
     <changeSet id="1656075873551-2" author="Pavel Starovoitov">
-        <addForeignKeyConstraint baseTableName="order" baseColumnNames="clientId" constraintName="orderClientId"
+        <addForeignKeyConstraint baseTableName="orders" baseColumnNames="clientId" constraintName="orderClientId"
                                  referencedTableName="client"
                                  referencedColumnNames="clientId"/>
 
         <addForeignKeyConstraint baseTableName="task" baseColumnNames="orderId" constraintName="taskOrderId"
-                                 referencedTableName="order"
+                                 referencedTableName="orders"
                                  referencedColumnNames="orderId"/>
         <addForeignKeyConstraint baseTableName="task" baseColumnNames="workerId" constraintName="taskWorkerId"
                                  referencedTableName="worker"
@@ -130,7 +130,7 @@
                                  referencedColumnNames="workerId"/>
 
         <addForeignKeyConstraint baseTableName="worker" baseColumnNames="userId" constraintName="workerUserId"
-                                 referencedTableName="user"
+                                 referencedTableName="users"
                                  referencedColumnNames="userId"/>
 
         <addForeignKeyConstraint baseTableName="price" baseColumnNames="jobId" constraintName="priceJobId"
