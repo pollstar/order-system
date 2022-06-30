@@ -20,11 +20,11 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="description" type="varchar(100)"/>
-            <column name="client" type="bigint"/>
+            <column name="client_id" type="bigint"/>
             <column name="placement_date" type="date">
                 <constraints nullable="false"/>
             </column>
-            <column name="closingDate" type="date"/>
+            <column name="closing_date" type="date"/>
             <column name="phase" type="int"/>
         </createTable>
 
@@ -32,10 +32,10 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="order" type="bigint"/>
-            <column name="worker" type="bigint"/>
-            <column name="job" type="bigint"/>
-            <column name="creator_worker" type="bigint"/>
+            <column name="order_id" type="bigint"/>
+            <column name="worker_id" type="bigint"/>
+            <column name="job_id" type="bigint"/>
+            <column name="creator_worker_id" type="bigint"/>
             <column name="part_factor" type="double"/>
             <column name="time_create" type="timestamp"/>
             <column name="comment" type="varchar(250)"/>
@@ -45,7 +45,7 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="user" type="bigint">
+            <column name="user_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
             <column name="first_name" type="varchar(50)">
@@ -81,7 +81,7 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="job" type="bigint">
+            <column name="job_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
             <column name="client_price" type="bigint"/>
@@ -96,7 +96,7 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="client" type="bigint"/>
-            <column name="address" type="bigint"/>
+            <column name="address_id" type="bigint"/>
             <column name="description" type="varchar(250)"/>
         </createTable>
 
