@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="1656075873551-1" author="Pavel Starovoitov">
+        <createTable tableName="client">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="orders">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="description" type="varchar(100)"/>
+            <column name="client" type="bigint"/>
+            <column name="placement_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="closingDate" type="date"/>
+            <column name="phase" type="int"/>
+        </createTable>
+
+        <createTable tableName="task">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="order" type="bigint"/>
+            <column name="worker" type="bigint"/>
+            <column name="job" type="bigint"/>
+            <column name="creator_worker" type="bigint"/>
+            <column name="part_factor" type="double"/>
+            <column name="time_create" type="timestamp"/>
+            <column name="comment" type="varchar(250)"/>
+        </createTable>
+
+        <createTable tableName="worker">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="users">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="login" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password_hash" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="job">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="description" type="varchar(250)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="price">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="job" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="client_price" type="bigint"/>
+            <column name="worker_price" type="bigint"/>
+            <column name="date_since" type="date">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="equipment">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="client" type="bigint"/>
+            <column name="address" type="bigint"/>
+            <column name="description" type="varchar(250)"/>
+        </createTable>
+
+        <createTable tableName="address">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="city" type="varchar(50)"/>
+            <column name="street" type="varchar(50)"/>
+            <column name="house" type="varchar(5)"/>
+            <column name="room" type="varchar(250)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1656075873551-2" author="Pavel Starovoitov">
+        <addForeignKeyConstraint baseTableName="orders" baseColumnNames="client" constraintName="order_client"
+                                 referencedTableName="client"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="task" baseColumnNames="order" constraintName="task_order"
+                                 referencedTableName="orders"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="task" baseColumnNames="worker" constraintName="task_worker"
+                                 referencedTableName="worker"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="task" baseColumnNames="job" constraintName="task_job"
+                                 referencedTableName="job"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="task" baseColumnNames="creator_worker" constraintName="task_creator_worker"
+                                 referencedTableName="worker"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="worker" baseColumnNames="user" constraintName="worker_user"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="price" baseColumnNames="job" constraintName="price_job"
+                                 referencedTableName="job"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="equipment" baseColumnNames="client" constraintName="equipment_client"
+                                 referencedTableName="client"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="equipment" baseColumnNames="address" constraintName="equipment_address"
+                                 referencedTableName="address"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>
