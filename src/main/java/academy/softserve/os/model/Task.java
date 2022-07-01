@@ -1,16 +1,19 @@
 package academy.softserve.os.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
 import java.time.Instant;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Task {
@@ -24,7 +27,7 @@ public class Task {
     @Column(name = "time_create")
     private Instant timeCreate;
 
-    @Column(name = "comment",length = 100)
+    @Column(name = "comment")
     private String comment;
 
     @ManyToOne

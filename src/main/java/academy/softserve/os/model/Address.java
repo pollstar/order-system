@@ -1,16 +1,18 @@
 package academy.softserve.os.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Address {
@@ -18,16 +20,16 @@ public class Address {
     @GeneratedValue
     private Long id;
 
-    @Column(length = 50)
+    @Column(name = "city")
     private String city;
 
-    @Column(length = 50)
+    @Column(name = "street")
     private String street;
 
-    @Column(length = 5)
+    @Column(name = "house")
     private String house;
 
-    @Column(length = 50)
+    @Column(name = "room")
     private String room;
 
     @OneToMany(mappedBy = "address")

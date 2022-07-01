@@ -1,16 +1,19 @@
 package academy.softserve.os.model;
 
-import lombok.AllArgsConstructor;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
-import javax.validation.constraints.Size;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
@@ -19,8 +22,7 @@ public class User {
     @GeneratedValue
     private Long id;
 
-    @Column(length = 20)
-    @Size(max = 20)
+    @Column(name = "login")
     private String login;
 
     @Column(name = "password_hash")
