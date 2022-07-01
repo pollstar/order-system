@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="1656075873551-4" author="Dmitry Mishnev">
+        <addAutoIncrement tableName="users" columnName="id" columnDataType="int"/>
+        <addAutoIncrement tableName="worker" columnName="id"  columnDataType="int"/>
+        <addAutoIncrement tableName="job" columnName="id" columnDataType="int"/>
+        <addAutoIncrement tableName="client" columnName="id" columnDataType="int"/>
+        <addAutoIncrement tableName="orders" columnName="id" columnDataType="int"/>
+        <addAutoIncrement tableName="address" columnName="id" columnDataType="int"/>
+        <addAutoIncrement tableName="price" columnName="id" columnDataType="int"/>
+        <addAutoIncrement tableName="equipment" columnName="id" columnDataType="int"/>
+        <addAutoIncrement tableName="task" columnName="id" columnDataType="int"/>
+    </changeSet>
+
+</databaseChangeLog>
