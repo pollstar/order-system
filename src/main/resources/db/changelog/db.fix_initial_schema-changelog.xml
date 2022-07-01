@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="1656075873551-3" author="Dmitry Mishnev">
+        <renameColumn tableName="orders" oldColumnName="client" newColumnName="client_id"/>
+        <renameColumn tableName="orders" oldColumnName="closingDate" newColumnName="closing_date"/>
+        <renameColumn tableName="task" oldColumnName="order" newColumnName="order_id"/>
+        <renameColumn tableName="task" oldColumnName="worker" newColumnName="worker_id"/>
+        <renameColumn tableName="task" oldColumnName="job" newColumnName="job_id"/>
+        <renameColumn tableName="task" oldColumnName="creator_worker" newColumnName="creator_worker_id"/>
+        <renameColumn tableName="worker" oldColumnName="user" newColumnName="user_id"/>
+        <renameColumn tableName="price" oldColumnName="job" newColumnName="job_id"/>
+        <renameColumn tableName="equipment" oldColumnName="client" newColumnName="client_id"/>
+        <renameColumn tableName="equipment" oldColumnName="address" newColumnName="address_id"/>
+    </changeSet>
+
+</databaseChangeLog>
