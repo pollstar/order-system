@@ -1,6 +1,7 @@
 package academy.softserve.os.service.impl;
 
 import academy.softserve.os.api.dto.OrderDTO;
+import academy.softserve.os.mapper.OrderMapper;
 import academy.softserve.os.model.Client;
 import academy.softserve.os.model.Order;
 import academy.softserve.os.repository.OrderRepository;
@@ -10,16 +11,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@WebMvcTest(value = {OrderServiceImpl.class, OrderMapper.class})
 class OrderServiceImplTest {
 
     @Autowired
