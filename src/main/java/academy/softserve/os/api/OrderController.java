@@ -5,6 +5,7 @@ import academy.softserve.os.api.dto.command.CreateOrderCommandDTO;
 import academy.softserve.os.mapper.OrderMapper;
 import academy.softserve.os.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +27,7 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<OrderDTO> createOrder(@Valid @RequestBody CreateOrderCommandDTO orderCommandDTO) {
         return orderService.createOrder(mapper.toModel(orderCommandDTO))
-                .map(ResponseEntity::ok)
+                .map(orderDTO -> ResponseEntity.status(HttpStatus.CREATED).body(orderDTO))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 }
