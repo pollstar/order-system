@@ -8,12 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class AddressService {
-    @Autowired
-    private AddressRepository addressRepository;
-
-    @Transactional
-    public Address createAddress(CreateAddressCommand createAddressCommand){
-        return addressRepository.saveAndFlush(createAddressCommand.getAddress());
-    }
+public interface AddressService {
+    Address createAddress(CreateAddressCommand command);
 }
