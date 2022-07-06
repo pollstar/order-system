@@ -1,8 +1,8 @@
 package academy.softserve.os.model;
 
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -19,7 +19,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "orders")
 public class Order {
