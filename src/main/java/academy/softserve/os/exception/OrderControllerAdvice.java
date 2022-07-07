@@ -30,7 +30,7 @@ public class OrderControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(CreateOrderException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<Object> handleGameException(CreateOrderException e) {
+    public ResponseEntity<Object> handleCreateOrderException(CreateOrderException e) {
         String message = e.getMessage();
         return ResponseEntity.badRequest().body(new ErrorResponse("Fail create order", message == null ? null : List.of(message)));
     }
