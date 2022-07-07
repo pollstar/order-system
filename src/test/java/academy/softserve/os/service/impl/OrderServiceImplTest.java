@@ -21,9 +21,9 @@ import static org.mockito.Mockito.when;
 
 class OrderServiceImplTest {
 
-    OrderRepository orderRepository;
-    OrderMapper mapper;
-    OrderService orderService;
+    private OrderRepository orderRepository;
+    private OrderMapper mapper;
+    private OrderService orderService;
 
     @BeforeEach
     public void init() {
