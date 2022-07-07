@@ -38,7 +38,7 @@ class OrderControllerTest {
     void givenValidCreateOrderCommandDTO_createOrder_shouldCreateNewOrderAndReturnOKResponse() throws Exception {
         //given
         var objectMapper = new ObjectMapper();
-        Client client = new Client();
+        var client = new Client();
         client.setId(1L);
         client.setName("John");
         var createOrderCommandDTO = CreateOrderCommandDTO.builder()
