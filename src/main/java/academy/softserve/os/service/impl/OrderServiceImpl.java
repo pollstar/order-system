@@ -1,6 +1,6 @@
 package academy.softserve.os.service.impl;
 
-import academy.softserve.os.api.dto.OrderDTO;
+import academy.softserve.os.exception.CreateOrderException;
 import academy.softserve.os.mapper.OrderMapper;
 import academy.softserve.os.model.Order;
 import academy.softserve.os.repository.OrderRepository;
@@ -21,11 +21,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Optional<OrderDTO> createOrder(CreateOrderCommand command) {
-        if (command == null) {
-            return Optional.empty();
-        }
-        Order order = orderRepository.save(mapper.toModel(command));
-        return Optional.ofNullable(mapper.toDTO(order));
+    public Order createOrder(CreateOrderCommand command) {
+        return Optional.ofNullable(command)
+                .map(then -> orderRepository.save(mapper.toModel(command)))
+                .filter(order -> order.getId() != null)
+                .orElseThrow(CreateOrderException::new);
     }
 }

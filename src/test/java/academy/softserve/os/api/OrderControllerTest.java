@@ -1,14 +1,14 @@
 package academy.softserve.os.api;
 
-import academy.softserve.os.api.dto.OrderDTO;
 import academy.softserve.os.api.dto.command.CreateOrderCommandDTO;
+import academy.softserve.os.exception.CreateOrderException;
 import academy.softserve.os.mapper.OrderMapper;
 import academy.softserve.os.model.Client;
+import academy.softserve.os.model.Order;
 import academy.softserve.os.service.OrderService;
 import academy.softserve.os.service.command.CreateOrderCommand;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -16,9 +16,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Date;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.nullable;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -33,51 +35,56 @@ class OrderControllerTest {
     private OrderService orderService;
 
     @Test
-    void whenPostRequestToOrder_returnNewOrder() throws Exception {
+    void givenValidCreateOrderCommandDTO_createOrder_shouldCreateNewOrderAndReturnOKResponse() throws Exception {
         //given
         var objectMapper = new ObjectMapper();
         Client client = new Client();
         client.setId(1L);
         client.setName("John");
-        var createOrderCommandDTO = new CreateOrderCommandDTO(
-                client,
-                new Date(),
-                new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)),
-                1,
-                "description");
-        var orderDTO = new OrderDTO(1L, client,
-                new Date(),
-                new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)),
-                1,
-                "description");
+        var createOrderCommandDTO = CreateOrderCommandDTO.builder()
+                .clientId(1L)
+                .placementDate(new Date())
+                .closingDate( new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)))
+                .description("description")
+                .phase(1)
+                .build();
+        var order = Order.builder()
+                .id(1L)
+                .client(client)
+                .placementDate(new Date())
+                .closingDate(new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)))
+                .description("description")
+                .phase(1)
+                .build();
+
         //when
-        Mockito.when(orderService.createOrder(Mockito.any(CreateOrderCommand.class))).thenReturn(Optional.of(orderDTO));
+        when(orderService.createOrder(any(CreateOrderCommand.class))).thenReturn(order);
         //then
         mockMvc.perform(post("/api/order")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createOrderCommandDTO)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.client.id").value(1L))
-                .andExpect(jsonPath("$.client.name").value("John"))
-                .andExpect(jsonPath("$.description").value("description"));
+                .andExpect(jsonPath("$.clientId").value(1L));
     }
 
     @Test
-    void whenPostRequestToOrderAndNotCreatedOrder_returnBadRequest() throws Exception {
+    void givenCreateOrderCommandDTO_createOrder_ifNotCreatedReturnBadRequest() throws Exception {
         //given
         var objectMapper = new ObjectMapper();
         Client client = new Client();
         client.setId(1L);
         client.setName("John");
-        var createOrderCommandDTO = new CreateOrderCommandDTO(
-                client,
-                new Date(),
-                new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)),
-                1,
-                "description");
+        var createOrderCommandDTO = CreateOrderCommandDTO.builder()
+                .clientId(1L)
+                .placementDate(new Date())
+                .closingDate( new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)))
+                .description("description")
+                .phase(1)
+                .build();
+
         //when
-        Mockito.when(orderService.createOrder(Mockito.any(CreateOrderCommand.class))).thenReturn(Optional.empty());
+        when(orderService.createOrder(nullable(CreateOrderCommand.class))).thenThrow(CreateOrderException.class);
         //then
         mockMvc.perform(post("/api/order")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -86,15 +93,16 @@ class OrderControllerTest {
     }
 
     @Test
-    void whenPostRequestToOrderWithNullClientIntBody_thenResponseErrorMessage() throws Exception {
+    void givenCreateOrderCommandDTOWithNullClientId_createOrder_thenResponseErrorMessage() throws Exception {
         //given
         var objectMapper = new ObjectMapper();
-        var createOrderCommandDTO = new CreateOrderCommandDTO(
-                null,
-                new Date(),
-                new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)),
-                1,
-                "description");
+        var createOrderCommandDTO = CreateOrderCommandDTO.builder()
+                .clientId(null)
+                .placementDate(new Date())
+                .closingDate( new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)))
+                .description("description")
+                .phase(1)
+                .build();
         //when
         mockMvc.perform(post("/api/order")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -102,23 +110,24 @@ class OrderControllerTest {
                 //then
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Validation failed!"))
-                .andExpect(jsonPath("$.details[0]").value("Client cannot be null"));
+                .andExpect(jsonPath("$.details[0]").value("Field a clientId cannot be null"));
     }
 
     @Test
-    void whenPostRequestToOrderWithTooLongDescriptionInBody_thenResponseErrorMessage() throws Exception {
+    void givenCreateOrderCommandDTOWWithTooLongDescriptionInBody_thenResponseErrorMessage() throws Exception {
         //given
         var objectMapper = new ObjectMapper();
         Client client = new Client();
         client.setId(1L);
         client.setName("John");
         String description = "A".repeat(101);
-        var createOrderCommandDTO = new CreateOrderCommandDTO(
-                client,
-                new Date(),
-                new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)),
-                1,
-                description);
+        var createOrderCommandDTO = CreateOrderCommandDTO.builder()
+                .clientId(1L)
+                .placementDate(new Date())
+                .closingDate(new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)))
+                .description(description)
+                .phase(1)
+                .build();
         //when
         mockMvc.perform(post("/api/order")
                         .contentType(MediaType.APPLICATION_JSON)

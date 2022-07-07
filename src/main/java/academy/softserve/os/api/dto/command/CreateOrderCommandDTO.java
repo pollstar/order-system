@@ -1,9 +1,7 @@
 package academy.softserve.os.api.dto.command;
 
-import academy.softserve.os.model.Client;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
@@ -12,12 +10,11 @@ import java.util.Date;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Builder
 public class CreateOrderCommandDTO {
 
-    @NotNull(message = "Client cannot be null")
-    private Client client;
+    @NotNull(message = "Field a clientId cannot be null")
+    private Long clientId;
 
     private Date placementDate;
 

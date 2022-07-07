@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -26,7 +27,10 @@ public class OrderController {
     @Transactional
     @PostMapping
     public ResponseEntity<OrderDTO> createOrder(@Valid @RequestBody CreateOrderCommandDTO orderCommandDTO) {
-        return orderService.createOrder(mapper.toModel(orderCommandDTO))
+
+        var order = orderService.createOrder(mapper.toModel(orderCommandDTO));
+        var orderDto = mapper.toDTO(order);
+        return Optional.of(orderDto)
                 .map(orderDTO -> ResponseEntity.status(HttpStatus.CREATED).body(orderDTO))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }

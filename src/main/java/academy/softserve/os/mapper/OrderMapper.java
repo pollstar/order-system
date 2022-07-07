@@ -9,10 +9,12 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
-    @Mapping(source = "dto.client", target = "client")
+
     CreateOrderCommand toModel(CreateOrderCommandDTO dto);
 
+    @Mapping(target = "clientId", source = "order.client.id")
     OrderDTO toDTO(Order order);
 
+    @Mapping(target = "client.id", source = "dto.clientId")
     Order toModel(CreateOrderCommand dto);
 }

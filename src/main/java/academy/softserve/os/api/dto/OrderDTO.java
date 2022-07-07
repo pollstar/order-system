@@ -1,6 +1,5 @@
 package academy.softserve.os.api.dto;
 
-import academy.softserve.os.model.Client;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -12,7 +11,7 @@ public class OrderDTO {
 
     private Long id;
 
-    private Client client;
+    private Long clientId;
 
     private Date placementDate;
 
