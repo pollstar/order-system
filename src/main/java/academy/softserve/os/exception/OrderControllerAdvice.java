@@ -21,8 +21,7 @@ public class OrderControllerAdvice extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return ex.getBindingResult().getAllErrors()
-                .stream()
+        return ex.getBindingResult().getAllErrors().stream()
                 .map(ObjectError::getDefaultMessage)
                 .collect(collectingAndThen(toList(),
                         details -> ResponseEntity.badRequest()
