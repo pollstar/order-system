@@ -56,7 +56,7 @@ class OrderServiceImplTest {
         //when
         when(mapper.toModel(any(CreateOrderCommand.class))).thenReturn(order);
         when(orderRepository.save(any(Order.class))).thenReturn(order);
-        var orderDTO = orderService.createOrder(createOrderCommand);
+        var order = orderService.createOrder(createOrderCommand);
         //then
 
         Assertions.assertEquals(1L, orderDTO.getId());
