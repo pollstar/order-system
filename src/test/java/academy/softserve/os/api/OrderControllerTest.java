@@ -38,7 +38,7 @@ class OrderControllerTest {
     void givenValidCreateOrderCommandDTO_createOrder_shouldCreateNewOrderAndReturnOKResponse() throws Exception {
         //given
         var objectMapper = new ObjectMapper();
-        Client client = new Client();
+        var client = new Client();
         client.setId(1L);
         client.setName("John");
         var createOrderCommandDTO = CreateOrderCommandDTO.builder()
@@ -93,7 +93,7 @@ class OrderControllerTest {
     }
 
     @Test
-    void givenCreateOrderCommandDTOWithNullClientId_createOrder_thenResponseErrorMessage() throws Exception {
+    void givenCreateOrderCommandDTOWithNullClientId_createOrder_shouldReturnErrorMessageBecauseClientIdCannotBeNull() throws Exception {
         //given
         var objectMapper = new ObjectMapper();
         var createOrderCommandDTO = CreateOrderCommandDTO.builder()

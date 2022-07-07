@@ -21,8 +21,7 @@ public class OrderControllerAdvice extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return ex.getBindingResult().getAllErrors()
-                .stream()
+        return ex.getBindingResult().getAllErrors().stream()
                 .map(ObjectError::getDefaultMessage)
                 .collect(collectingAndThen(toList(),
                         details -> ResponseEntity.badRequest()
@@ -31,8 +30,8 @@ public class OrderControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(CreateOrderException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<Object> handleGameException(CreateOrderException e) {
+    public ResponseEntity<Object> handleCreateOrderException(CreateOrderException e) {
         String message = e.getMessage();
-        return ResponseEntity.badRequest().body(new ErrorResponse("Fail create order", message == null ? null : List.of(message)));
+        return ResponseEntity.badRequest().body(new ErrorResponse("Failed to create an order", message == null ? null : List.of(message)));
     }
 }
