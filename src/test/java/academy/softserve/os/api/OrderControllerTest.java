@@ -93,7 +93,7 @@ class OrderControllerTest {
     }
 
     @Test
-    void givenCreateOrderCommandDTOWithNullClientId_createOrder_thenResponseErrorMessage() throws Exception {
+    void givenCreateOrderCommandDTOWithNullClientId_createOrder_shouldReturnErrorMessageBecauseClientIdCannotBeNull() throws Exception {
         //given
         var objectMapper = new ObjectMapper();
         var createOrderCommandDTO = CreateOrderCommandDTO.builder()
