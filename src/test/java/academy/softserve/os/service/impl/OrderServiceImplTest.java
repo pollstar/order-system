@@ -40,14 +40,6 @@ class OrderServiceImplTest {
         //given
         var placementDate = new Date();
         var closingDate = new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1));
-        Order orderEntity = Order.builder()
-                .id(1L)
-                .client(new Client())
-                .placementDate(placementDate)
-                .closingDate(closingDate)
-                .description("test")
-                .phase(1)
-                .build();
         var createOrderCommand = CreateOrderCommand.builder()
                 .clientId(1L)
                 .placementDate(placementDate)
