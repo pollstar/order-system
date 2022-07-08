@@ -10,6 +10,7 @@ import academy.softserve.os.service.command.CreateOrderCommand;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.AdditionalAnswers;
 import org.mockito.Mockito;
 
 import java.util.Date;
@@ -55,7 +56,7 @@ class OrderServiceImplTest {
                 .build();
         //when
         when(clientRepository.findById(any(Long.class))).thenReturn(Optional.of(new Client()));
-        when(orderRepository.save(any(Order.class))).thenReturn(orderEntity);
+        when(orderRepository.save(any(Order.class))).then(AdditionalAnswers.returnsFirstArg());
         var order = orderService.createOrder(createOrderCommand);
         //then
 

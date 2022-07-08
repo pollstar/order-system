@@ -40,11 +40,11 @@ class OrderControllerTest {
     @BeforeEach
     public void init(){
         client = new Client();
+        client.setId(1L);
     }
     @Test
     void givenValidCreateOrderCommandDTO_createOrder_shouldCreateNewOrderAndReturnOKResponse() throws Exception {
         //given
-        client.setId(1L);
         var createOrderCommandDTO = CreateOrderCommandDTO.builder()
                 .clientId(1L)
                 .placementDate(new Date())
@@ -75,7 +75,6 @@ class OrderControllerTest {
     @Test
     void givenCreateOrderCommandDTO_createOrder_ifNotCreatedReturnBadRequest() throws Exception {
         //given
-        client.setId(1L);
         var createOrderCommandDTO = CreateOrderCommandDTO.builder()
                 .clientId(1L)
                 .placementDate(new Date())
@@ -116,7 +115,6 @@ class OrderControllerTest {
     @Test
     void givenCreateOrderCommandDTOWWithTooLongDescriptionInBody_thenResponseErrorMessage() throws Exception {
         //given
-        client.setId(1L);
         String description = "A".repeat(101);
         var createOrderCommandDTO = CreateOrderCommandDTO.builder()
                 .clientId(1L)
