@@ -7,7 +7,6 @@ import academy.softserve.os.repository.ClientRepository;
 import academy.softserve.os.repository.OrderRepository;
 import academy.softserve.os.service.OrderService;
 import academy.softserve.os.service.command.CreateOrderCommand;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -17,6 +16,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
@@ -61,7 +61,6 @@ class OrderServiceImplTest {
         var order = orderService.createOrder(createOrderCommand);
         //then
 
-        assertEquals(1L, order.getId());
         assertEquals(placementDate, order.getPlacementDate());
         assertEquals(closingDate, order.getClosingDate());
         assertEquals("test", order.getDescription());
@@ -84,6 +83,6 @@ class OrderServiceImplTest {
         when(clientRepository.findById(any(Long.class))).thenReturn(Optional.empty());
 
         //then
-        Assertions.assertThrows(CreateOrderException.class, () -> orderService.createOrder(createOrderCommand));
+        assertThrows(CreateOrderException.class, () -> orderService.createOrder(createOrderCommand));
     }
 }
