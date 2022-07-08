@@ -86,7 +86,7 @@ class OrderControllerTest {
                 .build();
 
         //when
-        when(orderService.createOrder(nullable(CreateOrderCommand.class))).thenThrow(CreateOrderException.class);
+        when(orderService.createOrder(any(CreateOrderCommand.class))).thenThrow(CreateOrderException.class);
         //then
         mockMvc.perform(post("/api/order")
                         .contentType(MediaType.APPLICATION_JSON)
