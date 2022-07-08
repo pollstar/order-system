@@ -2,13 +2,15 @@ package academy.softserve.os.mapper;
 
 import academy.softserve.os.model.Client;
 import academy.softserve.os.model.Order;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class OrderMapperTest {
 
@@ -16,7 +18,7 @@ class OrderMapperTest {
     private final OrderMapper mapper = Mappers.getMapper(OrderMapper.class);
 
     @Test
-    void toDTO() {
+    void givenOrderWithClient_toDTO_shouldCorrectlyMapOrderToOrderDTO() {
         var placementDate = new Date();
         var closingDate = new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1));
         var client = new Client();
@@ -29,12 +31,14 @@ class OrderMapperTest {
                 .description("test")
                 .phase(1)
                 .build();
+                
         var orderDTO = mapper.toDTO(order);
-        assertEquals(1L, orderDTO.getId());
-        assertEquals(1L, orderDTO.getClientId());
-        assertEquals(placementDate, orderDTO.getPlacementDate());
-        assertEquals(closingDate, orderDTO.getClosingDate());
-        assertEquals("test", orderDTO.getDescription());
-        assertEquals(1, orderDTO.getPhase());
+        
+        Assertions.assertEquals(1L, orderDTO.getId());
+        Assertions.assertEquals(1L, orderDTO.getClientId());
+        Assertions.assertEquals(placementDate, orderDTO.getPlacementDate());
+        Assertions.assertEquals(closingDate, orderDTO.getClosingDate());
+        Assertions.assertEquals("test", orderDTO.getDescription());
+        Assertions.assertEquals(1, orderDTO.getPhase());
     }
 }

@@ -42,6 +42,7 @@ class OrderControllerTest {
         client = new Client();
         client.setId(1L);
     }
+    
     @Test
     void givenValidCreateOrderCommandDTO_createOrder_shouldCreateNewOrderAndReturnOKResponse() throws Exception {
         //given
@@ -73,7 +74,7 @@ class OrderControllerTest {
     }
 
     @Test
-    void givenCreateOrderCommandDTO_createOrder_ifNotCreatedReturnBadRequest() throws Exception {
+    void givenCreateOrderCommandDTO_createOrder_shouldFailBecauseOrderCannotBeCreated() throws Exception {
         //given
         var createOrderCommandDTO = CreateOrderCommandDTO.builder()
                 .clientId(1L)
@@ -84,7 +85,7 @@ class OrderControllerTest {
                 .build();
 
         //when
-        when(orderService.createOrder(nullable(CreateOrderCommand.class))).thenThrow(CreateOrderException.class);
+        when(orderService.createOrder(any(CreateOrderCommand.class))).thenThrow(CreateOrderException.class);
         //then
         mockMvc.perform(post("/api/order")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -113,7 +114,7 @@ class OrderControllerTest {
     }
 
     @Test
-    void givenCreateOrderCommandDTOWWithTooLongDescriptionInBody_thenResponseErrorMessage() throws Exception {
+    void givenCreateOrderCommandDTOWWithTooLongDescriptionInBody_createOrder_shouldReturnErrorMessage() throws Exception {
         //given
         String description = "A".repeat(101);
         var createOrderCommandDTO = CreateOrderCommandDTO.builder()
