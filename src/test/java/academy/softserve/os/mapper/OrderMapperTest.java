@@ -18,7 +18,7 @@ class OrderMapperTest {
     private final OrderMapper mapper = Mappers.getMapper(OrderMapper.class);
 
     @Test
-    void toDTO() {
+    void givenOrderWithClient_toDTO_shouldCorrectlyMapOrderToOrderDTO() {
         var placementDate = new Date();
         var closingDate = new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1));
         var client = new Client();
@@ -31,7 +31,9 @@ class OrderMapperTest {
                 .description("test")
                 .phase(1)
                 .build();
+                
         var orderDTO = mapper.toDTO(order);
+        
         Assertions.assertEquals(1L, orderDTO.getId());
         Assertions.assertEquals(1L, orderDTO.getClientId());
         Assertions.assertEquals(placementDate, orderDTO.getPlacementDate());
