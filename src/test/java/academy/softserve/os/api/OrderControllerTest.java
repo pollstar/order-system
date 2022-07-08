@@ -41,6 +41,7 @@ class OrderControllerTest {
     public void init(){
         client = new Client();
     }
+    
     @Test
     void givenValidCreateOrderCommandDTO_createOrder_shouldCreateNewOrderAndReturnOKResponse() throws Exception {
         //given
