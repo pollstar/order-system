@@ -10,13 +10,14 @@ import academy.softserve.os.service.command.CreateOrderCommand;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.AdditionalAnswers;
 import org.mockito.Mockito;
 
 import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
@@ -60,11 +61,11 @@ class OrderServiceImplTest {
         var order = orderService.createOrder(createOrderCommand);
         //then
 
-        Assertions.assertEquals(1L, order.getId());
-        Assertions.assertEquals(placementDate, order.getPlacementDate());
-        Assertions.assertEquals(closingDate, order.getClosingDate());
-        Assertions.assertEquals("test", order.getDescription());
-        Assertions.assertEquals(1, order.getPhase());
+        assertEquals(1L, order.getId());
+        assertEquals(placementDate, order.getPlacementDate());
+        assertEquals(closingDate, order.getClosingDate());
+        assertEquals("test", order.getDescription());
+        assertEquals(1, order.getPhase());
     }
 
     @Test
