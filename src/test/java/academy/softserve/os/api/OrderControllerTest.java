@@ -74,7 +74,7 @@ class OrderControllerTest {
     }
 
     @Test
-    void givenCreateOrderCommandDTO_createOrder_ifNotCreatedReturnBadRequest() throws Exception {
+    void givenCreateOrderCommandDTO_createOrder_shouldFailBecauseOrderCannotBeCreated() throws Exception {
         //given
         client.setId(1L);
         var createOrderCommandDTO = CreateOrderCommandDTO.builder()
