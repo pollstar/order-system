@@ -8,6 +8,7 @@ import academy.softserve.os.model.Order;
 import academy.softserve.os.service.OrderService;
 import academy.softserve.os.service.command.CreateOrderCommand;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -33,14 +34,17 @@ class OrderControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private OrderService orderService;
+    private final ObjectMapper objectMapper =  new ObjectMapper();
+    private  Client client;
 
+    @BeforeEach
+    public void init(){
+        client = new Client();
+    }
     @Test
     void givenValidCreateOrderCommandDTO_createOrder_shouldCreateNewOrderAndReturnOKResponse() throws Exception {
         //given
-        var objectMapper = new ObjectMapper();
-        var client = new Client();
         client.setId(1L);
-        client.setName("John");
         var createOrderCommandDTO = CreateOrderCommandDTO.builder()
                 .clientId(1L)
                 .placementDate(new Date())
@@ -48,6 +52,7 @@ class OrderControllerTest {
                 .description("description")
                 .phase(1)
                 .build();
+        //when
         var order = Order.builder()
                 .id(1L)
                 .client(client)
@@ -57,7 +62,6 @@ class OrderControllerTest {
                 .phase(1)
                 .build();
 
-        //when
         when(orderService.createOrder(any(CreateOrderCommand.class))).thenReturn(order);
         //then
         mockMvc.perform(post("/api/order")
@@ -71,10 +75,7 @@ class OrderControllerTest {
     @Test
     void givenCreateOrderCommandDTO_createOrder_ifNotCreatedReturnBadRequest() throws Exception {
         //given
-        var objectMapper = new ObjectMapper();
-        Client client = new Client();
         client.setId(1L);
-        client.setName("John");
         var createOrderCommandDTO = CreateOrderCommandDTO.builder()
                 .clientId(1L)
                 .placementDate(new Date())
@@ -95,7 +96,6 @@ class OrderControllerTest {
     @Test
     void givenCreateOrderCommandDTOWithNullClientId_createOrder_shouldReturnErrorMessageBecauseClientIdCannotBeNull() throws Exception {
         //given
-        var objectMapper = new ObjectMapper();
         var createOrderCommandDTO = CreateOrderCommandDTO.builder()
                 .clientId(null)
                 .placementDate(new Date())
@@ -116,10 +116,7 @@ class OrderControllerTest {
     @Test
     void givenCreateOrderCommandDTOWWithTooLongDescriptionInBody_thenResponseErrorMessage() throws Exception {
         //given
-        var objectMapper = new ObjectMapper();
-        Client client = new Client();
         client.setId(1L);
-        client.setName("John");
         String description = "A".repeat(101);
         var createOrderCommandDTO = CreateOrderCommandDTO.builder()
                 .clientId(1L)
