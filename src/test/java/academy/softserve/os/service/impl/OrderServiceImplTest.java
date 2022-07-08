@@ -56,7 +56,7 @@ class OrderServiceImplTest {
                 .build();
         //when
         when(clientRepository.findById(any(Long.class))).thenReturn(Optional.of(new Client()));
-        when(orderRepository.save(any(Order.class))).then(AdditionalAnswers.returnsFirstArg());
+        when(orderRepository.save(any(Order.class))).then(returnsFirstArg());
         var order = orderService.createOrder(createOrderCommand);
         //then
 
