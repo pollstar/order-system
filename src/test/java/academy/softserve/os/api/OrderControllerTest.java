@@ -115,7 +115,7 @@ class OrderControllerTest {
     }
 
     @Test
-    void givenCreateOrderCommandDTOWWithTooLongDescriptionInBody_thenResponseErrorMessage() throws Exception {
+    void givenCreateOrderCommandDTOWWithTooLongDescriptionInBody_createOrder_shouldReturnErrorMessage() throws Exception {
         //given
         client.setId(1L);
         String description = "A".repeat(101);
