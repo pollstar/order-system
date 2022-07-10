@@ -1,13 +1,50 @@
 package academy.softserve.os.service;
 
+import academy.softserve.os.service.exception.CreateAddressException;
 import academy.softserve.os.model.Address;
 import academy.softserve.os.repository.AddressRepository;
 import academy.softserve.os.service.command.CreateAddressCommand;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.function.UnaryOperator;
+
 @Service
-public interface AddressService {
-    Address createAddress(CreateAddressCommand command);
+@RequiredArgsConstructor
+public class AddressService {
+    private final AddressRepository addressRepository;
+
+    @Transactional
+    public Address createAddress(CreateAddressCommand command) {
+
+        if (command.getCity().isBlank() || Objects.isNull(command.getCity()) ||
+                command.getStreet().isBlank() || Objects.isNull(command.getStreet()) ||
+                command.getHouse().isBlank() || Objects.isNull(command.getHouse())) {
+            throw new CreateAddressException("Address not valid");
+        }
+
+        UnaryOperator<String> f = s -> s.toUpperCase().replaceAll("\\s+", " ").trim();
+        Address address = Address.builder()
+                .city(f.apply(command.getCity()))
+                .street(f.apply(command.getStreet()))
+                .house(f.apply(command.getHouse()))
+                .room(f.apply(command.getRoom()))
+                .build();
+
+
+        List<Address> addresses = addressRepository.findByCityAndStreetAndHouseAndRoom(
+                address.getCity(),
+                address.getStreet(),
+                address.getHouse(),
+                address.getRoom()
+        );
+
+        if (addresses.isEmpty()) {
+            return addressRepository.save(address);
+        }
+        return addresses.get(0);
+    }
 }

@@ -8,10 +8,11 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface AddressMapper {
-    Address dtoAddressToAddress(AddressDTO dto);
-    AddressDTO addressToAddressDto(Address address);
+    Address toAddress(AddressDTO dto);
 
-    CreateAddressCommand commandDtoToCommand(CreateAddressCommandDTO dto);
-    CreateAddressCommandDTO commandToCommandDTO(CreateAddressCommand command);
+    AddressDTO toAddressDTO(Address address);
 
+    CreateAddressCommand toCommand(CreateAddressCommandDTO dto);
+
+    CreateAddressCommandDTO toCommandDTO(CreateAddressCommand command);
 }
