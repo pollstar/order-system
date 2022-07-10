@@ -4,6 +4,7 @@ import academy.softserve.os.service.exception.CreateAddressException;
 import academy.softserve.os.model.Address;
 import academy.softserve.os.repository.AddressRepository;
 import academy.softserve.os.service.command.CreateAddressCommand;
+import academy.softserve.os.service.exception.GetAddressByIdException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,10 +21,10 @@ public class AddressService {
     @Transactional
     public Address createAddress(CreateAddressCommand command) {
 
-        if (command.getCity().isBlank() || Objects.isNull(command.getCity()) ||
-                command.getStreet().isBlank() || Objects.isNull(command.getStreet()) ||
-                command.getHouse().isBlank() || Objects.isNull(command.getHouse())) {
-            throw new CreateAddressException("Address not valid");
+        if (Objects.isNull(command.getCity()) || command.getCity().isBlank() ||
+                Objects.isNull(command.getStreet()) || command.getStreet().isBlank() ||
+                Objects.isNull(command.getHouse()) || command.getHouse().isBlank()) {
+            throw new CreateAddressException();
         }
 
         UnaryOperator<String> f = s -> s.toUpperCase().replaceAll("\\s+", " ").trim();
@@ -46,5 +47,14 @@ public class AddressService {
             return addressRepository.save(address);
         }
         return addresses.get(0);
+    }
+
+    public List<Address> getAddress() {
+        return addressRepository.findAll();
+    }
+
+    public Address getAddressById(Long id) {
+        return addressRepository.findById(id)
+                .orElseThrow(GetAddressByIdException::new);
     }
 }

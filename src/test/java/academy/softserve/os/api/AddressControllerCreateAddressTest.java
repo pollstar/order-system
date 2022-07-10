@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @WebMvcTest(value = {AddressController.class, AddressMapper.class})
-class AddressControllerTest {
+class AddressControllerCreateAddressTest {
     @Autowired
     private MockMvc mockMvc;
 

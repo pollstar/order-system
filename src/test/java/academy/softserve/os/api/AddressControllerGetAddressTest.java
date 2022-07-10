@@ -1,0 +1,100 @@
+package academy.softserve.os.api;
+
+import academy.softserve.os.api.dto.command.CreateAddressCommandDTO;
+import academy.softserve.os.api.mapper.AddressMapper;
+import academy.softserve.os.model.Address;
+import academy.softserve.os.service.AddressService;
+import academy.softserve.os.service.command.CreateAddressCommand;
+import academy.softserve.os.service.exception.CreateAddressException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.GsonJsonParser;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+
+@WebMvcTest(value = {AddressController.class, AddressMapper.class})
+class AddressControllerGetAddressTest {
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private AddressService service;
+
+    private Address address1, address2;
+    private final ObjectMapper mapper = new ObjectMapper();
+
+    @BeforeEach
+    void setUp() {
+        Address address1 = Address.builder()
+                .id(1L)
+                .city("ХАРЬКОВ")
+                .street("СУМСКАЯ")
+                .house("10")
+                .room("КУХНЯ")
+                .build();
+
+        Address address2 = Address.builder()
+                .id(2L)
+                .city("ЛЬВІВ")
+                .street("АВСТРІЙСКА")
+                .house("1")
+                .room("РЕСТОРАН")
+                .build();
+    }
+
+    @Test
+    void givenApiGetAddress_getAddress_shouldReturnJsonListAddressAndReturnOkResponse() throws Exception {
+        //given
+        List<Address> addresses = Arrays.asList(address1, address2);
+        //when
+        when(service.getAddress()).thenReturn(addresses);
+        //then
+        GsonJsonParser jsonParser = new GsonJsonParser();
+        mockMvc.perform(get("/api/address"))
+                .andExpect(status().isOk());
+//                .andExpect(jsonPath("$.id").value(1L))
+//                .andExpect(jsonPath("$.city").value("ХАРЬКОВ"))
+//                .andExpect(jsonPath("$.street").value("СУМСКАЯ"))
+//                .andExpect(jsonPath("$.house").value("10"))
+//                .andExpect(jsonPath("$.room").value("КУХНЯ"));
+
+    }
+
+    @Test
+    void givenApiGetAddressWithId_getAddressByIs_shouldReturnJsonAddressAndReturnOkResponse() throws Exception {
+        //given
+        Address address1 = Address.builder()
+                .id(1L)
+                .city("ХАРЬКОВ")
+                .street("СУМСКАЯ")
+                .house("10")
+                .room("КУХНЯ")
+                .build();
+        //when
+        when(service.getAddressById(address1.getId())).thenReturn(address1);
+        //then
+        GsonJsonParser jsonParser = new GsonJsonParser();
+        mockMvc.perform(get("/api/address/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.city").value("ХАРЬКОВ"))
+                .andExpect(jsonPath("$.street").value("СУМСКАЯ"))
+                .andExpect(jsonPath("$.house").value("10"))
+                .andExpect(jsonPath("$.room").value("КУХНЯ"));
+
+    }
+}

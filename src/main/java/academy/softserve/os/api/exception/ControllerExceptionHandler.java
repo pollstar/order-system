@@ -1,6 +1,7 @@
 package academy.softserve.os.api.exception;
 
 import academy.softserve.os.service.exception.CreateAddressException;
+import academy.softserve.os.service.exception.GetAddressByIdException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +19,12 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorApiMessage> handleCreateOrderException(CreateAddressException e) {
         return new ResponseEntity<>(new ErrorApiMessage("Error created address"), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(GetAddressByIdException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<ErrorApiMessage> handleCreateOrderException(GetAddressByIdException e) {
+        return new ResponseEntity<>(new ErrorApiMessage("Address not found"), HttpStatus.NOT_FOUND);
     }
 }
 
