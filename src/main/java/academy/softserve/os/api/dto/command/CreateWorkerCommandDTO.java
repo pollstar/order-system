@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Getter
@@ -15,13 +16,16 @@ import javax.validation.constraints.Size;
 @Builder
 public class CreateWorkerCommandDTO {
 
-    @Size(max = 50)
+    @NotNull(message = "firstName cannot be null")
+    @Size(max = 50, message = "firstName size must not be less than 50 characters")
     private String firstName;
 
-    @Size(max = 50)
+    @NotNull(message = "lastname cannot be null")
+    @Size(max = 50, message = "lastName size must not be less than 50 characters")
     private String lastName;
 
-    @Size(max = 20)
+    @NotNull(message = "login cannot be null")
+    @Size(max = 20, message = "login size must not be less than 20 characters")
     private String login;
 
     private String password;

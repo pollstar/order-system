@@ -8,7 +8,6 @@ import academy.softserve.os.service.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,11 +38,6 @@ public class WorkerController {
     @ExceptionHandler(LoginIsNotUniqueException.class)
     public ResponseEntity<String> handleLoginIsNotUnique(LoginIsNotUniqueException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<String> handleNotValidArgument(MethodArgumentNotValidException e) {
-        return new ResponseEntity<>("Input data is too long", HttpStatus.BAD_REQUEST);
     }
 
 }

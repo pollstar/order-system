@@ -71,6 +71,7 @@ class WorkerControllerTest {
 
     }
 
+
     @Test
     void givenTooLongLogin_createWorker_shouldThrowException() throws Exception {
 
@@ -105,4 +106,65 @@ class WorkerControllerTest {
                         .content(objectMapper.writeValueAsString(createWorkerCommand)))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    void givenCreateWorkerCommandDTOWithoutFirstname_createWorker_shouldThrowException() throws Exception {
+
+        var objectMapper = new ObjectMapper();
+
+        var createWorkerCommand = CreateWorkerCommand
+                .builder()
+                .lastName("Smith")
+                .login("john190")
+                .password("12345")
+                .build();
+
+        mockMvc.perform(post("/api/admin/worker")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createWorkerCommand)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message").value("Validation failed!"))
+                .andExpect(jsonPath("$.details[0]").value("firstName cannot be null"));
+    }
+
+    @Test
+    void givenCreateWorkerCommandDTOWithoutLastname_createWorker_shouldThrowException() throws Exception {
+
+        var objectMapper = new ObjectMapper();
+
+        var createWorkerCommand = CreateWorkerCommand
+                .builder()
+                .firstName("John")
+                .login("john190")
+                .password("12345")
+                .build();
+
+        mockMvc.perform(post("/api/admin/worker")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createWorkerCommand)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message").value("Validation failed!"))
+                .andExpect(jsonPath("$.details[0]").value("lastname cannot be null"));
+    }
+
+    @Test
+    void givenCreateWorkerCommandDTOWithoutLogin_createWorker_shouldThrowException() throws Exception {
+
+        var objectMapper = new ObjectMapper();
+
+        var createWorkerCommand = CreateWorkerCommand
+                .builder()
+                .firstName("John")
+                .lastName("Smith")
+                .password("12345")
+                .build();
+
+        mockMvc.perform(post("/api/admin/worker")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createWorkerCommand)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message").value("Validation failed!"))
+                .andExpect(jsonPath("$.details[0]").value("login cannot be null"));
+    }
+
 }
