@@ -86,7 +86,7 @@ class WorkerControllerTest {
 
     @Test
     void givenCreateWorkerCommandDTOWithoutFirstname_createWorker_shouldThrowException() throws Exception {
-        var createWorkerCommand = CreateWorkerCommand
+        var createWorkerCommandDTO = CreateWorkerCommandDTO
                 .builder()
                 .lastName("Smith")
                 .login("john190")
@@ -95,7 +95,7 @@ class WorkerControllerTest {
 
         mockMvc.perform(post("/api/admin/worker")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(createWorkerCommand)))
+                        .content(objectMapper.writeValueAsString(createWorkerCommandDTO)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("message").value("Validation failed!"))
                 .andExpect(jsonPath("$.details[0]").value("firstName cannot be null"));
@@ -120,7 +120,7 @@ class WorkerControllerTest {
 
     @Test
     void givenCreateWorkerCommandDTOWithoutLogin_createWorker_shouldThrowException() throws Exception {
-        var createWorkerCommand = CreateWorkerCommand
+        var createWorkerCommandDTO = CreateWorkerCommandDTO
                 .builder()
                 .firstName("John")
                 .lastName("Smith")
@@ -129,7 +129,7 @@ class WorkerControllerTest {
 
         mockMvc.perform(post("/api/admin/worker")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(createWorkerCommand)))
+                        .content(objectMapper.writeValueAsString(createWorkerCommandDTO)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("message").value("Validation failed!"))
                 .andExpect(jsonPath("$.details[0]").value("login cannot be null"));
