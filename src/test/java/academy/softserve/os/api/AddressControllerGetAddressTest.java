@@ -1,25 +1,18 @@
 package academy.softserve.os.api;
 
-import academy.softserve.os.api.dto.command.CreateAddressCommandDTO;
 import academy.softserve.os.api.mapper.AddressMapper;
 import academy.softserve.os.model.Address;
 import academy.softserve.os.service.AddressService;
-import academy.softserve.os.service.command.CreateAddressCommand;
-import academy.softserve.os.service.exception.CreateAddressException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -35,7 +28,6 @@ class AddressControllerGetAddressTest {
     private AddressService service;
 
     private Address address1, address2;
-    private final ObjectMapper mapper = new ObjectMapper();
 
     @BeforeEach
     void setUp() {
