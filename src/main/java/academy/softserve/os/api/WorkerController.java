@@ -19,7 +19,7 @@ import javax.validation.Valid;
 @RestController
 public class WorkerController {
     private final WorkerService workerService;
-
+    private static final WorkerMapper WORKER_MAPPER = WorkerMapper.INSTANCE;
     @Autowired
     WorkerController(WorkerService workerService) {
         this.workerService = workerService;
@@ -28,11 +28,10 @@ public class WorkerController {
     @Transactional
     @PostMapping("api/admin/worker")
     public ResponseEntity<WorkerDTO> createWorker(@RequestBody @Valid CreateWorkerCommandDTO commandDTO) {
-        var workerMapper = WorkerMapper.INSTANCE;
-        var createWorkerCommand = workerMapper.toCreateWorkerCommand(commandDTO);
+        var createWorkerCommand = WORKER_MAPPER.toCreateWorkerCommand(commandDTO);
         var worker = workerService.createWorker(createWorkerCommand);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(workerMapper.toWorkerDTO(worker));
+        return ResponseEntity.status(HttpStatus.CREATED).body(WORKER_MAPPER.toWorkerDTO(worker));
     }
 
     @ExceptionHandler(LoginIsNotUniqueException.class)
