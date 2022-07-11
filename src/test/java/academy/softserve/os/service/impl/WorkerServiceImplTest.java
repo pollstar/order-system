@@ -8,11 +8,13 @@ import academy.softserve.os.service.WorkerService;
 import academy.softserve.os.service.command.CreateWorkerCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.AdditionalAnswers;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -48,13 +50,6 @@ class WorkerServiceImplTest {
                 .passwordHash("12345")
                 .build();
 
-        var createdUser = User
-                .builder()
-                .id(1L)
-                .login("john123")
-                .passwordHash("12345")
-                .build();
-
         var requestWorker = Worker
                 .builder()
                 .firstName("John")
@@ -62,19 +57,11 @@ class WorkerServiceImplTest {
                 .user(requestUser)
                 .build();
 
-        var createdWorker = Worker
-                .builder()
-                .id(1L)
-                .firstName("John")
-                .lastName("Smith")
-                .user(createdUser)
-                .build();
-
         //when
-        when(workerRepository.save(requestWorker)).thenReturn(createdWorker);
+        when(workerRepository.save(requestWorker)).thenAnswer(returnsFirstArg());
         var result = workerService.createWorker(createWorkerCommand);
         //then
-        assertThat(result).isEqualTo(createdWorker);
+        assertThat(result).isEqualTo(requestWorker);
     }
 
     @Test
