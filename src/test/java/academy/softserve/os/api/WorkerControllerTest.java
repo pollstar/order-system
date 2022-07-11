@@ -84,6 +84,14 @@ class WorkerControllerTest {
                 .password("12345")
                 .build();
 
+        var createWorkerCommandDTO = CreateWorkerCommandDTO
+                .builder()
+                .firstName("John")
+                .lastName("Smith")
+                .login("john1231111111111111111111111111111111111111111111111")
+                .password("12345")
+                .build();
+
         var user = User
                 .builder()
                 .login("john1231111111111111111111111111111111111111111111111")
@@ -102,7 +110,7 @@ class WorkerControllerTest {
 
         mockMvc.perform(post("/api/admin/worker")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(createWorkerCommand)))
+                        .content(objectMapper.writeValueAsString(createWorkerCommandDTO)))
                 .andExpect(status().isBadRequest());
     }
 
