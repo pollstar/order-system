@@ -65,7 +65,6 @@ public class WorkerMapperTest {
                 .login(worker.getUser().getLogin())
                 .firstName(worker.getFirstName())
                 .lastName(worker.getLastName())
-                .passwordHash(worker.getUser().getPasswordHash())
                 .build();
 
         //when

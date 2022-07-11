@@ -18,7 +18,6 @@ public interface WorkerMapper {
     Worker toWorker(CreateWorkerCommand createWorkerCommand);
 
     @Mapping(target = "login", source = "user.login")
-    @Mapping(target = "passwordHash", source = "user.passwordHash")
     WorkerDTO toWorkerDTO(Worker worker);
 
     CreateWorkerCommand toCreateWorkerCommand(CreateWorkerCommandDTO dto);

@@ -66,8 +66,7 @@ class WorkerControllerTest {
                 .andDo(print())
                 .andExpect(jsonPath("$.firstName").value("John"))
                 .andExpect(jsonPath("$.lastName").value("Smith"))
-                .andExpect(jsonPath("$.login").value("john123"))
-                .andExpect(jsonPath("$.passwordHash").value("12345"));
+                .andExpect(jsonPath("$.login").value("john123"));
 
     }
 

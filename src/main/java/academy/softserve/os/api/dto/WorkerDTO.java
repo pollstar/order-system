@@ -22,6 +22,4 @@ public class WorkerDTO {
 
     private String login;
 
-    private String passwordHash;
-
 }
