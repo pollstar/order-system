@@ -24,12 +24,16 @@ public class WorkerServiceImpl implements WorkerService {
     @Override
     @Transactional
     public Worker createWorker(CreateWorkerCommand createWorkerCommand) {
-        var worker = getWorkerFromCommand(createWorkerCommand);
-        try {
-            return workerRepository.save(worker);
-        } catch (RuntimeException e) {
-            throw new LoginIsNotUniqueException(e);
+        if (!loginIsUnique(createWorkerCommand.getLogin())) {
+            throw new LoginIsNotUniqueException();
         }
+        var worker = getWorkerFromCommand(createWorkerCommand);
+        return workerRepository.save(worker);
+    }
+
+    private boolean loginIsUnique(String login) {
+        var worker = workerRepository.findByLogin(login);
+        return worker == null;
     }
 
     private Worker getWorkerFromCommand(CreateWorkerCommand command) {

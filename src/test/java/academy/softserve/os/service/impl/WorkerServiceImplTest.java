@@ -76,10 +76,10 @@ class WorkerServiceImplTest {
     }
 
     @Test
-    void givenWorkerService_createWorker_shouldThrowWrappedException() {
+    void givenWorkerService_createWorker_shouldThrowLoginIsNotUniqueException() {
 
         //when
-        when(workerRepository.save(any())).thenThrow(RuntimeException.class);
+        when(workerRepository.findByLogin(any())).thenReturn(new Worker());
         //then
         assertThatThrownBy(() -> workerService.createWorker(new CreateWorkerCommand()))
                 .isInstanceOf(LoginIsNotUniqueException.class);
