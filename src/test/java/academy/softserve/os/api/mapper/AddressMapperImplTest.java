@@ -7,15 +7,15 @@ import academy.softserve.os.service.command.CreateAddressCommand;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AddressMapperImplTest {
     private final AddressMapper mapper = Mappers.getMapper(AddressMapper.class);
 
     @Test
-    void givenAddressDTO_toAddress_shouldCorrectAddress() {
+    void givenAddressDTO_toAddress_shouldCorrectlyMapToAddress() {
         //given
-        AddressDTO addressDTO = AddressDTO.builder()
+        var addressDTO = AddressDTO.builder()
                 .id(1L)
                 .city(" Харків")
                 .house("Сумска  вул.")
@@ -23,7 +23,7 @@ class AddressMapperImplTest {
                 .room("вітальня")
                 .build();
         //when
-        Address address = mapper.toAddress(addressDTO);
+        var address = mapper.toAddress(addressDTO);
         //then
         assertEquals(addressDTO.getId(), address.getId());
         assertEquals(addressDTO.getCity(), address.getCity());
@@ -33,9 +33,9 @@ class AddressMapperImplTest {
     }
 
     @Test
-    void givenAddress_toAddressDTO_shouldCorrectAddressDTO() {
+    void givenAddress_toAddressDTO_shouldCorrectlyMapToAddressDTO() {
         //given
-        Address address = Address.builder()
+        var address = Address.builder()
                 .id(1L)
                 .city(" Харків")
                 .house("Сумска  вул.")
@@ -43,7 +43,7 @@ class AddressMapperImplTest {
                 .room("вітальня")
                 .build();
         //when
-        AddressDTO addressDTO = mapper.toAddressDTO(address);
+        var addressDTO = mapper.toAddressDTO(address);
         //then
         assertEquals(addressDTO.getId(), address.getId());
         assertEquals(addressDTO.getCity(), address.getCity());
@@ -53,16 +53,16 @@ class AddressMapperImplTest {
     }
 
     @Test
-    void givenCreateAddressCommandDTO_toCommand_shouldCorrectCreateAddressCommand() {
+    void givenCreateAddressCommandDTO_toCommand_shouldCorrectlyMapToCreateAddressCommand() {
         //given
-        CreateAddressCommandDTO commandDTO = CreateAddressCommandDTO.builder()
+        var commandDTO = CreateAddressCommandDTO.builder()
                 .city(" Харків")
                 .house("Сумска  вул.")
                 .street("буд.23 ")
                 .room("вітальня")
                 .build();
         //when
-        CreateAddressCommand command = mapper.toCommand(commandDTO);
+        var command = mapper.toCommand(commandDTO);
         //then
         assertEquals(commandDTO.getCity(),   command.getCity());
         assertEquals(commandDTO.getStreet(), command.getStreet());
@@ -71,16 +71,16 @@ class AddressMapperImplTest {
     }
 
     @Test
-    void givenCreateAddressCommand_toCommandDTO_shouldCorrectCreateAddressCommandDTO() {
+    void givenCreateAddressCommand_toCommandDTO_shouldCorrectlyMapToCreateAddressCommandDTO() {
         //given
-        CreateAddressCommand command = CreateAddressCommand.builder()
+        var command = CreateAddressCommand.builder()
                 .city(" Харків")
                 .house("Сумска  вул.")
                 .street("буд.23 ")
                 .room("вітальня")
                 .build();
         //when
-        CreateAddressCommandDTO commandDTO = mapper.toCommandDTO(command);
+        var commandDTO = mapper.toCommandDTO(command);
         //then
         assertEquals(command.getCity(),   commandDTO.getCity());
         assertEquals(command.getStreet(), commandDTO.getStreet());

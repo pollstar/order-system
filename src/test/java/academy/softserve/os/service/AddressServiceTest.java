@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -39,7 +40,7 @@ class AddressServiceTest {
     @Test
     void givenValidCreateAddressCommand_createAddress_shouldReturnCreatedAddress() {
         //given
-        Address addressOut = Address.builder()
+        var addressOut = Address.builder()
                 .id(1L)
                 .city("ХАРКІВ")
                 .street("СУМСКА ВУЛ.")
@@ -53,9 +54,9 @@ class AddressServiceTest {
                 address.getStreet(),
                 address.getHouse(),
                 address.getRoom()
-        )).thenReturn(new ArrayList<>());
+        )).thenReturn(Optional.empty());
 
-        Address address1 = service.createAddress(command);
+        var address1 = service.createAddress(command);
         //then
         assertEquals(address1.getId(), addressOut.getId());
         assertEquals(address1.getCity(), addressOut.getCity());
@@ -67,7 +68,7 @@ class AddressServiceTest {
     @Test
     void givenValidCreateAddressCommandWithExistingAddresss_createAddress_shouldReturnExistingAddress() {
         //given
-        Address address1 = Address.builder()
+        var address1 = Address.builder()
                 .id(1L)
                 .city("ХАРКІВ")
                 .street("СУМСКА ВУЛ.")
@@ -75,7 +76,7 @@ class AddressServiceTest {
                 .room("ВІТАЛЬНЯ")
                 .build();
 
-        Address address2 = Address.builder()
+        var address2 = Address.builder()
                 .id(2L)
                 .city("ЛЬВІВ")
                 .street("АВСТРІЙСКА ВУЛ.")
@@ -83,7 +84,7 @@ class AddressServiceTest {
                 .room("КІМ.5")
                 .build();
 
-        List<Address> addresses = List.of(address1, address2);
+        var addresses = List.of(address1, address2);
 
         //when
         when(repository.save(any(Address.class))).thenReturn(address1);
@@ -92,9 +93,9 @@ class AddressServiceTest {
                 address1.getStreet(),
                 address1.getHouse(),
                 address1.getRoom()
-        )).thenReturn(addresses);
+        )).thenReturn(Optional.of(address1));
 
-        Address addressOut = service.createAddress(command);
+        var addressOut = service.createAddress(command);
         //then
         assertEquals(address1.getId(), addressOut.getId());
         assertEquals(address1.getCity(), addressOut.getCity());
@@ -106,21 +107,21 @@ class AddressServiceTest {
     @Test
     void givenNotValidCreateAddressCommandWithEmptyFields_createAddress_shouldThrowException() {
         //given
-        CreateAddressCommand command1 = CreateAddressCommand.builder()
+        var command1 = CreateAddressCommand.builder()
                 .city("")
                 .house("Сумска  вул.")
                 .street("буд.23 ")
                 .room("вітальня")
                 .build();
 
-        CreateAddressCommand command2 = CreateAddressCommand.builder()
+        var command2 = CreateAddressCommand.builder()
                 .city(" Харків")
                 .house("")
                 .street("буд.23 ")
                 .room("вітальня")
                 .build();
 
-        CreateAddressCommand command3 = CreateAddressCommand.builder()
+        var command3 = CreateAddressCommand.builder()
                 .city(" Харків")
                 .house("Сумска  вул.")
                 .street("")
@@ -138,7 +139,7 @@ class AddressServiceTest {
         //given
         command.setRoom("");
 
-        Address addressOut = Address.builder()
+        var addressOut = Address.builder()
                 .id(1L)
                 .city("ХАРКІВ")
                 .street("СУМСКА ВУЛ.")
@@ -152,9 +153,9 @@ class AddressServiceTest {
                 address.getStreet(),
                 address.getHouse(),
                 address.getRoom()
-        )).thenReturn(new ArrayList<>());
+        )).thenReturn(Optional.empty());
 
-        Address address1 = service.createAddress(command);
+        var address1 = service.createAddress(command);
         //then
         assertEquals(address1.getId(), addressOut.getId());
         assertEquals(address1.getCity(), addressOut.getCity());
