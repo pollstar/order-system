@@ -18,8 +18,8 @@ import javax.validation.Valid;
 
 @RestController
 public class WorkerController {
-    private final WorkerService workerService;
     private static final WorkerMapper WORKER_MAPPER = WorkerMapper.INSTANCE;
+    private final WorkerService workerService;
     @Autowired
     WorkerController(WorkerService workerService) {
         this.workerService = workerService;
