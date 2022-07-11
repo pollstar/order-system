@@ -34,8 +34,7 @@ class WorkerControllerTest {
 
     @Test
     void givenCreateWorkerCommand_createWorker_shouldReturnWorkerDTO() throws Exception {
-        var createWorkerCommandDTO = CreateWorkerCommandDTO
-                .builder()
+        var createWorkerCommandDTO = CreateWorkerCommandDTO.builder()
                 .firstName("John")
                 .lastName("Smith")
                 .login("john123")
