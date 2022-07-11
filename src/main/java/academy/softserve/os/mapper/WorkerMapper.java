@@ -13,10 +13,6 @@ public interface WorkerMapper {
 
     WorkerMapper INSTANCE = Mappers.getMapper(WorkerMapper.class);
 
-    @Mapping(target = "user.login", source = "login")
-    @Mapping(target = "user.passwordHash", source = "password")
-    Worker toWorker(CreateWorkerCommand createWorkerCommand);
-
     @Mapping(target = "login", source = "user.login")
     WorkerDTO toWorkerDTO(Worker worker);
 

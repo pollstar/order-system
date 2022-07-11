@@ -39,26 +39,6 @@ public class WorkerMapperTest {
 
     @ParameterizedTest
     @MethodSource("provideArguments")
-    void givenCreateWorkerCommand_toWorker_shouldReturnWorker(Worker expectedWorker) {
-        //given
-        var createWorkerCommand = CreateWorkerCommand
-                .builder()
-                .login(expectedWorker.getUser().getLogin())
-                .firstName(expectedWorker.getFirstName())
-                .lastName(expectedWorker.getLastName())
-                .password(expectedWorker.getUser().getPasswordHash())
-                .build();
-
-
-        //when
-        var worker = workerMapper.toWorker(createWorkerCommand);
-
-        //then
-        assertThat(worker).isEqualTo(expectedWorker);
-    }
-
-    @ParameterizedTest
-    @MethodSource("provideArguments")
     void givenWorker_toWorkerDTO_shouldReturnWorkerDTO(Worker worker){
         var expectedWorkerDTO = WorkerDTO
                 .builder()
