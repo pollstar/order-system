@@ -4,8 +4,9 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
-    <include file="db/changelog/db.init-changelog.xml"/>
-    <include file="db/changelog/db.fix_initial_schema-changelog.xml"/>
-    <include file="db/changelog/db.fix_initial_schema_add_autoincrement-changelog.xml"/>
-    <include file="db/changelog/db.fix_initial_schema_add_unique_constraint_to_login-changelog.xml"/>
+
+    <changeSet id="1656075873551-5" author="Zhilko Anatoliy">
+        <addUniqueConstraint columnNames="login" tableName="users"/>
+    </changeSet>
+
 </databaseChangeLog>
