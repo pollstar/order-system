@@ -58,7 +58,7 @@ class WorkerServiceImplTest {
                 .build();
 
         //when
-        when(workerRepository.save(requestWorker)).thenAnswer(returnsFirstArg());
+        when(workerRepository.save(any(Worker.class))).thenAnswer(returnsFirstArg());
         var result = workerService.createWorker(createWorkerCommand);
         //then
         assertThat(result).isEqualTo(requestWorker);
