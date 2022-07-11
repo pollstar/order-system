@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.function.UnaryOperator;
 
@@ -21,14 +20,14 @@ public class AddressService {
     @Transactional
     public Address createAddress(CreateAddressCommand command) {
 
-        checkToValidCommand(command);
+        checkToValidAddress(command);
 
-        UnaryOperator<String> removeExtraSpaces = s -> s.toUpperCase().replaceAll("\\s+", " ").trim();
+        UnaryOperator<String> removingExtraSpaces = s -> s.toUpperCase().replaceAll("\\s+", " ").trim();
         var address = Address.builder()
-                .city(removeExtraSpaces.apply(command.getCity()))
-                .street(removeExtraSpaces.apply(command.getStreet()))
-                .house(removeExtraSpaces.apply(command.getHouse()))
-                .room(removeExtraSpaces.apply(command.getRoom()))
+                .city(removingExtraSpaces.apply(command.getCity()))
+                .street(removingExtraSpaces.apply(command.getStreet()))
+                .house(removingExtraSpaces.apply(command.getHouse()))
+                .room(removingExtraSpaces.apply(command.getRoom()))
                 .build();
 
 
@@ -40,11 +39,11 @@ public class AddressService {
         ).orElseGet(() -> addressRepository.save(address));
     }
 
-    private void checkToValidCommand(CreateAddressCommand command) {
-        if (Objects.isNull(command.getCity()) || command.getCity().isBlank() ||
-                Objects.isNull(command.getStreet()) || command.getStreet().isBlank() ||
-                Objects.isNull(command.getHouse()) || command.getHouse().isBlank()) {
-            throw new CreateAddressException();
+    private void checkToValidAddress(CreateAddressCommand command) {
+        if (command.getCity().isBlank() || Objects.isNull(command.getCity()) ||
+                command.getStreet().isBlank() || Objects.isNull(command.getStreet()) ||
+                command.getHouse().isBlank() || Objects.isNull(command.getHouse())) {
+            throw new CreateAddressException("Address not valid");
         }
     }
 

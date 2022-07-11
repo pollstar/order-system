@@ -46,7 +46,7 @@ class AddressControllerCreateAddressTest {
     @Test
     void givenValidCreateAddressCommandDTO_createAddress_shouldCreateNewAddressAndReturnOkResponse() throws Exception {
         //given
-        Address address = Address.builder()
+        var address = Address.builder()
                 .id(1L)
                 .city("ХАРЬКОВ")
                 .street("СУМСКАЯ")

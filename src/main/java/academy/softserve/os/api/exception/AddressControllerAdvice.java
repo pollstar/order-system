@@ -18,6 +18,7 @@ public class AddressControllerAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorApiMessage> handleCreateOrderException(CreateAddressException e) {
         return new ResponseEntity<>(new ErrorApiMessage("Error created address"), HttpStatus.BAD_REQUEST);
     }
+}
 
     @ExceptionHandler(GetAddressByIdException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -25,4 +26,5 @@ public class AddressControllerAdvice extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(new ErrorApiMessage("Address not found"), HttpStatus.NOT_FOUND);
     }
 }
+
 

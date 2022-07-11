@@ -84,6 +84,8 @@ class AddressServiceTest {
                 .room("КІМ.5")
                 .build();
 
+        var addresses = List.of(address1, address2);
+
         //when
         when(repository.save(any(Address.class))).thenReturn(address1);
         when(repository.findByCityAndStreetAndHouseAndRoom(

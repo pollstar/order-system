@@ -13,7 +13,7 @@ class AddressMapperImplTest {
     private final AddressMapper mapper = Mappers.getMapper(AddressMapper.class);
 
     @Test
-    void givenAddressDTO_toAddress_shouldCorrectlyMapAddress() {
+    void givenAddressDTO_toAddress_shouldCorrectlyMapToAddress() {
         //given
         var addressDTO = AddressDTO.builder()
                 .id(1L)
@@ -71,7 +71,7 @@ class AddressMapperImplTest {
     }
 
     @Test
-    void givenCreateAddressCommand_toCommandDTO_shouldCorrectCreateAddressCommandDTO() {
+    void givenCreateAddressCommand_toCommandDTO_shouldCorrectlyMapToCreateAddressCommandDTO() {
         //given
         var command = CreateAddressCommand.builder()
                 .city(" Харків")
