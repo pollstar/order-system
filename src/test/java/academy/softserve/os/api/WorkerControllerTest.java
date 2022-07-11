@@ -25,14 +25,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(value = {WorkerController.class, WorkerMapper.class})
 class WorkerControllerTest {
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private WorkerService workerService;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @Test
     void givenCreateWorkerCommand_createWorker_shouldReturnWorkerDTO() throws Exception {
@@ -73,9 +71,6 @@ class WorkerControllerTest {
 
     @Test
     void givenTooLongLogin_createWorker_shouldThrowException() throws Exception {
-
-        var objectMapper = new ObjectMapper();
-
         var createWorkerCommandDTO = CreateWorkerCommandDTO
                 .builder()
                 .firstName("John")
@@ -92,9 +87,6 @@ class WorkerControllerTest {
 
     @Test
     void givenCreateWorkerCommandDTOWithoutFirstname_createWorker_shouldThrowException() throws Exception {
-
-        var objectMapper = new ObjectMapper();
-
         var createWorkerCommand = CreateWorkerCommand
                 .builder()
                 .lastName("Smith")
@@ -112,10 +104,7 @@ class WorkerControllerTest {
 
     @Test
     void givenCreateWorkerCommandDTOWithoutLastname_createWorker_shouldThrowException() throws Exception {
-
-        var objectMapper = new ObjectMapper();
-
-        var createWorkerCommand = CreateWorkerCommand
+        var createWorkerCommandDTO = CreateWorkerCommandDTO
                 .builder()
                 .firstName("John")
                 .login("john190")
@@ -124,7 +113,7 @@ class WorkerControllerTest {
 
         mockMvc.perform(post("/api/admin/worker")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(createWorkerCommand)))
+                        .content(objectMapper.writeValueAsString(createWorkerCommandDTO)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("message").value("Validation failed!"))
                 .andExpect(jsonPath("$.details[0]").value("lastname cannot be null"));
@@ -132,9 +121,6 @@ class WorkerControllerTest {
 
     @Test
     void givenCreateWorkerCommandDTOWithoutLogin_createWorker_shouldThrowException() throws Exception {
-
-        var objectMapper = new ObjectMapper();
-
         var createWorkerCommand = CreateWorkerCommand
                 .builder()
                 .firstName("John")
