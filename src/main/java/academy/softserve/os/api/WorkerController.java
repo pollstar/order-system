@@ -33,10 +33,4 @@ public class WorkerController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(WORKER_MAPPER.toWorkerDTO(worker));
     }
-
-    @ExceptionHandler(LoginIsNotUniqueException.class)
-    public ResponseEntity<String> handleLoginIsNotUnique(LoginIsNotUniqueException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
 }
