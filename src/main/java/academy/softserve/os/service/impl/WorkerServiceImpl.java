@@ -32,7 +32,7 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     private boolean loginIsUnique(String login) {
-        var worker = workerRepository.findByLogin(login);
+        var worker = workerRepository.findByUserLogin(login);
         return worker == null;
     }
 

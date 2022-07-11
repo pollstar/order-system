@@ -6,6 +6,5 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface WorkerRepository extends JpaRepository<Worker, Long> {
 
-    @Query("SELECT worker FROM Worker worker WHERE worker.user.login = ?1")
-    Worker findByLogin(String login);
+    Worker findByUserLogin(String login);
 }
