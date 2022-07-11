@@ -4,7 +4,9 @@ import academy.softserve.os.model.Worker;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+
 public interface WorkerRepository extends JpaRepository<Worker, Long> {
 
-    Worker findByUserLogin(String login);
+    Optional<Worker> findByUserLogin(String login);
 }

@@ -9,6 +9,8 @@ import academy.softserve.os.service.command.CreateWorkerCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -79,7 +81,7 @@ class WorkerServiceImplTest {
     void givenWorkerService_createWorker_shouldThrowLoginIsNotUniqueException() {
 
         //when
-        when(workerRepository.findByUserLogin(any())).thenReturn(new Worker());
+        when(workerRepository.findByUserLogin(any())).thenReturn(Optional.of(new Worker()));
         //then
         assertThatThrownBy(() -> workerService.createWorker(new CreateWorkerCommand()))
                 .isInstanceOf(LoginIsNotUniqueException.class);
