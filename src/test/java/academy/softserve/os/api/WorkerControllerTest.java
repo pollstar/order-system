@@ -76,14 +76,6 @@ class WorkerControllerTest {
 
         var objectMapper = new ObjectMapper();
 
-        var createWorkerCommand = CreateWorkerCommand
-                .builder()
-                .firstName("John")
-                .lastName("Smith")
-                .login("john1231111111111111111111111111111111111111111111111")
-                .password("12345")
-                .build();
-
         var createWorkerCommandDTO = CreateWorkerCommandDTO
                 .builder()
                 .firstName("John")
@@ -91,22 +83,6 @@ class WorkerControllerTest {
                 .login("john1231111111111111111111111111111111111111111111111")
                 .password("12345")
                 .build();
-
-        var user = User
-                .builder()
-                .login("john1231111111111111111111111111111111111111111111111")
-                .passwordHash("12345")
-                .build();
-
-        var worker = Worker
-                .builder()
-                .id(1L)
-                .firstName("John")
-                .lastName("Smith")
-                .user(user)
-                .build();
-
-        when(workerService.createWorker(createWorkerCommand)).thenReturn(worker);
 
         mockMvc.perform(post("/api/admin/worker")
                         .contentType(MediaType.APPLICATION_JSON)
