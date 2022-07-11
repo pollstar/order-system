@@ -39,7 +39,7 @@ class AddressControllerGetAddressTest {
 
     @BeforeEach
     void setUp() {
-        Address address1 = Address.builder()
+        address1 = Address.builder()
                 .id(1L)
                 .city("ХАРЬКОВ")
                 .street("СУМСКАЯ")
@@ -47,7 +47,7 @@ class AddressControllerGetAddressTest {
                 .room("КУХНЯ")
                 .build();
 
-        Address address2 = Address.builder()
+        address2 = Address.builder()
                 .id(2L)
                 .city("ЛЬВІВ")
                 .street("АВСТРІЙСКА")
@@ -63,14 +63,13 @@ class AddressControllerGetAddressTest {
         //when
         when(service.getAddress()).thenReturn(addresses);
         //then
-        GsonJsonParser jsonParser = new GsonJsonParser();
         mockMvc.perform(get("/api/address"))
-                .andExpect(status().isOk());
-//                .andExpect(jsonPath("$.id").value(1L))
-//                .andExpect(jsonPath("$.city").value("ХАРЬКОВ"))
-//                .andExpect(jsonPath("$.street").value("СУМСКАЯ"))
-//                .andExpect(jsonPath("$.house").value("10"))
-//                .andExpect(jsonPath("$.room").value("КУХНЯ"));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].city").value("ХАРЬКОВ"))
+                .andExpect(jsonPath("$[0].street").value("СУМСКАЯ"))
+                .andExpect(jsonPath("$[0].house").value("10"))
+                .andExpect(jsonPath("$[0].room").value("КУХНЯ"));
 
     }
 
@@ -87,7 +86,6 @@ class AddressControllerGetAddressTest {
         //when
         when(service.getAddressById(address1.getId())).thenReturn(address1);
         //then
-        GsonJsonParser jsonParser = new GsonJsonParser();
         mockMvc.perform(get("/api/address/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L))

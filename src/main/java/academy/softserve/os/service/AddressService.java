@@ -21,32 +21,31 @@ public class AddressService {
     @Transactional
     public Address createAddress(CreateAddressCommand command) {
 
+        checkToValidCommand(command);
+
+        UnaryOperator<String> removeExtraSpaces = s -> s.toUpperCase().replaceAll("\\s+", " ").trim();
+        var address = Address.builder()
+                .city(removeExtraSpaces.apply(command.getCity()))
+                .street(removeExtraSpaces.apply(command.getStreet()))
+                .house(removeExtraSpaces.apply(command.getHouse()))
+                .room(removeExtraSpaces.apply(command.getRoom()))
+                .build();
+
+
+        return addressRepository.findByCityAndStreetAndHouseAndRoom(
+                address.getCity(),
+                address.getStreet(),
+                address.getHouse(),
+                address.getRoom()
+        ).orElseGet(() -> addressRepository.save(address));
+    }
+
+    private void checkToValidCommand(CreateAddressCommand command) {
         if (Objects.isNull(command.getCity()) || command.getCity().isBlank() ||
                 Objects.isNull(command.getStreet()) || command.getStreet().isBlank() ||
                 Objects.isNull(command.getHouse()) || command.getHouse().isBlank()) {
             throw new CreateAddressException();
         }
-
-        UnaryOperator<String> f = s -> s.toUpperCase().replaceAll("\\s+", " ").trim();
-        Address address = Address.builder()
-                .city(f.apply(command.getCity()))
-                .street(f.apply(command.getStreet()))
-                .house(f.apply(command.getHouse()))
-                .room(f.apply(command.getRoom()))
-                .build();
-
-
-        List<Address> addresses = addressRepository.findByCityAndStreetAndHouseAndRoom(
-                address.getCity(),
-                address.getStreet(),
-                address.getHouse(),
-                address.getRoom()
-        );
-
-        if (addresses.isEmpty()) {
-            return addressRepository.save(address);
-        }
-        return addresses.get(0);
     }
 
     public List<Address> getAddress() {
