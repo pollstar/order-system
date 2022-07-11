@@ -44,6 +44,12 @@ class WorkerServiceImplTest {
                 .password("12345")
                 .build();
 
+
+        //when
+        when(workerRepository.save(any(Worker.class))).thenAnswer(returnsFirstArg());
+        var result = workerService.createWorker(createWorkerCommand);
+
+        //then
         var requestUser = User
                 .builder()
                 .login("john123")
@@ -56,11 +62,6 @@ class WorkerServiceImplTest {
                 .lastName("Smith")
                 .user(requestUser)
                 .build();
-
-        //when
-        when(workerRepository.save(any(Worker.class))).thenAnswer(returnsFirstArg());
-        var result = workerService.createWorker(createWorkerCommand);
-        //then
         assertThat(result).isEqualTo(requestWorker);
     }
 
