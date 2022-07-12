@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.UnaryOperator;
 
 @Service
@@ -42,7 +44,15 @@ public class AddressService {
         if (command.getCity().isBlank() || Objects.isNull(command.getCity()) ||
                 command.getStreet().isBlank() || Objects.isNull(command.getStreet()) ||
                 command.getHouse().isBlank() || Objects.isNull(command.getHouse())) {
-            throw new CreateAddressException("Address not valid");
+            throw new CreateAddressException();
         }
+    }
+
+    public List<Address> findAddresses() {
+        return addressRepository.findAll();
+    }
+
+    public Optional<Address> getAddressById(Long id) {
+        return addressRepository.findById(id);
     }
 }

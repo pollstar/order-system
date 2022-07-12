@@ -2,6 +2,7 @@ package academy.softserve.os.api.exception;
 
 import academy.softserve.os.api.AddressController;
 import academy.softserve.os.service.exception.CreateAddressException;
+import academy.softserve.os.service.exception.GetAddressByIdException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,5 +18,12 @@ public class AddressControllerAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorApiMessage> handleCreateOrderException(CreateAddressException e) {
         return new ResponseEntity<>(new ErrorApiMessage("Error created address"), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(GetAddressByIdException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<ErrorApiMessage> handleCreateOrderException(GetAddressByIdException e) {
+        return new ResponseEntity<>(new ErrorApiMessage("Address not found"), HttpStatus.NOT_FOUND);
+    }
 }
+
 

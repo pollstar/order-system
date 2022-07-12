@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.AdditionalAnswers;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -75,14 +74,6 @@ class AddressServiceTest {
                 .room("ВІТАЛЬНЯ")
                 .build();
 
-        var address2 = Address.builder()
-                .id(2L)
-                .city("ЛЬВІВ")
-                .street("АВСТРІЙСКА ВУЛ.")
-                .house("БУД.2")
-                .room("КІМ.5")
-                .build();
-
         //when
         when(repository.save(any(Address.class))).thenReturn(address1);
         when(repository.findByCityAndStreetAndHouseAndRoom(
@@ -144,7 +135,7 @@ class AddressServiceTest {
                 .room("")
                 .build();
         //when
-        when(repository.save(any(Address.class))).thenReturn(addressOut);
+        when(repository.save(any(Address.class))).then(AdditionalAnswers.returnsFirstArg());
         when(repository.findByCityAndStreetAndHouseAndRoom(
                 address.getCity(),
                 address.getStreet(),
@@ -154,11 +145,9 @@ class AddressServiceTest {
 
         var address1 = service.createAddress(command);
         //then
-        assertEquals(address1.getId(), addressOut.getId());
         assertEquals(address1.getCity(), addressOut.getCity());
         assertEquals(address1.getStreet(), addressOut.getStreet());
         assertEquals(address1.getHouse(), addressOut.getHouse());
         assertEquals(address1.getRoom(), addressOut.getRoom());
     }
-
 }
