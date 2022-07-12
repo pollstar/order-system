@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.AdditionalAnswers;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -74,16 +73,6 @@ class AddressServiceTest {
                 .house("БУД.23")
                 .room("ВІТАЛЬНЯ")
                 .build();
-
-        var address2 = Address.builder()
-                .id(2L)
-                .city("ЛЬВІВ")
-                .street("АВСТРІЙСКА ВУЛ.")
-                .house("БУД.2")
-                .room("КІМ.5")
-                .build();
-
-        var addresses = List.of(address1, address2);
 
         //when
         when(repository.save(any(Address.class))).thenReturn(address1);
