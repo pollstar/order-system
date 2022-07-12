@@ -6,6 +6,7 @@ import academy.softserve.os.repository.AddressRepository;
 import academy.softserve.os.service.command.CreateAddressCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.AdditionalAnswers;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,8 +31,8 @@ class AddressServiceTest {
 
         command = CreateAddressCommand.builder()
                 .city(" Харків")
-                .house("Сумска  вул.")
-                .street("буд.23 ")
+                .street("Сумска  вул.")
+                .house("буд.23 ")
                 .room("вітальня")
                 .build();
     }
@@ -47,7 +48,7 @@ class AddressServiceTest {
                 .room("ВІТАЛЬНЯ")
                 .build();
         //when
-        when(repository.save(any(Address.class))).thenReturn(addressOut);
+        when(repository.save(any(Address.class))).then(AdditionalAnswers.returnsFirstArg());
         when(repository.findByCityAndStreetAndHouseAndRoom(
                 address.getCity(),
                 address.getStreet(),
@@ -57,7 +58,6 @@ class AddressServiceTest {
 
         var address1 = service.createAddress(command);
         //then
-        assertEquals(address1.getId(), addressOut.getId());
         assertEquals(address1.getCity(), addressOut.getCity());
         assertEquals(address1.getStreet(), addressOut.getStreet());
         assertEquals(address1.getHouse(), addressOut.getHouse());
