@@ -4,13 +4,13 @@ import academy.softserve.os.service.exception.CreateAddressException;
 import academy.softserve.os.model.Address;
 import academy.softserve.os.repository.AddressRepository;
 import academy.softserve.os.service.command.CreateAddressCommand;
-import academy.softserve.os.service.exception.GetAddressByIdException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.UnaryOperator;
 
 @Service
@@ -48,12 +48,11 @@ public class AddressService {
         }
     }
 
-    public List<Address> getAddress() {
+    public List<Address> findAddresses() {
         return addressRepository.findAll();
     }
 
-    public Address getAddressById(Long id) {
-        return addressRepository.findById(id)
-                .orElseThrow(GetAddressByIdException::new);
+    public Optional<Address> getAddressById(Long id) {
+        return addressRepository.findById(id);
     }
 }

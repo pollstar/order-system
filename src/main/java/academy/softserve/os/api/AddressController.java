@@ -3,8 +3,8 @@ package academy.softserve.os.api;
 import academy.softserve.os.api.dto.AddressDTO;
 import academy.softserve.os.api.dto.command.CreateAddressCommandDTO;
 import academy.softserve.os.api.mapper.AddressMapper;
-import academy.softserve.os.model.Address;
 import academy.softserve.os.service.AddressService;
+import academy.softserve.os.service.exception.GetAddressByIdException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -34,13 +34,16 @@ public class AddressController {
     }
 
     @GetMapping("/address")
-    public @ResponseBody ResponseEntity<List<Address>> getAddress() {
-        List<Address> addresses = addressService.getAddress();
+    public ResponseEntity<List<AddressDTO>> getAddress() {
+        List<AddressDTO> addresses = addressService.findAddresses().stream()
+                .map(mapper::toAddressDTO).collect(Collectors.toList());
         return new ResponseEntity<>(addresses, HttpStatus.OK);
     }
 
     @GetMapping("/address/{id}")
-    public Address getAddressById(@PathVariable Long id){
-        return addressService.getAddressById(id);
+    public ResponseEntity<AddressDTO> getAddressById(@PathVariable Long id) {
+        return new ResponseEntity<>(mapper.toAddressDTO(addressService.getAddressById(id)
+                .orElseThrow(GetAddressByIdException::new))
+                , HttpStatus.OK);
     }
 }

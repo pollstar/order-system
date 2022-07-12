@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -53,7 +54,7 @@ class AddressControllerGetAddressTest {
         //given
         List<Address> addresses = Arrays.asList(address1, address2);
         //when
-        when(service.getAddress()).thenReturn(addresses);
+        when(service.findAddresses()).thenReturn(addresses);
         //then
         mockMvc.perform(get("/api/address"))
                 .andExpect(status().isOk())
@@ -76,7 +77,7 @@ class AddressControllerGetAddressTest {
                 .room("КУХНЯ")
                 .build();
         //when
-        when(service.getAddressById(address1.getId())).thenReturn(address1);
+        when(service.getAddressById(address1.getId())).thenReturn(Optional.of(address1));
         //then
         mockMvc.perform(get("/api/address/1"))
                 .andExpect(status().isOk())
