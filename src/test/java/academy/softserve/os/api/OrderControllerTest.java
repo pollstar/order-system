@@ -47,13 +47,7 @@ class OrderControllerTest {
         client = new Client();
         client.setId(1L);
         placementDate = LocalDateTime.now();
-        closingDate = LocalDateTime.of(LocalDate
-                        .of(
-                                LocalDate.now().getYear(),
-                                LocalDate.now().getMonth(),
-                                LocalDate.now().getDayOfMonth() + 1
-                        )
-                , LocalTime.now());
+        closingDate = placementDate.plusDays(1);
         createOrderCommandDTO = CreateOrderCommandDTO.builder()
                 .clientId(1L)
                 .placementDate(placementDate)
