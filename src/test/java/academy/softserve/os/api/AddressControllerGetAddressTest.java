@@ -52,7 +52,7 @@ class AddressControllerGetAddressTest {
     @Test
     void givenApiGetAddress_getAddress_shouldReturnJsonListAddressAndReturnOkResponse() throws Exception {
         //given
-        List<Address> addresses = Arrays.asList(address1, address2);
+        var addresses = Arrays.asList(address1, address2);
         //when
         when(service.findAddresses()).thenReturn(addresses);
         //then
@@ -69,7 +69,7 @@ class AddressControllerGetAddressTest {
     @Test
     void givenApiGetAddressWithId_getAddressByIs_shouldReturnJsonAddressAndReturnOkResponse() throws Exception {
         //given
-        Address address1 = Address.builder()
+        var address1 = Address.builder()
                 .id(1L)
                 .city("ХАРЬКОВ")
                 .street("СУМСКАЯ")

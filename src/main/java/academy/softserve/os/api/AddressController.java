@@ -4,7 +4,6 @@ import academy.softserve.os.api.dto.AddressDTO;
 import academy.softserve.os.api.dto.command.CreateAddressCommandDTO;
 import academy.softserve.os.api.mapper.AddressMapper;
 import academy.softserve.os.service.AddressService;
-import academy.softserve.os.service.exception.GetAddressByIdException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,15 +34,16 @@ public class AddressController {
 
     @GetMapping("/address")
     public ResponseEntity<List<AddressDTO>> getAddress() {
-        List<AddressDTO> addresses = addressService.findAddresses().stream()
-                .map(mapper::toAddressDTO).collect(Collectors.toList());
+        var addresses = addressService.findAddresses().stream()
+                .map(mapper::toAddressDTO)
+                .collect(Collectors.toList());
         return new ResponseEntity<>(addresses, HttpStatus.OK);
     }
 
     @GetMapping("/address/{id}")
     public ResponseEntity<AddressDTO> getAddressById(@PathVariable Long id) {
-        return new ResponseEntity<>(mapper.toAddressDTO(addressService.getAddressById(id)
-                .orElseThrow(GetAddressByIdException::new))
-                , HttpStatus.OK);
+        return addressService.getAddressById(id)
+                .map(address -> new ResponseEntity<>(mapper.toAddressDTO(address), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }
