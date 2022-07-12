@@ -8,6 +8,7 @@ import academy.softserve.os.model.Order;
 import academy.softserve.os.service.OrderService;
 import academy.softserve.os.service.command.CreateOrderCommand;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -33,31 +35,42 @@ class OrderControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private OrderService orderService;
-    private final ObjectMapper objectMapper =  new ObjectMapper();
-    private  Client client;
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private Client client;
+    private LocalDateTime closingDate;
+    private LocalDateTime placementDate;
+    private CreateOrderCommandDTO createOrderCommandDTO;
 
     @BeforeEach
-    public void init(){
+    public void init() {
+        objectMapper.registerModule(new JavaTimeModule());
         client = new Client();
         client.setId(1L);
-    }
-    
-    @Test
-    void givenValidCreateOrderCommandDTO_createOrder_shouldCreateNewOrderAndReturnOKResponse() throws Exception {
-        //given
-        var createOrderCommandDTO = CreateOrderCommandDTO.builder()
+        placementDate = LocalDateTime.now();
+        closingDate = LocalDateTime.of(LocalDate
+                        .of(
+                                LocalDate.now().getYear(),
+                                LocalDate.now().getMonth(),
+                                LocalDate.now().getDayOfMonth() + 1
+                        )
+                , LocalTime.now());
+        createOrderCommandDTO = CreateOrderCommandDTO.builder()
                 .clientId(1L)
-                .placementDate(new Date())
-                .closingDate( new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)))
+                .placementDate(placementDate)
+                .closingDate(closingDate)
                 .description("description")
                 .phase(1)
                 .build();
+    }
+
+    @Test
+    void givenValidCreateOrderCommandDTO_createOrder_shouldCreateNewOrderAndReturnOKResponse() throws Exception {
         //when
         var order = Order.builder()
                 .id(1L)
                 .client(client)
-                .placementDate(new Date())
-                .closingDate(new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)))
+                .placementDate(placementDate)
+                .closingDate(closingDate)
                 .description("description")
                 .phase(1)
                 .build();
@@ -74,15 +87,6 @@ class OrderControllerTest {
 
     @Test
     void givenCreateOrderCommandDTO_createOrder_shouldFailBecauseOrderCannotBeCreated() throws Exception {
-        //given
-        var createOrderCommandDTO = CreateOrderCommandDTO.builder()
-                .clientId(1L)
-                .placementDate(new Date())
-                .closingDate( new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)))
-                .description("description")
-                .phase(1)
-                .build();
-
         //when
         when(orderService.createOrder(any(CreateOrderCommand.class))).thenThrow(CreateOrderException.class);
         //then
@@ -96,9 +100,8 @@ class OrderControllerTest {
     void givenCreateOrderCommandDTOWithNullClientId_createOrder_shouldReturnErrorMessageBecauseClientIdCannotBeNull() throws Exception {
         //given
         var createOrderCommandDTO = CreateOrderCommandDTO.builder()
-                .clientId(null)
-                .placementDate(new Date())
-                .closingDate( new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)))
+                .placementDate(placementDate)
+                .closingDate(closingDate)
                 .description("description")
                 .phase(1)
                 .build();
@@ -116,13 +119,7 @@ class OrderControllerTest {
     void givenCreateOrderCommandDTOWWithTooLongDescriptionInBody_createOrder_shouldReturnErrorMessage() throws Exception {
         //given
         String description = "A".repeat(101);
-        var createOrderCommandDTO = CreateOrderCommandDTO.builder()
-                .clientId(1L)
-                .placementDate(new Date())
-                .closingDate(new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)))
-                .description(description)
-                .phase(1)
-                .build();
+        createOrderCommandDTO.setDescription(description);
         //when
         mockMvc.perform(post("/api/order")
                         .contentType(MediaType.APPLICATION_JSON)

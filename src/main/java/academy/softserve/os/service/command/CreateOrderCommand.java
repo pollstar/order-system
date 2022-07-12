@@ -3,7 +3,7 @@ package academy.softserve.os.service.command;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -13,9 +13,9 @@ public class CreateOrderCommand {
 
     private String description;
 
-    private Date placementDate;
+    private LocalDateTime placementDate;
 
-    private Date closingDate;
+    private LocalDateTime closingDate;
 
     private Integer phase;
 

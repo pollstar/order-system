@@ -15,7 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -37,10 +37,10 @@ public class Order {
     private List<Task> tasks;
 
     @Column(name = "placement_date")
-    private Date placementDate;
+    private LocalDateTime placementDate;
 
     @Column(name = "closing_date")
-    private Date closingDate;
+    private LocalDateTime closingDate;
 
     @Column(name = "phase")
     private Integer phase;
