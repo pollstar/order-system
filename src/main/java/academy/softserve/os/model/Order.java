@@ -1,8 +1,9 @@
 package academy.softserve.os.model;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -14,12 +15,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@Builder
+@AllArgsConstructor
 @Entity
 @Table(name = "orders")
 public class Order {
@@ -35,10 +37,10 @@ public class Order {
     private List<Task> tasks;
 
     @Column(name = "placement_date")
-    private Date placementDate;
+    private LocalDateTime placementDate;
 
     @Column(name = "closing_date")
-    private Date closingDate;
+    private LocalDateTime closingDate;
 
     @Column(name = "phase")
     private Integer phase;
