@@ -19,13 +19,7 @@ class OrderMapperTest {
     @Test
     void givenOrderWithClient_toDTO_shouldCorrectlyMapOrderToOrderDTO() {
         var placementDate = LocalDateTime.now();
-        var closingDate = LocalDateTime.of(LocalDate
-                        .of(
-                                LocalDate.now().getYear(),
-                                LocalDate.now().getMonth(),
-                                LocalDate.now().getDayOfMonth() + 1
-                        )
-                , LocalTime.now());
+        var closingDate = placementDate.plusDays(1);
         var client = new Client();
         client.setId(1L);
         var order = Order.builder()
