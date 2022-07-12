@@ -135,7 +135,7 @@ class AddressServiceTest {
                 .room("")
                 .build();
         //when
-        when(repository.save(any(Address.class))).thenReturn(addressOut);
+        when(repository.save(any(Address.class))).then(AdditionalAnswers.returnsFirstArg());
         when(repository.findByCityAndStreetAndHouseAndRoom(
                 address.getCity(),
                 address.getStreet(),
@@ -145,7 +145,6 @@ class AddressServiceTest {
 
         var address1 = service.createAddress(command);
         //then
-        assertEquals(address1.getId(), addressOut.getId());
         assertEquals(address1.getCity(), addressOut.getCity());
         assertEquals(address1.getStreet(), addressOut.getStreet());
         assertEquals(address1.getHouse(), addressOut.getHouse());
