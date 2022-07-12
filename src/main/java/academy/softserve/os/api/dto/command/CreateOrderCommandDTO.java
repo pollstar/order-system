@@ -6,7 +6,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -16,9 +16,9 @@ public class CreateOrderCommandDTO {
     @NotNull(message = "Field a clientId cannot be null")
     private Long clientId;
 
-    private Date placementDate;
+    private LocalDateTime placementDate;
 
-    private Date closingDate;
+    private LocalDateTime closingDate;
 
     private Integer phase;
 

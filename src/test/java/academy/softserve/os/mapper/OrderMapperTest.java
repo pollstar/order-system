@@ -5,8 +5,9 @@ import academy.softserve.os.model.Order;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -17,8 +18,8 @@ class OrderMapperTest {
 
     @Test
     void givenOrderWithClient_toDTO_shouldCorrectlyMapOrderToOrderDTO() {
-        var placementDate = new Date();
-        var closingDate = new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1));
+        var placementDate = LocalDateTime.now();
+        var closingDate = placementDate.plusDays(1);
         var client = new Client();
         client.setId(1L);
         var order = Order.builder()
