@@ -53,7 +53,7 @@ class UserServiceImplTest {
     @Test
     void givenUserLogin_loadUserByUsername_shouldThrowException() {
         //given
-        String login = "login";
+        var login = "login";
         var user = User.builder()
                 .login("login")
                 .passwordHash("123")
