@@ -3,7 +3,7 @@ package academy.softserve.os.api.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -13,9 +13,9 @@ public class OrderDTO {
 
     private Long clientId;
 
-    private Date placementDate;
+    private LocalDateTime placementDate;
 
-    private Date closingDate;
+    private LocalDateTime closingDate;
 
     private Integer phase;
 
