@@ -34,7 +34,7 @@ class UserServiceImplTest {
     @Test
     void givenUserLogin_loadUserByUsername_shouldReturnUser() {
         //given
-        String login = "login";
+        var login = "login";
         var user = User.builder()
                 .login("login")
                 .passwordHash("123")
