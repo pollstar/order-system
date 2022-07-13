@@ -1,5 +1,6 @@
 package academy.softserve.os.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -14,6 +15,7 @@ import javax.persistence.Table;
 
 @Getter
 @ToString
+@EqualsAndHashCode
 @Entity
 @Table(name = "roles")
 public class Role {
