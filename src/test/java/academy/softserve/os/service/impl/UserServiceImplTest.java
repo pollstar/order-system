@@ -60,7 +60,7 @@ class UserServiceImplTest {
                 .build();
 
         //when
-        when(userRepository.findByLogin(login)).thenThrow(UsernameNotFoundException.class);
+        when(userRepository.findByLogin(login)).thenReturn(Optional.empty());
 
         //then
         assertThatThrownBy(() -> userService.loadUserByUsername(any()))
