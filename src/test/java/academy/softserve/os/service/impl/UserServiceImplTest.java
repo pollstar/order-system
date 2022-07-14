@@ -5,7 +5,6 @@ import academy.softserve.os.model.UserDetailsImpl;
 import academy.softserve.os.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -40,7 +39,7 @@ class UserServiceImplTest {
                 .passwordHash("123")
                 .roles(Set.of())
                 .build();
-        var userDetails = UserDetailsImpl.build(user);
+        var userDetails = UserDetailsImpl.from(user);
 
         //when
         when(userRepository.findByLogin(login)).thenReturn(Optional.of(user));
