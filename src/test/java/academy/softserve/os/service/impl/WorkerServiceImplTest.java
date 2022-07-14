@@ -26,19 +26,14 @@ import static org.mockito.Mockito.when;
 class WorkerServiceImplTest {
 
     private WorkerService workerService;
-
     private WorkerRepository workerRepository;
-
-    private UserRepository userRepository;
-
     private RoleRepository roleRepository;
 
     @BeforeEach
     void init() {
         workerRepository = mock(WorkerRepository.class);
-        userRepository = mock(UserRepository.class);
         roleRepository = mock(RoleRepository.class);
-        workerService = new WorkerServiceImpl(workerRepository, userRepository, roleRepository);
+        workerService = new WorkerServiceImpl(workerRepository, roleRepository);
     }
 
     @Test
@@ -56,7 +51,6 @@ class WorkerServiceImplTest {
 
         //when
         when(workerRepository.save(any(Worker.class))).thenAnswer(returnsFirstArg());
-        when(userRepository.save(any(User.class))).thenAnswer(returnsFirstArg());
         when(roleRepository.findByName(any(ERole.class))).thenReturn(Optional.of(new Role()));
         var result = workerService.createWorker(createWorkerCommand);
 

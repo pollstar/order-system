@@ -19,15 +19,12 @@ import java.util.Set;
 public class WorkerServiceImpl implements WorkerService {
 
     private final WorkerRepository workerRepository;
-    private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
     @Autowired
     WorkerServiceImpl(WorkerRepository workerRepository,
-                      UserRepository userRepository,
                       RoleRepository roleRepository) {
         this.workerRepository = workerRepository;
-        this.userRepository = userRepository;
         this.roleRepository = roleRepository;
     }
 
@@ -39,7 +36,6 @@ public class WorkerServiceImpl implements WorkerService {
         }
 
         var user = getUserFromCommand(createWorkerCommand);
-        user = userRepository.save(user);
         var worker = getWorkerFromCommand(createWorkerCommand);
         worker.setUser(user);
         return workerRepository.save(worker);
