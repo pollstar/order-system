@@ -8,6 +8,6 @@
     <include file="db/changelog/db.fix_initial_schema-changelog.xml"/>
     <include file="db/changelog/db.fix_initial_schema_add_autoincrement-changelog.xml"/>
     <include file="db/changelog/db.fix_initial_schema_add_unique_constraint_to_login-changelog.xml"/>
-    <include file="db/changelog/db.fix_initial_schema_add_roles-changelog.xml"/>
+    <include file="db/changelog/db.add_roles-changelog.xml"/>
     <include file="db/changelog/db.fix_initial_schema_add_unique_constraint_to_address-changelog.xml"/>
 </databaseChangeLog>
