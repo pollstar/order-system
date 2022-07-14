@@ -53,11 +53,6 @@ class UserServiceImplTest {
     void givenUserLogin_loadUserByUsername_shouldThrowException() {
         //given
         var login = "login";
-        var user = User.builder()
-                .login("login")
-                .passwordHash("123")
-                .build();
-
         //when
         when(userRepository.findByLogin(login)).thenThrow(UsernameNotFoundException.class);
 
