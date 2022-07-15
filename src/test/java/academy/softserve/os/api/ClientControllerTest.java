@@ -98,7 +98,7 @@ class ClientControllerTest {
     }
 
     @Test
-    void givenClientId_findClientById_notFoundShouldBeThrowException() throws Exception {
+    void givenClientId_findClientById_shouldThrowExceptionBecauseNoClientWithSuchIdExists() throws Exception {
         //when
         when(clientService.findClientById(any(Long.class))).thenThrow(ClientNotFoundException.class);
 
