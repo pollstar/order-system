@@ -1,6 +1,8 @@
 package academy.softserve.os.service.impl;
 
 import academy.softserve.os.exception.LoginIsNotUniqueException;
+import academy.softserve.os.model.Role;
+import academy.softserve.os.model.RoleAssignment;
 import academy.softserve.os.model.User;
 import academy.softserve.os.model.Worker;
 import academy.softserve.os.repository.WorkerRepository;
@@ -10,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class WorkerServiceImpl implements WorkerService {
@@ -27,8 +31,20 @@ public class WorkerServiceImpl implements WorkerService {
         if (!loginIsUnique(createWorkerCommand.getLogin())) {
             throw new LoginIsNotUniqueException();
         }
+
+        var user = getUserFromCommand(createWorkerCommand);
         var worker = getWorkerFromCommand(createWorkerCommand);
+        worker.setUser(user);
         return workerRepository.save(worker);
+    }
+
+    private User getUserFromCommand(CreateWorkerCommand createWorkerCommand) {
+        var roleAssignment = new RoleAssignment(Role.ROLE_WORKER);
+        return User.builder()
+                .login(createWorkerCommand.getLogin())
+                .passwordHash(createWorkerCommand.getPassword())
+                .roles(List.of(roleAssignment))
+                .build();
     }
 
     private boolean loginIsUnique(String login) {
@@ -37,14 +53,9 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     private Worker getWorkerFromCommand(CreateWorkerCommand command) {
-        var user = User.builder()
-                .login(command.getLogin())
-                .passwordHash(command.getPassword())
-                .build();
-
         return Worker.builder()
                 .firstName(command.getFirstName())
                 .lastName(command.getLastName())
-                .user(user).build();
+                .build();
     }
 }

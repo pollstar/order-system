@@ -1,6 +1,8 @@
 package academy.softserve.os.service.impl;
 
 import academy.softserve.os.exception.LoginIsNotUniqueException;
+import academy.softserve.os.model.Role;
+import academy.softserve.os.model.RoleAssignment;
 import academy.softserve.os.model.User;
 import academy.softserve.os.model.Worker;
 import academy.softserve.os.repository.WorkerRepository;
@@ -8,9 +10,10 @@ import academy.softserve.os.service.WorkerService;
 import academy.softserve.os.service.command.CreateWorkerCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.AdditionalAnswers;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -22,9 +25,7 @@ import static org.mockito.Mockito.when;
 class WorkerServiceImplTest {
 
     private WorkerService workerService;
-
     private WorkerRepository workerRepository;
-
 
     @BeforeEach
     void init() {
@@ -54,6 +55,7 @@ class WorkerServiceImplTest {
                 .builder()
                 .login("john123")
                 .passwordHash("12345")
+                .roles(List.of(new RoleAssignment(Role.ROLE_WORKER)))
                 .build();
 
         var requestWorker = Worker
@@ -62,7 +64,11 @@ class WorkerServiceImplTest {
                 .lastName("Smith")
                 .user(requestUser)
                 .build();
-        assertThat(result).isEqualTo(requestWorker);
+
+        assertThat(result.getFirstName()).isEqualTo(requestWorker.getFirstName());
+        assertThat(result.getLastName()).isEqualTo(requestWorker.getLastName());
+        assertThat(result.getUser().getLogin()).isEqualTo(requestWorker.getUser().getLogin());
+        assertThat(result.getUser().getPasswordHash()).isEqualTo(requestWorker.getUser().getPasswordHash());
     }
 
     @Test
