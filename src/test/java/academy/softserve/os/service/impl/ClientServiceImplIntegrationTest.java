@@ -18,7 +18,7 @@ class ClientServiceImplIntegrationTest {
     private ClientService clientService;
 
     @Test
-    void givenClientName_findClientByName_shouldBeReturnListClientsWithMatchesName() {
+    void givenClientName_findClientByName_shouldReturnListOfClientsWithMatchingName() {
         var client1 = new CreateClientCommand("PolRon");
         var client2 = new CreateClientCommand("Pol");
         var client3 = new CreateClientCommand("Ron");
