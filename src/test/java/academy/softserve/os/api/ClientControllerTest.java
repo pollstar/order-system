@@ -83,7 +83,7 @@ class ClientControllerTest {
     }
 
     @Test
-    void givenClientId_findClientById_shouldBeReturnClient() throws Exception {
+    void givenClientId_findClientById_shouldReturnClient() throws Exception {
         //given
         var client = Client.builder()
                 .id(1L)
