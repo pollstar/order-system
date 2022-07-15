@@ -2,9 +2,9 @@ package academy.softserve.os.service.impl;
 
 import academy.softserve.os.exception.LoginIsNotUniqueException;
 import academy.softserve.os.model.Role;
+import academy.softserve.os.model.RoleAssignment;
 import academy.softserve.os.model.User;
 import academy.softserve.os.model.Worker;
-import academy.softserve.os.repository.RoleRepository;
 import academy.softserve.os.repository.WorkerRepository;
 import academy.softserve.os.service.WorkerService;
 import academy.softserve.os.service.command.CreateWorkerCommand;
@@ -18,13 +18,10 @@ import java.util.Set;
 public class WorkerServiceImpl implements WorkerService {
 
     private final WorkerRepository workerRepository;
-    private final RoleRepository roleRepository;
 
     @Autowired
-    WorkerServiceImpl(WorkerRepository workerRepository,
-                      RoleRepository roleRepository) {
+    WorkerServiceImpl(WorkerRepository workerRepository) {
         this.workerRepository = workerRepository;
-        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -41,11 +38,11 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     private User getUserFromCommand(CreateWorkerCommand createWorkerCommand) {
-        var role = roleRepository.findByName(Role.ROLE_WORKER);
+        var roleAssignment = new RoleAssignment(Role.ROLE_WORKER);
         return User.builder()
                 .login(createWorkerCommand.getLogin())
                 .passwordHash(createWorkerCommand.getPassword())
-                .roles(Set.of(role.get()))
+                .roles(Set.of(roleAssignment))
                 .build();
     }
 

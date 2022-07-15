@@ -2,6 +2,7 @@ package academy.softserve.os.model;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.Column;
@@ -16,6 +17,7 @@ import javax.persistence.Table;
 @Getter
 @ToString
 @EqualsAndHashCode
+@NoArgsConstructor
 @Entity
 @Table(name = "roles")
 public class RoleAssignment {
@@ -31,4 +33,7 @@ public class RoleAssignment {
     @Column(name = "role")
     private Role role;
 
+    public RoleAssignment(Role role) {
+        this.role = role;
+    }
 }
