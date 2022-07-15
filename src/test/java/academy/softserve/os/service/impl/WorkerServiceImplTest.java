@@ -11,6 +11,7 @@ import academy.softserve.os.service.command.CreateWorkerCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -54,7 +55,7 @@ class WorkerServiceImplTest {
                 .builder()
                 .login("john123")
                 .passwordHash("12345")
-                .roles(Set.of(new RoleAssignment(Role.ROLE_WORKER)))
+                .roles(List.of(new RoleAssignment(Role.ROLE_WORKER)))
                 .build();
 
         var requestWorker = Worker

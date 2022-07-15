@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -37,7 +38,7 @@ class UserServiceImplTest {
         var user = User.builder()
                 .login("login")
                 .passwordHash("123")
-                .roles(Set.of())
+                .roles(List.of())
                 .build();
         var userDetails = UserDetailsImpl.from(user);
 
