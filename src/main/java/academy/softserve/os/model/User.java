@@ -46,7 +46,7 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private Set<RoleAssignment> roles;
+    private List<RoleAssignment> roles;
 
     public User(String login, String passwordHash) {
         this.login = login;
