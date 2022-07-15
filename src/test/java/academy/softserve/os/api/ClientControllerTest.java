@@ -110,12 +110,12 @@ class ClientControllerTest {
     @Test
     void givenClientName_findAllClientsByName_shouldReturnAllClientsMatchesByName() throws Exception {
         //given
-        var client = List.of(
+        var clients = List.of(
                 new Client(),
                 new Client(),
                 new Client()
         );
-        when(clientService.findAllClientsByName(anyString())).thenReturn(client);
+        when(clientService.findAllClientsByName(anyString())).thenReturn(clients);
 
         mockMvc.perform(get("/api/clients?name=Pol"))
                 //then
