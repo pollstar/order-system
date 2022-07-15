@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/admin/job")
+@RequestMapping("/api/jobs")
 public class JobController {
     private final JobService jobService;
     private final JobMapper jobMapper;
@@ -30,6 +30,5 @@ public class JobController {
         return Optional.of(jobDto)
                 .map(jobDTO -> ResponseEntity.status(HttpStatus.CREATED).body(jobDTO))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
-
     }
 }
