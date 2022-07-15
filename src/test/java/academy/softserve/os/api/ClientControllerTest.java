@@ -108,7 +108,7 @@ class ClientControllerTest {
     }
 
     @Test
-    void givenClientName_findAllClientsByName_shouldBeReturnAllClientsMatchesByName() throws Exception {
+    void givenClientName_findAllClientsByName_shouldReturnAllClientsMatchesByName() throws Exception {
         //given
         var client = List.of(
                 new Client(),
