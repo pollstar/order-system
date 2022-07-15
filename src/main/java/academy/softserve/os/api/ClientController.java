@@ -39,9 +39,10 @@ public class ClientController {
     @GetMapping("/{id}")
     @Transactional
     public ResponseEntity<ClientDTO> findClientById(@PathVariable Long id) {
-        var client = clientService.findClientById(id);
-        var clientDto = mapper.toDTO(client);
-        return ResponseEntity.ok(clientDto);
+        return clientService.findClientById(id)
+                .map(mapper::toDTO)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @GetMapping

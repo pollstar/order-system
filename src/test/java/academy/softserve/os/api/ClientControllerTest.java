@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -65,7 +66,6 @@ class ClientControllerTest {
                 //then
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Validation failed!"));
-
     }
 
     @Test
@@ -79,7 +79,6 @@ class ClientControllerTest {
                 //then
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Validation failed!"));
-
     }
 
     @Test
@@ -88,7 +87,8 @@ class ClientControllerTest {
         var client = Client.builder()
                 .id(1L)
                 .name("Pol").build();
-        when(clientService.findClientById(any(Long.class))).thenReturn(client);
+        //when
+        when(clientService.findClientById(any(Long.class))).thenReturn(Optional.of(client));
 
         mockMvc.perform(get("/api/clients/1"))
                 //then
@@ -115,6 +115,7 @@ class ClientControllerTest {
                 new Client(),
                 new Client()
         );
+        //when
         when(clientService.findAllClientsByName(anyString())).thenReturn(clients);
 
         mockMvc.perform(get("/api/clients?name=Pol"))
