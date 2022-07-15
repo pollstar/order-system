@@ -2,27 +2,17 @@ package academy.softserve.os.api;
 
 
 import academy.softserve.os.api.dto.command.CreateClientCommandDTO;
-import academy.softserve.os.api.dto.command.CreateOrderCommandDTO;
-import academy.softserve.os.exception.CreateOrderException;
 import academy.softserve.os.mapper.ClientMapper;
-import academy.softserve.os.mapper.OrderMapper;
 import academy.softserve.os.model.Client;
-import academy.softserve.os.model.Order;
 import academy.softserve.os.service.ClientService;
-import academy.softserve.os.service.OrderService;
 import academy.softserve.os.service.command.CreateClientCommand;
-import academy.softserve.os.service.command.CreateOrderCommand;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -64,8 +54,8 @@ class ClientControllerTest {
                         .content(objectMapper.writeValueAsString(createCommandDto)))
                 //then
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Validation failed!"))
-                .andExpect(jsonPath("$.details[0]").value("Field a name cannot be null"));
+                .andExpect(jsonPath("$.message").value("Validation failed!"));
+
     }
 
     @Test
@@ -77,7 +67,7 @@ class ClientControllerTest {
                         .content(objectMapper.writeValueAsString(createCommandDto)))
                 //then
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Validation failed!"))
-                .andExpect(jsonPath("$.details[0]").value("Field a name cannot be empty"));
+                .andExpect(jsonPath("$.message").value("Validation failed!"));
+
     }
 }
