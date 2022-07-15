@@ -44,8 +44,8 @@ class OrderServiceImplTest {
         closingDate = LocalDateTime.of(LocalDate.of(currentYear, currentMonth, currentDay + 1), LocalTime.now());
     }
 
-        @Test
-        void givenValidCreateOrderCommand_createOrder_shouldReturnCreatedOrder() {
+    @Test
+    void givenValidCreateOrderCommand_createOrder_shouldReturnCreatedOrder() {
         //given
         var createOrderCommand = CreateOrderCommand.builder()
                 .clientId(1L)
@@ -71,7 +71,7 @@ class OrderServiceImplTest {
         //given
         var createOrderCommand = CreateOrderCommand.builder()
                 .clientId(1L)
-                 .placementDate(placementDate)
+                .placementDate(placementDate)
                 .closingDate(closingDate)
                 .description("test")
                 .phase(1)
