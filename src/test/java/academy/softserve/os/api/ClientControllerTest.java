@@ -6,7 +6,9 @@ import academy.softserve.os.mapper.ClientMapper;
 import academy.softserve.os.model.Client;
 import academy.softserve.os.service.ClientService;
 import academy.softserve.os.service.command.CreateClientCommand;
+import academy.softserve.os.service.exception.ClientNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -14,8 +16,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
+import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,13 +37,15 @@ class ClientControllerTest {
 
     @Test
     void givenValidCreateClientCommandDTO_createClient_shouldCreateNewClientAndReturnOKResponse() throws Exception {
+        //given
         var client = Client.builder()
                 .id(1L)
                 .name("Pol")
                 .build();
         var createCommandClientDTO = new CreateClientCommandDTO("Pol");
+        //when
         when(clientService.createClient(any(CreateClientCommand.class))).thenReturn(client);
-
+        //then
         mockMvc.perform(post("/api/clients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createCommandClientDTO)))
@@ -46,9 +55,10 @@ class ClientControllerTest {
     }
 
     @Test
-    void givenCreateClientCommandDTOWithNullName_createClient_shouldReturnErrorMessageBecauseNameCannotBeNull() throws Exception{
+    void givenCreateClientCommandDTOWithNullName_createClient_shouldReturnErrorMessageBecauseNameCannotBeNull() throws Exception {
+        //given
         var createCommandDto = new CreateClientCommandDTO(null);
-
+        //when
         mockMvc.perform(post("/api/clients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createCommandDto)))
@@ -59,9 +69,10 @@ class ClientControllerTest {
     }
 
     @Test
-    void givenCreateClientCommandDTOWithEmptyName_createClient_shouldReturnErrorMessageBecauseNameCannotBeEmpty() throws Exception{
+    void givenCreateClientCommandDTOWithEmptyName_createClient_shouldReturnErrorMessageBecauseNameCannotBeEmpty() throws Exception {
+        //given
         var createCommandDto = new CreateClientCommandDTO("");
-
+        //when
         mockMvc.perform(post("/api/clients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createCommandDto)))
@@ -69,5 +80,46 @@ class ClientControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Validation failed!"));
 
+    }
+
+    @Test
+    void givenClientId_findClientById_shouldBeReturnClient() throws Exception {
+        //given
+        var client = Client.builder()
+                .id(1L)
+                .name("Pol").build();
+        when(clientService.findClientById(any(Long.class))).thenReturn(client);
+
+        mockMvc.perform(get("/api/clients/1"))
+                //then
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.name").value("Pol"));
+    }
+
+    @Test
+    void givenClientId_findClientById_notFoundShouldBeThrowException() throws Exception {
+        //when
+        when(clientService.findClientById(any(Long.class))).thenThrow(ClientNotFoundException.class);
+
+        mockMvc.perform(get("/api/clients/1"))
+                //then
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void givenClientName_findAllClientsByName_shouldBeReturnAllClientsMatchesByName() throws Exception {
+        //given
+        var client = List.of(
+                new Client(),
+                new Client(),
+                new Client()
+        );
+        when(clientService.findAllClientsByName(anyString())).thenReturn(client);
+
+        mockMvc.perform(get("/api/clients?name=Pol"))
+                //then
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", is(3)));
     }
 }
