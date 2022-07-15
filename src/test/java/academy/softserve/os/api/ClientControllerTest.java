@@ -47,7 +47,7 @@ class ClientControllerTest {
 
     @Test
     void givenCreateClientCommandDTOWithNullName_createClient_shouldReturnErrorMessageBecauseNameCannotBeNull() throws Exception{
-        var createCommandDto =new  CreateClientCommandDTO(null);
+        var createCommandDto = new CreateClientCommandDTO(null);
 
         mockMvc.perform(post("/api/clients")
                         .contentType(MediaType.APPLICATION_JSON)
