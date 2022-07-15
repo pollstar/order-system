@@ -1,11 +1,10 @@
 package academy.softserve.os.service.impl;
 
 import academy.softserve.os.exception.LoginIsNotUniqueException;
-import academy.softserve.os.model.ERole;
+import academy.softserve.os.model.Role;
 import academy.softserve.os.model.User;
 import academy.softserve.os.model.Worker;
 import academy.softserve.os.repository.RoleRepository;
-import academy.softserve.os.repository.UserRepository;
 import academy.softserve.os.repository.WorkerRepository;
 import academy.softserve.os.service.WorkerService;
 import academy.softserve.os.service.command.CreateWorkerCommand;
@@ -42,7 +41,7 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     private User getUserFromCommand(CreateWorkerCommand createWorkerCommand) {
-        var role = roleRepository.findByName(ERole.ROLE_WORKER);
+        var role = roleRepository.findByName(Role.ROLE_WORKER);
         return User.builder()
                 .login(createWorkerCommand.getLogin())
                 .passwordHash(createWorkerCommand.getPassword())

@@ -5,35 +5,19 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
-    <changeSet id="1656075873551-1" author="Anatoliy Zhilko">
+    <changeSet id="1656075873551-6" author="Anatoliy Zhilko">
         <createTable tableName="roles">
-            <column name="id" type="bigint">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
             <column name="name" type="varchar(50)">
                 <constraints nullable="false" unique="true"/>
             </column>
+            <column name="user_id" type="bigint"/>
         </createTable>
 
-        <createTable tableName="users_roles">
-            <column name="user_id" type="bigint">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="role_id" type="varchar(50)">
-                <constraints nullable="false" unique="true"/>
-            </column>
-        </createTable>
-        
-        <addUniqueConstraint tableName="users_roles" columnNames="user_id, role_id"/>
-
-        <insert tableName="roles">
-            <column name="id" value="1"/>
-            <column name="name" value="ROLE_ADMIN"/>
-        </insert>
-
-        <insert tableName="roles">
-            <column name="id" value="2"/>
-            <column name="name" value="ROLE_WORKER"/>
-        </insert>
+        <addForeignKeyConstraint baseTableName="roles" baseColumnNames="user" constraintName="roles_user"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
     </changeSet>
 </databaseChangeLog>
