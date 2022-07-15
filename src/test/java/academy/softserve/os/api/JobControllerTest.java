@@ -34,9 +34,7 @@ class JobControllerTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public JobControllerTest(MockMvc mockMvc) {
-        this.mockMvc = mockMvc;
-    }
+
 
     @Test
     void givenValidCreateJobCommandDTO_createJob_shouldCreateNewJobAndReturnOKResponse() throws Exception {
