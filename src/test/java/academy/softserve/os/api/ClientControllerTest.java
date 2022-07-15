@@ -60,7 +60,7 @@ class ClientControllerTest {
 
     @Test
     void givenCreateClientCommandDTOWithEmptyName_createClient_shouldReturnErrorMessageBecauseNameCannotBeEmpty() throws Exception{
-        var createCommandDto =new  CreateClientCommandDTO("");
+        var createCommandDto = new CreateClientCommandDTO("");
 
         mockMvc.perform(post("/api/clients")
                         .contentType(MediaType.APPLICATION_JSON)
