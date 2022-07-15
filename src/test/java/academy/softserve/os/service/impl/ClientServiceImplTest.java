@@ -17,8 +17,10 @@ class ClientServiceImplTest {
     @Test
     void givenValidCreateClientCommand_createClient_shouldReturnCreatedClient(){
         var createClientCommand = new CreateClientCommand("Pol");
-        Mockito.when(clientRepository.save(Mockito.any(Client.class))).then(AdditionalAnswers.returnsFirstArg());
+        
+        when(clientRepository.save(any(Client.class))).then(returnsFirstArg());
         var client = clientService.createClient(createClientCommand);
-        Assertions.assertEquals("Pol", client.getName());
+        
+        assertEquals("Pol", client.getName());
     }
 }
