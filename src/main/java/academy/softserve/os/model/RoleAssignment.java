@@ -28,7 +28,7 @@ public class RoleAssignment {
     private Long userId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "name")
-    private Role name;
+    @Column(name = "role")
+    private Role role;
 
 }
