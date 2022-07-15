@@ -1,6 +1,7 @@
 package academy.softserve.os.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.Column;
@@ -35,5 +36,6 @@ public class Price {
 
     @ManyToOne
     @JoinColumn(name = "job_id")
+    @JsonIgnore
     private Job job;
 }
