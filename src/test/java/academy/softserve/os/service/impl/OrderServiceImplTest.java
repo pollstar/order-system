@@ -11,14 +11,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Month;
-import java.util.Date;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -75,7 +71,7 @@ class OrderServiceImplTest {
         //given
         var createOrderCommand = CreateOrderCommand.builder()
                 .clientId(1L)
-                 .placementDate(placementDate)
+                .placementDate(placementDate)
                 .closingDate(closingDate)
                 .description("test")
                 .phase(1)
