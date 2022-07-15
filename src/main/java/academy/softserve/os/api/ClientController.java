@@ -47,8 +47,7 @@ public class ClientController {
     @GetMapping
     @Transactional
     public ResponseEntity<List<ClientDTO>> findAllClientsByName(@RequestParam String name) {
-        var clients = clientService.findAllClientsByName(name)
-                .stream()
+        var clients = clientService.findAllClientsByName(name).stream()
                 .map(mapper::toDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(clients);
