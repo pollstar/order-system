@@ -63,7 +63,11 @@ class WorkerServiceImplTest {
                 .lastName("Smith")
                 .user(requestUser)
                 .build();
-        assertThat(result).isEqualTo(requestWorker);
+
+        assertThat(result.getFirstName()).isEqualTo(requestWorker.getFirstName());
+        assertThat(result.getLastName()).isEqualTo(requestWorker.getLastName());
+        assertThat(result.getUser().getLogin()).isEqualTo(requestWorker.getUser().getLogin());
+        assertThat(result.getUser().getPasswordHash()).isEqualTo(requestWorker.getUser().getPasswordHash());
     }
 
     @Test

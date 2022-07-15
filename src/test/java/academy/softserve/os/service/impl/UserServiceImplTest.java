@@ -46,7 +46,9 @@ class UserServiceImplTest {
         var result = userService.loadUserByUsername(login);
 
         //then
-        assertThat(result).isEqualTo(userDetails);
+        assertThat(result.getUsername()).isEqualTo(userDetails.getUsername());
+        assertThat(result.getPassword()).isEqualTo(userDetails.getPassword());
+        assertThat(result.getAuthorities()).isEqualTo(userDetails.getAuthorities());
     }
 
     @Test

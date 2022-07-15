@@ -16,7 +16,6 @@ import javax.persistence.Table;
 
 @Getter
 @ToString
-@EqualsAndHashCode
 @NoArgsConstructor
 @Entity
 @Table(name = "roles")
