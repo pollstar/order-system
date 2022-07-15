@@ -43,7 +43,7 @@ class ClientServiceImplIntegrationTest {
     }
 
     @Test
-    void givenClientId_findClientById_notFoundShouldBeThrowException() {
+    void givenClientId_findClientById_shouldThrowExceptionBecauseNoSuchClientHasBeenFound() {
         Long id = 25L;
         var client = new CreateClientCommand("Pol");
         var clientId = clientService.createClient(client).getId();
