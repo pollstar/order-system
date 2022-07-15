@@ -16,7 +16,7 @@
             <column name="user_id" type="bigint"/>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="roles" baseColumnNames="user" constraintName="roles_user"
+        <addForeignKeyConstraint baseTableName="role_assignment" baseColumnNames="user_id" constraintName="roles_user"
                                  referencedTableName="users"
                                  referencedColumnNames="id"/>
     </changeSet>
