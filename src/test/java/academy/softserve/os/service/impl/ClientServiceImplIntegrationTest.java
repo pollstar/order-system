@@ -32,7 +32,7 @@ class ClientServiceImplIntegrationTest {
     }
 
     @Test
-    void givenClientId_findClientById_shouldBeReturnClient() {
+    void givenClientId_findClientById_shouldReturnClientWithGivenId() {
 
         var client = new CreateClientCommand("Pol");
         var id = clientService.createClient(client).getId();
