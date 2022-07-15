@@ -24,6 +24,7 @@ public class ClientController {
     private final ClientMapper mapper;
 
     @PostMapping
+    @Transactional
     public ResponseEntity<ClientDTO> createClient(@RequestBody @Valid CreateClientCommandDTO clientCommandDTO){
         var client = clientService.createClient(mapper.toModel(clientCommandDTO));
         var clientDto = mapper.toDTO(client);
