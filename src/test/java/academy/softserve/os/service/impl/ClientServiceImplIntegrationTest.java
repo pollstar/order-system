@@ -47,14 +47,4 @@ class ClientServiceImplIntegrationTest {
 
         assertEquals(client.getName(), clientById.getName());
     }
-
-    @Test
-    void givenClientId_findClientById_shouldThrowExceptionBecauseNoSuchClientHasBeenFound() {
-        Long id = 25L;
-
-        var clientId = clientService.createClient(client).getId();
-
-        assertNotEquals(id, clientId);
-        assertThrows(ClientNotFoundException.class, () -> clientService.findClientById(id));
-    }
 }
