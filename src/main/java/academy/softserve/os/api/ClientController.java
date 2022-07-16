@@ -4,6 +4,7 @@ import academy.softserve.os.api.dto.ClientDTO;
 import academy.softserve.os.api.dto.command.CreateClientCommandDTO;
 import academy.softserve.os.mapper.ClientMapper;
 import academy.softserve.os.service.ClientService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ public class ClientController {
 
     @PostMapping
     @Transactional
+    @Operation(summary = "Create a new Client")
     public ResponseEntity<ClientDTO> createClient(@RequestBody @Valid CreateClientCommandDTO clientCommandDTO) {
         var client = clientService.createClient(mapper.toModel(clientCommandDTO));
         var clientDto = mapper.toDTO(client);
@@ -38,6 +40,7 @@ public class ClientController {
 
     @GetMapping("/{id}")
     @Transactional
+    @Operation(summary = "Find Client by ID")
     public ResponseEntity<ClientDTO> findClientById(@PathVariable Long id) {
         return clientService.findClientById(id)
                 .map(mapper::toDTO)
@@ -47,6 +50,7 @@ public class ClientController {
 
     @GetMapping
     @Transactional
+    @Operation(summary = "Find all Clients by Name")
     public ResponseEntity<List<ClientDTO>> findAllClientsByName(@RequestParam String name) {
         var clients = clientService.findAllClientsByName(name).stream()
                 .map(mapper::toDTO)
