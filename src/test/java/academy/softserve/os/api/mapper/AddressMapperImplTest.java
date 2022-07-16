@@ -2,6 +2,7 @@ package academy.softserve.os.api.mapper;
 
 import academy.softserve.os.api.dto.AddressDTO;
 import academy.softserve.os.api.dto.command.CreateAddressCommandDTO;
+import academy.softserve.os.mapper.AddressMapper;
 import academy.softserve.os.model.Address;
 import academy.softserve.os.service.command.CreateAddressCommand;
 import org.junit.jupiter.api.Test;

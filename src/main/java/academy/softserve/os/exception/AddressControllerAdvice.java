@@ -1,8 +1,6 @@
-package academy.softserve.os.api.exception;
+package academy.softserve.os.exception;
 
 import academy.softserve.os.api.AddressController;
-import academy.softserve.os.service.exception.CreateAddressException;
-import academy.softserve.os.service.exception.GetAddressByIdException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

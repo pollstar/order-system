@@ -1,4 +1,4 @@
-package academy.softserve.os.api.mapper;
+package academy.softserve.os.mapper;
 
 import academy.softserve.os.api.dto.AddressDTO;
 import academy.softserve.os.api.dto.command.CreateAddressCommandDTO;

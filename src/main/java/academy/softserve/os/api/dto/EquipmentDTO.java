@@ -1,5 +1,7 @@
 package academy.softserve.os.api.dto;
 
+import academy.softserve.os.model.Address;
+import academy.softserve.os.model.Client;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,15 +13,13 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddressDTO {
+public class EquipmentDTO {
 
     private Long id;
 
-    private String city;
+    private String description;
 
-    private String street;
+    private Client client;
 
-    private String house;
-
-    private String room;
+    private Address address;
 }

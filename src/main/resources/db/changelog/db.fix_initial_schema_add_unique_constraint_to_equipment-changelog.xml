@@ -7,8 +7,8 @@
 
     <changeSet id="1656075873551-5" author="Pavel Starovoitov">
         <addUniqueConstraint
-                tableName="address"
-                columnNames="city,street,house,room"
+                tableName="equipment"
+                columnNames="description, address_id, client_id"
                 validate="true"
         />
     </changeSet>

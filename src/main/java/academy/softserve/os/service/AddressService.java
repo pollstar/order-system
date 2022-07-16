@@ -1,6 +1,6 @@
 package academy.softserve.os.service;
 
-import academy.softserve.os.service.exception.CreateAddressException;
+import academy.softserve.os.exception.CreateAddressException;
 import academy.softserve.os.model.Address;
 import academy.softserve.os.repository.AddressRepository;
 import academy.softserve.os.service.command.CreateAddressCommand;
@@ -53,6 +53,7 @@ public class AddressService {
     }
 
     public Optional<Address> getAddressById(Long id) {
-        return addressRepository.findById(id);
+        var res = addressRepository.findById(id);
+        return res;
     }
 }

@@ -1,6 +1,6 @@
 package academy.softserve.os.api;
 
-import academy.softserve.os.api.mapper.AddressMapper;
+import academy.softserve.os.mapper.AddressMapper;
 import academy.softserve.os.model.Address;
 import academy.softserve.os.service.AddressService;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +11,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
