@@ -10,10 +10,10 @@ import academy.softserve.os.service.WorkerService;
 import academy.softserve.os.service.command.CreateWorkerCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -26,11 +26,13 @@ class WorkerServiceImplTest {
 
     private WorkerService workerService;
     private WorkerRepository workerRepository;
+    private PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void init() {
         workerRepository = mock(WorkerRepository.class);
-        workerService = new WorkerServiceImpl(workerRepository);
+        passwordEncoder = mock(PasswordEncoder.class);
+        workerService = new WorkerServiceImpl(workerRepository, passwordEncoder);
     }
 
     @Test
@@ -48,6 +50,7 @@ class WorkerServiceImplTest {
 
         //when
         when(workerRepository.save(any(Worker.class))).thenAnswer(returnsFirstArg());
+        when(passwordEncoder.encode(any(String.class))).thenReturn("12345");
         var result = workerService.createWorker(createWorkerCommand);
 
         //then

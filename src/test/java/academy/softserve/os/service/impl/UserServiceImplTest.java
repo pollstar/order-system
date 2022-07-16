@@ -5,12 +5,11 @@ import academy.softserve.os.model.UserDetailsImpl;
 import academy.softserve.os.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -18,7 +17,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@WebMvcTest(value = {UserRepository.class})
 class UserServiceImplTest {
 
     private UserServiceImpl userService;
@@ -28,7 +26,8 @@ class UserServiceImplTest {
     @BeforeEach
     void init() {
         userRepository = mock(UserRepository.class);
-        userService = new UserServiceImpl(userRepository);
+        var passwordEncoder = mock(PasswordEncoder.class);
+        userService = new UserServiceImpl(userRepository, passwordEncoder);
     }
 
     @Test
