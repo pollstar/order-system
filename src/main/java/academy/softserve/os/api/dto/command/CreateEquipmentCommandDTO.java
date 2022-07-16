@@ -7,8 +7,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
+<<<<<<< HEAD
 import javax.validation.constraints.NotNull;
 
+=======
+>>>>>>> c8c801e (ORD-20: Equipment API: Query Equipment)
 @Getter
 @Setter
 @Builder
