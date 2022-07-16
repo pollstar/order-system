@@ -7,6 +7,7 @@ import academy.softserve.os.service.AddressService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,12 +27,14 @@ public class AddressController {
     private final AddressService addressService;
 
     @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin/address")
     public ResponseEntity<AddressDTO> createAddress(@RequestBody CreateAddressCommandDTO commandDTO) {
         return new ResponseEntity<>(mapper.toAddressDTO(addressService.createAddress(mapper.toCommand(commandDTO))),
                 HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'WORKER')")
     @GetMapping("/address")
     public ResponseEntity<List<AddressDTO>> getAddress() {
         var addresses = addressService.findAddresses().stream()
@@ -40,6 +43,7 @@ public class AddressController {
         return new ResponseEntity<>(addresses, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'WORKER')")
     @GetMapping("/address/{id}")
     public ResponseEntity<AddressDTO> getAddressById(@PathVariable Long id) {
         return addressService.getAddressById(id)
