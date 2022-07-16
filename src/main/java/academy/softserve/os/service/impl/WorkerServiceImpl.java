@@ -9,6 +9,7 @@ import academy.softserve.os.repository.WorkerRepository;
 import academy.softserve.os.service.WorkerService;
 import academy.softserve.os.service.command.CreateWorkerCommand;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -19,10 +20,12 @@ import java.util.Set;
 public class WorkerServiceImpl implements WorkerService {
 
     private final WorkerRepository workerRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    WorkerServiceImpl(WorkerRepository workerRepository) {
+    WorkerServiceImpl(WorkerRepository workerRepository, PasswordEncoder passwordEncoder) {
         this.workerRepository = workerRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -42,7 +45,7 @@ public class WorkerServiceImpl implements WorkerService {
         var roleAssignment = new RoleAssignment(Role.ROLE_WORKER);
         return User.builder()
                 .login(createWorkerCommand.getLogin())
-                .passwordHash(createWorkerCommand.getPassword())
+                .passwordHash(passwordEncoder.encode(createWorkerCommand.getPassword()))
                 .roles(List.of(roleAssignment))
                 .build();
     }
