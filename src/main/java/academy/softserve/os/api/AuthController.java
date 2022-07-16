@@ -70,7 +70,9 @@ public class AuthController {
     private void throwIfRolesAreWrong(Set<String> roles) {
         try {
             roles.forEach(roleName -> new RoleAssignment(Role.valueOf(roleName)));
-
+            if (roles.contains(Role.ROLE_ADMIN.name())){
+                throw new WrongRoleNameException("You are permitted only to create Worker user");
+            }
         } catch (IllegalArgumentException illegalArgumentException) {
             throw new WrongRoleNameException();
         }
