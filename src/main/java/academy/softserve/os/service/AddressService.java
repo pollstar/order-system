@@ -44,7 +44,7 @@ public class AddressService {
         if (command.getCity().isBlank() || Objects.isNull(command.getCity()) ||
                 command.getStreet().isBlank() || Objects.isNull(command.getStreet()) ||
                 command.getHouse().isBlank() || Objects.isNull(command.getHouse())) {
-            throw new CreateAddressException();
+            throw new CreateAddressException("Address not valid");
         }
     }
 
@@ -53,7 +53,6 @@ public class AddressService {
     }
 
     public Optional<Address> getAddressById(Long id) {
-        var res = addressRepository.findById(id);
-        return res;
+        return addressRepository.findById(id);
     }
 }

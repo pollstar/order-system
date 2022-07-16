@@ -13,8 +13,8 @@ public class EquipmentControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(CreateEquipmentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ErrorApiMessage> handleCreateOrderException(CreateEquipmentException e) {
-        return new ResponseEntity<>(new ErrorApiMessage("Error created equipment"), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ErrorApiMessage> handleCreateEquipmentException(CreateEquipmentException e) {
+        return new ResponseEntity<>(new ErrorApiMessage(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }
 

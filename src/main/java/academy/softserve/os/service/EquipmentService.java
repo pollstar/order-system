@@ -1,6 +1,5 @@
 package academy.softserve.os.service;
 
-import academy.softserve.os.api.dto.EquipmentDTO;
 import academy.softserve.os.model.Address;
 import academy.softserve.os.model.Client;
 import academy.softserve.os.model.Equipment;
@@ -10,14 +9,9 @@ import academy.softserve.os.repository.EquipmentRepository;
 import academy.softserve.os.service.command.CreateEquipmentCommand;
 import academy.softserve.os.exception.CreateEquipmentException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
@@ -31,19 +25,24 @@ public class EquipmentService {
 
     @Transactional
     public Optional<Equipment> createEquipment(CreateEquipmentCommand command) {
-        Address address = null;
-        Client client = null;
+        Address address;
+        Client client;
 
         checkToValidEquipment(command);
 
-        if (command.getClientId() != null) {
+        try {
             client = clientRepository.findById(command.getClientId())
                     .orElseThrow(() -> new CreateEquipmentException("Client ID not found."));
+        } catch (DataAccessException e) {
+            throw new CreateEquipmentException("Client ID error.");
         }
-        if (command.getAddressId() != null) {
+        try {
             address = addressRepository.findById(command.getAddressId())
                     .orElseThrow(() -> new CreateEquipmentException("Address ID not found."));
+        } catch (DataAccessException e) {
+            throw new CreateEquipmentException("Address ID error.");
         }
+
         UnaryOperator<String> removingExtraSpaces = s -> s.replaceAll("\\s+", " ").trim();
         var equipment = Equipment.builder()
                 .description(removingExtraSpaces.apply(command.getDescription()))
@@ -59,26 +58,8 @@ public class EquipmentService {
     }
 
     private void checkToValidEquipment(CreateEquipmentCommand command) {
-        if (command.getDescription().isBlank() || Objects.isNull(command.getDescription())) {
-            throw new CreateEquipmentException();
+        if (Objects.isNull(command.getDescription()) || command.getDescription().trim().isBlank()) {
+            throw new CreateEquipmentException("Description not present.");
         }
-    }
-
-    public Optional<Equipment> getEquipmentById(Long id) {
-        return equipmentRepository.findById(id);
-    }
-
-    public List<Equipment> findEquipment(String description) {
-        if (description == null || description.isEmpty()) {
-            return equipmentRepository.findAll();
-        }
-        Equipment equipment = new Equipment();
-        equipment.setDescription(description);
-        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAny().withIgnoreCase()
-            .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);//.withIgnoreCase();
-        Example<Equipment> example = Example.of(equipment, caseInsensitiveExampleMatcher);
-
-        var res = equipmentRepository.findAll(example);
-        return res;
     }
 }

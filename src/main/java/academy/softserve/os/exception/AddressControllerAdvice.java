@@ -14,13 +14,13 @@ public class AddressControllerAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(CreateAddressException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorApiMessage> handleCreateOrderException(CreateAddressException e) {
-        return new ResponseEntity<>(new ErrorApiMessage("Error created address"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorApiMessage("Error created address. " + e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(GetAddressByIdException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorApiMessage> handleCreateOrderException(GetAddressByIdException e) {
-        return new ResponseEntity<>(new ErrorApiMessage("Address not found"), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ErrorApiMessage("Address not found" + e.getMessage()), HttpStatus.NOT_FOUND);
     }
 }
 
