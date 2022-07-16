@@ -1,4 +1,4 @@
-package academy.softserve.os.configs.jwt;
+package academy.softserve.os.api.config.jwt;
 
 import academy.softserve.os.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

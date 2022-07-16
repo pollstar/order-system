@@ -3,7 +3,7 @@ package academy.softserve.os.api;
 import academy.softserve.os.api.dto.JwtResponseDTO;
 import academy.softserve.os.api.dto.command.CreateUserCommandDTO;
 import academy.softserve.os.api.dto.command.LoginCommandDTO;
-import academy.softserve.os.configs.jwt.JwtUtils;
+import academy.softserve.os.api.config.jwt.JwtUtils;
 import academy.softserve.os.mapper.UserMapper;
 import academy.softserve.os.model.Role;
 import academy.softserve.os.model.RoleAssignment;

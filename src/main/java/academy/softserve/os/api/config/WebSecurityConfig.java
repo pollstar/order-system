@@ -1,7 +1,7 @@
-package academy.softserve.os.configs;
+package academy.softserve.os.api.config;
 
-import academy.softserve.os.configs.jwt.AuthEntryPointJwt;
-import academy.softserve.os.configs.jwt.AuthTokenFilter;
+import academy.softserve.os.api.config.jwt.AuthEntryPointJwt;
+import academy.softserve.os.api.config.jwt.AuthTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

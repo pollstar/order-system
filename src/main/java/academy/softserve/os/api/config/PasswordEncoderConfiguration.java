@@ -1,4 +1,4 @@
-package academy.softserve.os.configs;
+package academy.softserve.os.api.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
