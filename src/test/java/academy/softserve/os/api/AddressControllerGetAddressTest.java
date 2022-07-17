@@ -66,7 +66,7 @@ class AddressControllerGetAddressTest {
     }
 
     @Test
-    void givenApiGetAddressWithId_getAddressByIs_shouldReturnJsonAddressAndReturnOkResponse() throws Exception {
+    void givenApiGetAddressWithId_getAddressById_shouldReturnJsonAddressAndReturnOkResponse() throws Exception {
         //given
         var address1 = Address.builder()
                 .id(1L)

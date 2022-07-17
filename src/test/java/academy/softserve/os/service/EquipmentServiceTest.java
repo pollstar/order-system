@@ -10,15 +10,31 @@ import academy.softserve.os.repository.ClientRepository;
 import academy.softserve.os.repository.EquipmentRepository;
 import academy.softserve.os.service.command.CreateAddressCommand;
 import academy.softserve.os.service.command.CreateEquipmentCommand;
+import liquibase.pro.packaged.E;
 import liquibase.pro.packaged.O;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.AdditionalAnswers;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Pageable;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -31,9 +47,7 @@ class EquipmentServiceTest {
     private EquipmentRepository equipmentRepository;
     private ClientRepository clientRepository;
     private AddressRepository addressRepository;
-    private AddressService addressService;
     private EquipmentService equipmentService;
-    private CreateAddressCommand addressCommand;
 
     private Address address;
     private Equipment equipment;
@@ -85,7 +99,7 @@ class EquipmentServiceTest {
 
         var equipment1 = equipmentService.createEquipment(command);
         //then
-        assertEquals(equipment1.get().getDescription() , equipment.getDescription());
+        assertEquals(equipment1.get().getDescription(), equipment.getDescription());
     }
 
     @Test
@@ -196,5 +210,79 @@ class EquipmentServiceTest {
         CreateEquipmentException thrown = Assertions.assertThrows(CreateEquipmentException.class,
                 () -> equipmentService.createEquipment(command));
         assertEquals("Create equipment error. Description not present.", thrown.getMessage());
+    }
+
+    @Test
+    void givenDescriptionNullAndEmpty_findEquipment_returnListAllEquipment() {
+        //given
+        var equipment1 = Equipment.builder()
+                .id(1L)
+                .description("Condition 2")
+                .build();
+        var equipment2 = Equipment.builder()
+                .id(1L)
+                .description("Watercoller")
+                .build();
+        var equipment3 = Equipment.builder()
+                .id(1L)
+                .description("Condition 1")
+                .build();
+        var equipments = List.of(equipment1, equipment2, equipment3);
+        //when
+        when(equipmentRepository.findAll()).thenReturn(equipments);
+        var result = equipmentService.findEquipment(null);
+        assertEquals(equipments.size(), result.size());
+        result = equipmentService.findEquipment("");
+        assertEquals(equipments.size(), result.size());
+    }
+
+    static Stream<Arguments> initParameters() {
+        return Stream.of(
+                Arguments.of("con", 2),
+                Arguments.of("1", 1),
+                Arguments.of("HVAC", 0)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("initParameters")
+    void givenFindEquipmentByDescriptionExample_findEquipment_returnListEquipment(String testExample, Integer size) throws Exception{
+        //given
+        var equipment1 = Equipment.builder()
+                .id(1L)
+                .description("Condition 2")
+                .build();
+        var equipment2 = Equipment.builder()
+                .id(1L)
+                .description("Watercoller")
+                .build();
+        var equipment3 = Equipment.builder()
+                .id(1L)
+                .description("Condition 1")
+                .build();
+        var equipments = List.of(equipment1, equipment2, equipment3);
+
+        var equipmentTest = Equipment.builder()
+                .description(testExample).build();
+        var example = Example.of(equipmentTest);
+
+        var answer = new Answer<List<Equipment>>() {
+            @Override
+            public List<Equipment> answer(InvocationOnMock invocation) throws Throwable {
+                var ex = invocation.getArgument(0, Example.class);
+                var testString = ((Equipment) ex.getProbe()).getDescription().toLowerCase();
+                var reslist = equipments
+                        .stream().filter(e -> e.getDescription()
+                                .toLowerCase().contains(testString))
+                        .collect(Collectors.toList());
+                return reslist;
+            }
+        };
+        //when
+//        when(equipmentRepository.findAll()).thenReturn(equipments);
+        when(equipmentRepository.findAll(example)).then(answer);
+
+        var result = equipmentService.findEquipment(equipmentTest.getDescription());
+        assertEquals(size, result.size());
     }
 }
