@@ -19,6 +19,8 @@ import java.io.IOException;
 @Component
 public class AuthTokenFilter extends OncePerRequestFilter {
 
+    private static final String TOKEN_TYPE = "Bearer ";
+
     private JwtUtils jwtUtils;
 
     private UserServiceImpl userDetailsService;
@@ -54,8 +56,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private String parseJwt(HttpServletRequest request) {
         var headerAuth = request.getHeader("Authorization");
 
-        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
-            return headerAuth.split("Bearer ")[1];
+        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(TOKEN_TYPE)) {
+            return headerAuth.split(TOKEN_TYPE)[1];
         }
 
         return null;
