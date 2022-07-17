@@ -38,7 +38,7 @@ public class AuthController {
     private final UserMapper userMapper;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authUser(@RequestBody LoginCommandDTO loginCommandDTO) {
+    public ResponseEntity<JwtResponseDTO> authUser(@RequestBody LoginCommandDTO loginCommandDTO) {
 
         var authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(
