@@ -31,7 +31,6 @@ public class AuthController {
                         loginCommandDTO.getLogin(),
                         loginCommandDTO.getPassword()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
         var jwt = jwtUtils.generateJwtToken(authentication);
 
         var userDetails = (UserDetailsImpl) authentication.getPrincipal();
