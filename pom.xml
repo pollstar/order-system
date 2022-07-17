@@ -29,8 +29,7 @@
         <jacoco.report.execFile>${jacoco.report.directory}/jacoco.exec</jacoco.report.execFile>
 
         <!-- Sonar properties -->
-        <sonar.coverage.jacoco.xmlReportPaths>${jacoco.report.directory}/jacoco.xml
-        </sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.coverage.jacoco.xmlReportPaths>${jacoco.report.directory}/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
 
     <dependencies>
