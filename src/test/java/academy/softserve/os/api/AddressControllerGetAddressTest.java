@@ -6,6 +6,7 @@ import academy.softserve.os.service.AddressService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,7 +19,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
+@AutoConfigureMockMvc(addFilters = false)
 @WebMvcTest(value = {AddressController.class, AddressMapper.class})
 class AddressControllerGetAddressTest {
     @Autowired
@@ -50,11 +51,11 @@ class AddressControllerGetAddressTest {
 
     @Test
     void givenApiGetAddress_getAddress_shouldReturnJsonListAddressAndReturnOkResponse() throws Exception {
-        //given
+
         var addresses = Arrays.asList(address1, address2);
-        //when
+
         when(service.findAddresses()).thenReturn(addresses);
-        //then
+
         mockMvc.perform(get("/api/address"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(1L))
@@ -66,8 +67,8 @@ class AddressControllerGetAddressTest {
     }
 
     @Test
-    void givenApiGetAddressWithId_getAddressById_shouldReturnJsonAddressAndReturnOkResponse() throws Exception {
-        //given
+    void givenApiGetAddressWithId_getAddressByIs_shouldReturnJsonAddressAndReturnOkResponse() throws Exception {
+
         var address1 = Address.builder()
                 .id(1L)
                 .city("ХАРЬКОВ")
@@ -75,9 +76,9 @@ class AddressControllerGetAddressTest {
                 .house("10")
                 .room("КУХНЯ")
                 .build();
-        //when
+
         when(service.getAddressById(address1.getId())).thenReturn(Optional.of(address1));
-        //then
+
         mockMvc.perform(get("/api/address/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L))
@@ -85,6 +86,5 @@ class AddressControllerGetAddressTest {
                 .andExpect(jsonPath("$.street").value("СУМСКАЯ"))
                 .andExpect(jsonPath("$.house").value("10"))
                 .andExpect(jsonPath("$.room").value("КУХНЯ"));
-
     }
 }

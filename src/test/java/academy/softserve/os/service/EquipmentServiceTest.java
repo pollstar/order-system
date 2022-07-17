@@ -1,6 +1,5 @@
 package academy.softserve.os.service;
 
-import academy.softserve.os.exception.CreateAddressException;
 import academy.softserve.os.exception.CreateEquipmentException;
 import academy.softserve.os.model.Address;
 import academy.softserve.os.model.Client;
@@ -10,8 +9,6 @@ import academy.softserve.os.repository.ClientRepository;
 import academy.softserve.os.repository.EquipmentRepository;
 import academy.softserve.os.service.command.CreateAddressCommand;
 import academy.softserve.os.service.command.CreateEquipmentCommand;
-import liquibase.pro.packaged.E;
-import liquibase.pro.packaged.O;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,6 +21,8 @@ import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.dao.DataAccessException;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Pageable;
@@ -37,12 +36,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@SpringBootTest
+@AutoConfigureMockMvc(addFilters = false)
 class EquipmentServiceTest {
     private EquipmentRepository equipmentRepository;
     private ClientRepository clientRepository;
@@ -86,8 +85,8 @@ class EquipmentServiceTest {
 
     @Test
     void givenValidCreateEquipmentCommand_createEquipment_shouldReturnCreatedEquipment() {
-        //given
-        //when
+
+
         when(addressRepository.findById(any(Long.class))).thenReturn(Optional.of(address));
         when(clientRepository.findById(any(Long.class))).thenReturn(Optional.of(client));
         when(equipmentRepository.save(any(Equipment.class))).thenReturn(equipment);
@@ -98,14 +97,14 @@ class EquipmentServiceTest {
         )).thenReturn(Optional.empty());
 
         var equipment1 = equipmentService.createEquipment(command);
-        //then
-        assertEquals(equipment1.get().getDescription(), equipment.getDescription());
+
+        assertEquals(equipment1.getDescription() , equipment.getDescription());
     }
 
     @Test
-    void givenCreateEquipmentCommandWithNotAddressField_createEquipment_shouldReturnException() {
-        //given
-        //when
+    void givenCreateEquipmentCommandWithNotAddressField_createEquipment_shouldThrowException() {
+
+
         when(addressRepository.findById(any(Long.class))).thenReturn(Optional.empty());
         when(clientRepository.findById(any(Long.class))).thenReturn(Optional.of(client));
         when(equipmentRepository.save(any(Equipment.class))).thenReturn(equipment);
@@ -114,17 +113,18 @@ class EquipmentServiceTest {
                 equipment.getClient(),
                 equipment.getAddress()
         )).thenReturn(Optional.empty());
-        //then
-        CreateEquipmentException thrown = Assertions.assertThrows(CreateEquipmentException.class,
+
+        var thrown = Assertions.assertThrows(CreateEquipmentException.class,
                 () -> equipmentService.createEquipment(command));
         assertEquals("Create equipment error. Address ID not found.", thrown.getMessage());
     }
 
     @Test
-    void givenCreateEquipmentCommandWithNullAddressField_createEquipment_shouldReturnException() {
-        //given
-        //when
-        when(addressRepository.findById(any(Long.class))).thenThrow(new InvalidDataAccessApiUsageException(""));
+    void givenCreateEquipmentCommandWithNullAddressField_createEquipment_shouldThrowException() {
+
+        String errorMessage = "Error message";
+
+        when(addressRepository.findById(any(Long.class))).thenThrow(new InvalidDataAccessApiUsageException(errorMessage));
         when(clientRepository.findById(any(Long.class))).thenReturn(Optional.of(client));
         when(equipmentRepository.save(any(Equipment.class))).thenReturn(equipment);
         when(equipmentRepository.findByDescriptionAndClientAndAddress(
@@ -132,16 +132,16 @@ class EquipmentServiceTest {
                 equipment.getClient(),
                 equipment.getAddress()
         )).thenReturn(Optional.empty());
-        //then
-        CreateEquipmentException thrown = Assertions.assertThrows(CreateEquipmentException.class,
+
+        var thrown = Assertions.assertThrows(InvalidDataAccessApiUsageException.class,
                 () -> equipmentService.createEquipment(command));
-        assertEquals("Create equipment error. Address ID error.", thrown.getMessage());
+        assertEquals(errorMessage, thrown.getMessage());
     }
 
     @Test
-    void givenCreateEquipmentCommandWithNotClientField_createEquipment_shouldReturnException() {
-        //given
-        //when
+    void givenCreateEquipmentCommandWithNotClientField_createEquipment_shouldThrowException() {
+
+
         when(addressRepository.findById(any(Long.class))).thenReturn(Optional.of(address));
         when(clientRepository.findById(any(Long.class))).thenReturn(Optional.empty());
         when(equipmentRepository.save(any(Equipment.class))).thenReturn(equipment);
@@ -150,35 +150,35 @@ class EquipmentServiceTest {
                 equipment.getClient(),
                 equipment.getAddress()
         )).thenReturn(Optional.empty());
-        //then
-        CreateEquipmentException thrown = Assertions.assertThrows(CreateEquipmentException.class,
+
+        var thrown = Assertions.assertThrows(CreateEquipmentException.class,
                 () -> equipmentService.createEquipment(command));
         assertEquals("Create equipment error. Client ID not found.", thrown.getMessage());
     }
 
     @Test
-    void givenCreateEquipmentCommandWithNullClientField_createEquipment_shouldReturnException() {
-        //given
-        //when
+    void givenCreateEquipmentCommandWithNullClientField_createEquipment_shouldThrowException() {
+
+        String errorMessage = "Create equipment error. Client ID error.";
         when(addressRepository.findById(any(Long.class))).thenReturn(Optional.of(address));
-        when(clientRepository.findById(any(Long.class))).thenThrow(new InvalidDataAccessApiUsageException(""));
+        when(clientRepository.findById(any(Long.class))).thenThrow(new InvalidDataAccessApiUsageException(errorMessage));
         when(equipmentRepository.save(any(Equipment.class))).thenReturn(equipment);
         when(equipmentRepository.findByDescriptionAndClientAndAddress(
                 equipment.getDescription(),
                 equipment.getClient(),
                 equipment.getAddress()
         )).thenReturn(Optional.empty());
-        //then
-        CreateEquipmentException thrown = Assertions.assertThrows(CreateEquipmentException.class,
+
+        var thrown = Assertions.assertThrows(InvalidDataAccessApiUsageException.class,
                 () -> equipmentService.createEquipment(command));
-        assertEquals("Create equipment error. Client ID error.", thrown.getMessage());
+        assertEquals(errorMessage, thrown.getMessage());
     }
 
     @Test
-    void givenCreateEquipmentCommandWithNullDescriptionField_createEquipment_shouldReturnException() {
-        //given
+    void givenCreateEquipmentCommandWithNullDescriptionField_createEquipment_shouldThrowException() {
+
         command.setDescription(null);
-        //when
+
         when(addressRepository.findById(any(Long.class))).thenReturn(Optional.of(address));
         when(clientRepository.findById(any(Long.class))).thenReturn(Optional.of(client));
         when(equipmentRepository.save(any(Equipment.class))).thenReturn(equipment);
@@ -187,17 +187,17 @@ class EquipmentServiceTest {
                 equipment.getClient(),
                 equipment.getAddress()
         )).thenReturn(Optional.empty());
-        //then
-        CreateEquipmentException thrown = Assertions.assertThrows(CreateEquipmentException.class,
+
+        var thrown = Assertions.assertThrows(CreateEquipmentException.class,
                 () -> equipmentService.createEquipment(command));
         assertEquals("Create equipment error. Description not present.", thrown.getMessage());
     }
 
     @Test
-    void givenCreateEquipmentCommandWithEmptyDescriptionField_createEquipment_shouldReturnException() {
-        //given
+    void givenCreateEquipmentCommandWithEmptyDescriptionField_createEquipment_shouldThrowException() {
+
         command.setDescription(" ");
-        //when
+
         when(addressRepository.findById(any(Long.class))).thenReturn(Optional.of(address));
         when(clientRepository.findById(any(Long.class))).thenReturn(Optional.of(client));
         when(equipmentRepository.save(any(Equipment.class))).thenReturn(equipment);
@@ -206,8 +206,8 @@ class EquipmentServiceTest {
                 equipment.getClient(),
                 equipment.getAddress()
         )).thenReturn(Optional.empty());
-        //then
-        CreateEquipmentException thrown = Assertions.assertThrows(CreateEquipmentException.class,
+
+        var thrown = Assertions.assertThrows(CreateEquipmentException.class,
                 () -> equipmentService.createEquipment(command));
         assertEquals("Create equipment error. Description not present.", thrown.getMessage());
     }

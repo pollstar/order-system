@@ -29,9 +29,8 @@ public class EquipmentController {
     @Transactional
     @PostMapping("/admin/equipment")
     public ResponseEntity<EquipmentDTO> createEquipment(@RequestBody CreateEquipmentCommandDTO commandDTO) {
-        return service.createEquipment(mapper.toCommand(commandDTO))
-                .map(equipment -> new ResponseEntity<>(mapper.toEquipmentDTO(equipment), HttpStatus.CREATED))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+        return new ResponseEntity<>(mapper.toEquipmentDTO(service.createEquipment(mapper.toCommand(commandDTO))),
+                HttpStatus.CREATED);
     }
 
     public ResponseEntity<EquipmentDTO> createAddress(@RequestBody CreateEquipmentCommandDTO commandDTO) {

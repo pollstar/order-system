@@ -11,14 +11,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Month;
-import java.util.Date;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -50,7 +46,7 @@ class OrderServiceImplTest {
 
     @Test
     void givenValidCreateOrderCommand_createOrder_shouldReturnCreatedOrder() {
-        //given
+
         var createOrderCommand = CreateOrderCommand.builder()
                 .clientId(1L)
                 .placementDate(placementDate)
@@ -58,11 +54,11 @@ class OrderServiceImplTest {
                 .description("test")
                 .phase(1)
                 .build();
-        //when
+
         when(clientRepository.findById(any(Long.class))).thenReturn(Optional.of(new Client()));
         when(orderRepository.save(any(Order.class))).then(returnsFirstArg());
         var order = orderService.createOrder(createOrderCommand);
-        //then
+
 
         assertEquals(placementDate, order.getPlacementDate());
         assertEquals(closingDate, order.getClosingDate());
@@ -72,18 +68,18 @@ class OrderServiceImplTest {
 
     @Test
     void givenFailCreateOrder_createOrder_shouldThrowException() {
-        //given
+
         var createOrderCommand = CreateOrderCommand.builder()
                 .clientId(1L)
-                 .placementDate(placementDate)
+                .placementDate(placementDate)
                 .closingDate(closingDate)
                 .description("test")
                 .phase(1)
                 .build();
-        //when
+
         when(clientRepository.findById(any(Long.class))).thenReturn(Optional.empty());
 
-        //then
+
         assertThrows(CreateOrderException.class, () -> orderService.createOrder(createOrderCommand));
     }
 }

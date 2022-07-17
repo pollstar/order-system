@@ -1,6 +1,5 @@
 package academy.softserve.os.mapper;
 
-import academy.softserve.os.api.dto.AddressDTO;
 import academy.softserve.os.api.dto.command.CreateEquipmentCommandDTO;
 import academy.softserve.os.model.Address;
 import academy.softserve.os.model.Client;
@@ -15,7 +14,7 @@ class EquipmentMapperTest {
 
     @Test
     void givenEquipment_mapperToEquipmentDTO_shouldReturnEquipmentDTO() {
-        //given
+
         var client = Client.builder()
                 .id(1L)
                 .name("Client")
@@ -33,25 +32,25 @@ class EquipmentMapperTest {
                 .client(client)
                 .address(adderess)
                 .build();
-        //when
-        var equipmentDto = mapper.toEquipmentDTO(equipment);
-        //then
-        assertEquals(equipment.getId(), equipmentDto.getId());
-        assertEquals(equipment.getClient(), equipmentDto.getClient());
-        assertEquals(equipment.getAddress(), equipmentDto.getAddress());
+
+        var equipmentDTO = mapper.toEquipmentDTO(equipment);
+
+        assertEquals(equipment.getId(), equipmentDTO.getId());
+        assertEquals(equipment.getClient().getName(), equipmentDTO.getClient().getName());
+        assertEquals(equipment.getAddress().getCity(), equipmentDTO.getAddress().getCity());
     }
 
     @Test
     void givenCreateEquipmentCommandDTO_mapperToCommand_shouldReturnCreateCommandEquipment() {
-        //given
+
         var commandDto = CreateEquipmentCommandDTO.builder()
                 .addressId(1L)
                 .clientId(2L)
                 .description("Description")
                 .build();
-        //when
+
         var command = mapper.toCommand(commandDto);
-        //then
+
         assertEquals(commandDto.getDescription(), command.getDescription());
         assertEquals(commandDto.getAddressId(), command.getAddressId());
         assertEquals(commandDto.getClientId(), command.getClientId());

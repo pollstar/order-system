@@ -16,6 +16,12 @@ public class EquipmentControllerAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorApiMessage> handleCreateEquipmentException(CreateEquipmentException e) {
         return new ResponseEntity<>(new ErrorApiMessage(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorApiMessage> handleDataAccessException(IllegalArgumentException e) {
+        return new ResponseEntity<>(new ErrorApiMessage("Error create Equipment. " + e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
 }
 
 
