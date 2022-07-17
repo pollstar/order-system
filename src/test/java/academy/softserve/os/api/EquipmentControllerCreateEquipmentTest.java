@@ -1,6 +1,5 @@
 package academy.softserve.os.api;
 
-import academy.softserve.os.api.dto.EquipmentDTO;
 import academy.softserve.os.api.dto.command.CreateEquipmentCommandDTO;
 import academy.softserve.os.exception.CreateEquipmentException;
 import academy.softserve.os.mapper.EquipmentMapper;
@@ -17,8 +16,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
