@@ -10,8 +10,12 @@ import academy.softserve.os.service.command.CreateEquipmentCommand;
 import academy.softserve.os.exception.CreateEquipmentException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
@@ -61,5 +65,22 @@ public class EquipmentService {
         if (Objects.isNull(command.getDescription()) || command.getDescription().trim().isBlank()) {
             throw new CreateEquipmentException("Description not present.");
         }
+    }
+
+    public Optional<Equipment> getEquipmentById(Long id) {
+        return equipmentRepository.findById(id);
+    }
+
+    public List<Equipment> findEquipment(String description) {
+        if (description == null || description.isEmpty()) {
+            return equipmentRepository.findAll();
+        }
+        Equipment equipment = new Equipment();
+        equipment.setDescription(description);
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAny().withIgnoreCase()
+            .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+        Example<Equipment> example = Example.of(equipment, caseInsensitiveExampleMatcher);
+
+        return equipmentRepository.findAll(example);
     }
 }
