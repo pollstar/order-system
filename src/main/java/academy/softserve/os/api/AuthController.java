@@ -3,15 +3,11 @@ package academy.softserve.os.api;
 import academy.softserve.os.api.config.jwt.JwtUtils;
 import academy.softserve.os.api.dto.JwtResponseDTO;
 import academy.softserve.os.api.dto.command.LoginCommandDTO;
-import academy.softserve.os.model.UserDetailsImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
@@ -26,18 +22,12 @@ public class AuthController {
     public ResponseEntity<JwtResponseDTO> authUser(@RequestBody LoginCommandDTO loginCommandDTO) {
 
         var authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(
-                        loginCommandDTO.getLogin(),
-                        loginCommandDTO.getPassword()));
+                .authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                loginCommandDTO.getLogin(),
+                                loginCommandDTO.getPassword()));
 
         var jwt = jwtUtils.generateJwtToken(authentication);
-
-        var userDetails = (UserDetailsImpl) authentication.getPrincipal();
-
-        var roles = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
-
         return ResponseEntity.ok(new JwtResponseDTO(jwt));
     }
 }
