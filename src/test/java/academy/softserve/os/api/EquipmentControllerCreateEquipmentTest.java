@@ -91,13 +91,12 @@ class EquipmentControllerCreateEquipmentTest {
     void givenCreateNotValidEquipmentCommand_createEquipment_shouldReturnExceptionErrorMessage() throws Exception {
         //given
         //when
-        commandDTO.setClientId(null);
+        when(service.createEquipment(any(CreateEquipmentCommand.class))).thenThrow(CreateEquipmentException.class);
         //then
         mockMvc.perform(post("/api/admin/equipment")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(commandDTO)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Create equipment error. "));
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -106,12 +105,11 @@ class EquipmentControllerCreateEquipmentTest {
         commandDTO.setClientId(null);
         //when
         when(service.createEquipment(any(CreateEquipmentCommand.class)))
-                .thenReturn(service.createEquipment(equipmentMapper.toCommand(commandDTO)));
+                .thenReturn(Optional.empty());
         //then
         mockMvc.perform(post("/api/admin/equipment")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(commandDTO)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Error created equipment"));
+                .andExpect(status().isBadRequest());
     }
 }
