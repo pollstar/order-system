@@ -1,7 +1,6 @@
 package academy.softserve.os.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,11 +29,9 @@ public class Client {
     @Column(name = "name")
     private String name;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "client")
     private List<Equipment> equipments;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "client")
     private List<Order> orders;
 }

@@ -1,7 +1,5 @@
 package academy.softserve.os.api.dto;
 
-import academy.softserve.os.model.Address;
-import academy.softserve.os.model.Client;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,7 +17,7 @@ public class EquipmentDTO {
 
     private String description;
 
-    private Client client;
+    private ClientDTO client;
 
-    private Address address;
+    private AddressDTO address;
 }

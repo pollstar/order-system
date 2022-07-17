@@ -1,6 +1,5 @@
 package academy.softserve.os.service;
 
-import academy.softserve.os.exception.CreateAddressException;
 import academy.softserve.os.exception.CreateEquipmentException;
 import academy.softserve.os.model.Address;
 import academy.softserve.os.model.Client;
@@ -10,23 +9,22 @@ import academy.softserve.os.repository.ClientRepository;
 import academy.softserve.os.repository.EquipmentRepository;
 import academy.softserve.os.service.command.CreateAddressCommand;
 import academy.softserve.os.service.command.CreateEquipmentCommand;
-import liquibase.pro.packaged.O;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.AdditionalAnswers;
-import org.springframework.dao.DataAccessException;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@SpringBootTest
+@AutoConfigureMockMvc(addFilters = false)
 class EquipmentServiceTest {
     private EquipmentRepository equipmentRepository;
     private ClientRepository clientRepository;

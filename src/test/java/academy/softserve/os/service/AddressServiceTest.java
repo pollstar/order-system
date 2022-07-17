@@ -7,6 +7,8 @@ import academy.softserve.os.service.command.CreateAddressCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.AdditionalAnswers;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
@@ -16,6 +18,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.any;
 
+@SpringBootTest
+@AutoConfigureMockMvc(addFilters = false)
 class AddressServiceTest {
     private AddressRepository repository;
     private AddressService service;

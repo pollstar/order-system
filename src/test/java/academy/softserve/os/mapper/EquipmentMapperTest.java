@@ -1,6 +1,5 @@
 package academy.softserve.os.mapper;
 
-import academy.softserve.os.api.dto.AddressDTO;
 import academy.softserve.os.api.dto.command.CreateEquipmentCommandDTO;
 import academy.softserve.os.model.Address;
 import academy.softserve.os.model.Client;
@@ -34,11 +33,11 @@ class EquipmentMapperTest {
                 .address(adderess)
                 .build();
 
-        var equipmentDto = mapper.toEquipmentDTO(equipment);
+        var equipmentDTO = mapper.toEquipmentDTO(equipment);
 
-        assertEquals(equipment.getId(), equipmentDto.getId());
-        assertEquals(equipment.getClient(), equipmentDto.getClient());
-        assertEquals(equipment.getAddress(), equipmentDto.getAddress());
+        assertEquals(equipment.getId(), equipmentDTO.getId());
+        assertEquals(equipment.getClient().getName(), equipmentDTO.getClient().getName());
+        assertEquals(equipment.getAddress().getCity(), equipmentDTO.getAddress().getCity());
     }
 
     @Test
