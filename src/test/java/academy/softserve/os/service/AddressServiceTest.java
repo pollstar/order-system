@@ -38,7 +38,7 @@ class AddressServiceTest {
 
     @Test
     void givenValidCreateAddressCommand_createAddress_shouldReturnCreatedAddress() {
-        //given
+
         var addressOut = Address.builder()
                 .id(1L)
                 .city("ХАРКІВ")
@@ -46,7 +46,7 @@ class AddressServiceTest {
                 .house("БУД.23")
                 .room("ВІТАЛЬНЯ")
                 .build();
-        //when
+
         when(repository.save(any(Address.class))).then(AdditionalAnswers.returnsFirstArg());
         when(repository.findByCityAndStreetAndHouseAndRoom(
                 address.getCity(),
@@ -56,7 +56,7 @@ class AddressServiceTest {
         )).thenReturn(Optional.empty());
 
         var address1 = service.createAddress(command);
-        //then
+
         assertEquals(address1.getCity(), addressOut.getCity());
         assertEquals(address1.getStreet(), addressOut.getStreet());
         assertEquals(address1.getHouse(), addressOut.getHouse());
@@ -65,7 +65,7 @@ class AddressServiceTest {
 
     @Test
     void givenValidCreateAddressCommandWithExistingAddresss_createAddress_shouldReturnExistingAddress() {
-        //given
+
         var address1 = Address.builder()
                 .id(1L)
                 .city("ХАРКІВ")
@@ -74,7 +74,7 @@ class AddressServiceTest {
                 .room("ВІТАЛЬНЯ")
                 .build();
 
-        //when
+
         when(repository.save(any(Address.class))).thenReturn(address1);
         when(repository.findByCityAndStreetAndHouseAndRoom(
                 address1.getCity(),
@@ -84,7 +84,7 @@ class AddressServiceTest {
         )).thenReturn(Optional.of(address1));
 
         var addressOut = service.createAddress(command);
-        //then
+
         assertEquals(address1.getId(), addressOut.getId());
         assertEquals(address1.getCity(), addressOut.getCity());
         assertEquals(address1.getStreet(), addressOut.getStreet());
@@ -94,7 +94,7 @@ class AddressServiceTest {
 
     @Test
     void givenNotValidCreateAddressCommandWithEmptyFields_createAddress_shouldThrowException() {
-        //given
+
         var command1 = CreateAddressCommand.builder()
                 .city("")
                 .house("Сумска  вул.")
@@ -116,7 +116,7 @@ class AddressServiceTest {
                 .room("вітальня")
                 .build();
 
-        //then
+
         assertThrows(CreateAddressException.class, () -> service.createAddress(command1));
         assertThrows(CreateAddressException.class, () -> service.createAddress(command2));
         assertThrows(CreateAddressException.class, () -> service.createAddress(command3));
@@ -124,7 +124,7 @@ class AddressServiceTest {
 
     @Test
     void givenCreateAddressCommandWithEmptyFieldRoom_createAddress_shouldReturnCreatedAddress() {
-        //given
+
         command.setRoom("");
 
         var addressOut = Address.builder()
@@ -134,7 +134,7 @@ class AddressServiceTest {
                 .house("БУД.23")
                 .room("")
                 .build();
-        //when
+
         when(repository.save(any(Address.class))).then(AdditionalAnswers.returnsFirstArg());
         when(repository.findByCityAndStreetAndHouseAndRoom(
                 address.getCity(),
@@ -144,7 +144,7 @@ class AddressServiceTest {
         )).thenReturn(Optional.empty());
 
         var address1 = service.createAddress(command);
-        //then
+
         assertEquals(address1.getCity(), addressOut.getCity());
         assertEquals(address1.getStreet(), addressOut.getStreet());
         assertEquals(address1.getHouse(), addressOut.getHouse());

@@ -15,7 +15,7 @@ class AddressMapperTest {
 
     @Test
     void givenAddressDTO_mapperToAddress_shouldReturnAddress() {
-        //given
+
         var dto = AddressDTO.builder()
                 .id(1L)
                 .city("City")
@@ -23,9 +23,9 @@ class AddressMapperTest {
                 .house("House")
                 .room("room")
                 .build();
-        //when
+
         var address = mapper.toAddress(dto);
-        //then
+
         assertEquals(dto.getId(), address.getId());
         assertEquals(dto.getCity(), address.getCity());
         assertEquals(dto.getStreet(), address.getStreet());
@@ -35,7 +35,7 @@ class AddressMapperTest {
 
     @Test
     void givenAddress_mapperToAddressDTO_shouldReturnAddressDTO() {
-        //given
+
         var address = Address.builder()
                 .id(1L)
                 .city("City")
@@ -43,9 +43,9 @@ class AddressMapperTest {
                 .house("House")
                 .room("room")
                 .build();
-        //when
+
         var dto = mapper.toAddressDTO(address);
-        //then
+
         assertEquals(address.getId(), dto.getId());
         assertEquals(address.getCity(), dto.getCity());
         assertEquals(address.getStreet(), dto.getStreet());
@@ -55,16 +55,16 @@ class AddressMapperTest {
 
     @Test
     void givenCreateAddressCommandDTO_mapperToCreateAddressCommand_shouldReturnCreateAddressCommand() {
-        //given
+
         var commandDto = CreateAddressCommandDTO.builder()
                 .city("City")
                 .street("Street")
                 .house("House")
                 .room("room")
                 .build();
-        //when
+
         var command = mapper.toCommand(commandDto);
-        //then
+
         assertEquals(command.getCity(), commandDto.getCity());
         assertEquals(command.getStreet(), commandDto.getStreet());
         assertEquals(command.getHouse(), commandDto.getHouse());
@@ -73,16 +73,16 @@ class AddressMapperTest {
 
     @Test
     void givenCreateAddressCommand_mapperToCreateAddressCommandDTO_shouldReturnCreateAddressCommandDTO() {
-        //given
+
         var command = CreateAddressCommand.builder()
                 .city("City")
                 .street("Street")
                 .house("House")
                 .room("room")
                 .build();
-        //when
+
         var commandDto = mapper.toCommandDTO(command);
-        //then
+
         assertEquals(command.getCity(), commandDto.getCity());
         assertEquals(command.getStreet(), commandDto.getStreet());
         assertEquals(command.getHouse(), commandDto.getHouse());

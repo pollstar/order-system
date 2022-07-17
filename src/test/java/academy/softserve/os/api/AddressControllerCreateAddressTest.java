@@ -46,7 +46,7 @@ class AddressControllerCreateAddressTest {
 
     @Test
     void givenValidCreateAddressCommandDTO_createAddress_shouldCreateNewAddressAndReturnOkResponse() throws Exception {
-        //given
+
         var address = Address.builder()
                 .id(1L)
                 .city("ХАРЬКОВ")
@@ -54,9 +54,9 @@ class AddressControllerCreateAddressTest {
                 .house("10")
                 .room("КУХНЯ")
                 .build();
-        //when
+
         when(service.createAddress(any(CreateAddressCommand.class))).thenReturn(address);
-        //then
+
         mockMvc.perform(post("/api/admin/address")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(mapper.writeValueAsString(commandDTO)))
@@ -71,12 +71,12 @@ class AddressControllerCreateAddressTest {
 
     @Test
     void givenCreateAddressCommandDTOWithNullFieldCity_createAddress_shouldReturnErrorMessageBecauseFieldCityCannotBeNull() throws Exception {
-        //given
+
         commandDTO.setCity("");
         String error = "Error";
-        //when
+
         when(service.createAddress(any(CreateAddressCommand.class))).thenThrow(new CreateAddressException(error));
-        //then
+
         mockMvc.perform(post("/api/admin/address")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(commandDTO)))
@@ -86,11 +86,11 @@ class AddressControllerCreateAddressTest {
 
     @Test
     void givenCreateAddressCommandDTOWithNullFieldStreet_createAddress_shouldReturnErrorMessageBecauseFieldStreetCannotBeNull() throws Exception {
-        //given
+
         commandDTO.setStreet("");
-        //when
+
         when(service.createAddress(any(CreateAddressCommand.class))).thenThrow(CreateAddressException.class);
-        //then
+
         mockMvc.perform(post("/api/admin/address")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(commandDTO)))
@@ -100,11 +100,11 @@ class AddressControllerCreateAddressTest {
 
     @Test
     void givenCreateAddressCommandDTOWithNullFieldHouse_createAddress_shouldReturnErrorMessageBecauseFieldHouseCannotBeNull() throws Exception {
-        //given
+
         commandDTO.setHouse("");
-        //when
+
         when(service.createAddress(any(CreateAddressCommand.class))).thenThrow(CreateAddressException.class);
-        //then
+
         mockMvc.perform(post("/api/admin/address")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(commandDTO)))

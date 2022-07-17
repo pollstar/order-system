@@ -1,7 +1,5 @@
 package academy.softserve.os.service;
 
-import academy.softserve.os.model.Address;
-import academy.softserve.os.model.Client;
 import academy.softserve.os.model.Equipment;
 import academy.softserve.os.repository.AddressRepository;
 import academy.softserve.os.repository.ClientRepository;
@@ -9,11 +7,9 @@ import academy.softserve.os.repository.EquipmentRepository;
 import academy.softserve.os.service.command.CreateEquipmentCommand;
 import academy.softserve.os.exception.CreateEquipmentException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.UnaryOperator;
 
 @Service
@@ -24,24 +20,13 @@ public class EquipmentService {
     private final AddressRepository addressRepository;
 
     @Transactional
-    public Optional<Equipment> createEquipment(CreateEquipmentCommand command) {
-        Address address;
-        Client client;
-
+    public Equipment createEquipment(CreateEquipmentCommand command) {
         checkToValidEquipment(command);
 
-        try {
-            client = clientRepository.findById(command.getClientId())
-                    .orElseThrow(() -> new CreateEquipmentException("Client ID not found."));
-        } catch (DataAccessException e) {
-            throw new CreateEquipmentException("Client ID error.");
-        }
-        try {
-            address = addressRepository.findById(command.getAddressId())
-                    .orElseThrow(() -> new CreateEquipmentException("Address ID not found."));
-        } catch (DataAccessException e) {
-            throw new CreateEquipmentException("Address ID error.");
-        }
+        var client = clientRepository.findById(command.getClientId())
+                .orElseThrow(() -> new CreateEquipmentException("Client ID not found."));
+        var address = addressRepository.findById(command.getAddressId())
+                .orElseThrow(() -> new CreateEquipmentException("Address ID not found."));
 
         UnaryOperator<String> removingExtraSpaces = s -> s.replaceAll("\\s+", " ").trim();
         var equipment = Equipment.builder()
@@ -50,11 +35,11 @@ public class EquipmentService {
                 .address(address)
                 .build();
 
-        return Optional.of(equipmentRepository.findByDescriptionAndClientAndAddress(
+        return equipmentRepository.findByDescriptionAndClientAndAddress(
                 equipment.getDescription(),
                 equipment.getClient(),
                 equipment.getAddress()
-        ).orElseGet(() -> equipmentRepository.save(equipment)));
+        ).orElseGet(() -> equipmentRepository.save(equipment));
     }
 
     private void checkToValidEquipment(CreateEquipmentCommand command) {

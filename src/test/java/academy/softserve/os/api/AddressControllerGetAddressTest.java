@@ -51,11 +51,11 @@ class AddressControllerGetAddressTest {
 
     @Test
     void givenApiGetAddress_getAddress_shouldReturnJsonListAddressAndReturnOkResponse() throws Exception {
-        //given
+
         var addresses = Arrays.asList(address1, address2);
-        //when
+
         when(service.findAddresses()).thenReturn(addresses);
-        //then
+
         mockMvc.perform(get("/api/address"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(1L))
@@ -68,7 +68,7 @@ class AddressControllerGetAddressTest {
 
     @Test
     void givenApiGetAddressWithId_getAddressByIs_shouldReturnJsonAddressAndReturnOkResponse() throws Exception {
-        //given
+
         var address1 = Address.builder()
                 .id(1L)
                 .city("ХАРЬКОВ")
@@ -76,9 +76,9 @@ class AddressControllerGetAddressTest {
                 .house("10")
                 .room("КУХНЯ")
                 .build();
-        //when
+
         when(service.getAddressById(address1.getId())).thenReturn(Optional.of(address1));
-        //then
+
         mockMvc.perform(get("/api/address/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L))

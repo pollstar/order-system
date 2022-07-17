@@ -52,7 +52,7 @@ class EquipmentControllerCreateEquipmentTest {
 
     @Test
     void givenValidCreateEquipmentCommandDTO_createEquipment_shouldCreateNewEquipmentAndReturnOkResponse() throws Exception {
-        //given
+
         var client = Client.builder()
                 .id(commandDTO.getClientId())
                 .name("Client")
@@ -70,9 +70,9 @@ class EquipmentControllerCreateEquipmentTest {
                 .client(client)
                 .address(adderess)
                 .build();
-        //when
-        when(service.createEquipment(any(CreateEquipmentCommand.class))).thenReturn(Optional.of(equipment));
-        //then
+
+        when(service.createEquipment(any(CreateEquipmentCommand.class))).thenReturn(equipment);
+
         mockMvc.perform(post("/api/admin/equipment")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(commandDTO)))
@@ -89,10 +89,10 @@ class EquipmentControllerCreateEquipmentTest {
 
     @Test
     void givenCreateNotValidEquipmentCommand_createEquipment_shouldReturnExceptionErrorMessage() throws Exception {
-        //given
-        //when
+
+
         when(service.createEquipment(any(CreateEquipmentCommand.class))).thenThrow(CreateEquipmentException.class);
-        //then
+
         mockMvc.perform(post("/api/admin/equipment")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(commandDTO)))
@@ -101,15 +101,16 @@ class EquipmentControllerCreateEquipmentTest {
 
     @Test
     void givenCreateEquipmentCommandDTOWithNullFieldStreet_createEquipment_shouldReturnErrorMessageBecauseFieldStreetCannotBeNull() throws Exception {
-        //given
+
         commandDTO.setClientId(null);
-        //when
+
         when(service.createEquipment(any(CreateEquipmentCommand.class)))
-                .thenReturn(Optional.empty());
-        //then
+                .thenThrow(new CreateEquipmentException(""));
+
         mockMvc.perform(post("/api/admin/equipment")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(commandDTO)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message").value("Create equipment error. "));
     }
 }

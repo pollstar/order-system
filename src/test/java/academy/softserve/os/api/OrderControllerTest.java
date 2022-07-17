@@ -58,7 +58,7 @@ class OrderControllerTest {
 
     @Test
     void givenValidCreateOrderCommandDTO_createOrder_shouldCreateNewOrderAndReturnOKResponse() throws Exception {
-        //when
+
         var order = Order.builder()
                 .id(1L)
                 .client(client)
@@ -69,7 +69,7 @@ class OrderControllerTest {
                 .build();
 
         when(orderService.createOrder(any(CreateOrderCommand.class))).thenReturn(order);
-        //then
+
         mockMvc.perform(post("/api/order")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createOrderCommandDTO)))
@@ -80,9 +80,9 @@ class OrderControllerTest {
 
     @Test
     void givenCreateOrderCommandDTO_createOrder_shouldFailBecauseOrderCannotBeCreated() throws Exception {
-        //when
+
         when(orderService.createOrder(any(CreateOrderCommand.class))).thenThrow(CreateOrderException.class);
-        //then
+
         mockMvc.perform(post("/api/order")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createOrderCommandDTO)))
@@ -91,18 +91,18 @@ class OrderControllerTest {
 
     @Test
     void givenCreateOrderCommandDTOWithNullClientId_createOrder_shouldReturnErrorMessageBecauseClientIdCannotBeNull() throws Exception {
-        //given
+
         var createOrderCommandDTO = CreateOrderCommandDTO.builder()
                 .placementDate(placementDate)
                 .closingDate(closingDate)
                 .description("description")
                 .phase(1)
                 .build();
-        //when
+
         mockMvc.perform(post("/api/order")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createOrderCommandDTO)))
-                //then
+
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Validation failed!"))
                 .andExpect(jsonPath("$.details[0]").value("Field a clientId cannot be null"));
@@ -110,14 +110,14 @@ class OrderControllerTest {
 
     @Test
     void givenCreateOrderCommandDTOWWithTooLongDescriptionInBody_createOrder_shouldReturnErrorMessage() throws Exception {
-        //given
+
         String description = "A".repeat(101);
         createOrderCommandDTO.setDescription(description);
-        //when
+
         mockMvc.perform(post("/api/order")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createOrderCommandDTO)))
-                //then
+
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Validation failed!"))
                 .andExpect(jsonPath("$.details[0]").value("Description is too long"));

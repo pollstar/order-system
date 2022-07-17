@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -31,6 +32,7 @@ public class Equipment {
 
     @ManyToOne
     @JoinColumn(name = "client_id")
+    @NotNull(message = "Id address not be null")
     private Client client;
 
     @ManyToOne

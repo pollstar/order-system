@@ -46,7 +46,7 @@ class OrderServiceImplTest {
 
     @Test
     void givenValidCreateOrderCommand_createOrder_shouldReturnCreatedOrder() {
-        //given
+
         var createOrderCommand = CreateOrderCommand.builder()
                 .clientId(1L)
                 .placementDate(placementDate)
@@ -54,11 +54,11 @@ class OrderServiceImplTest {
                 .description("test")
                 .phase(1)
                 .build();
-        //when
+
         when(clientRepository.findById(any(Long.class))).thenReturn(Optional.of(new Client()));
         when(orderRepository.save(any(Order.class))).then(returnsFirstArg());
         var order = orderService.createOrder(createOrderCommand);
-        //then
+
 
         assertEquals(placementDate, order.getPlacementDate());
         assertEquals(closingDate, order.getClosingDate());
@@ -68,7 +68,7 @@ class OrderServiceImplTest {
 
     @Test
     void givenFailCreateOrder_createOrder_shouldThrowException() {
-        //given
+
         var createOrderCommand = CreateOrderCommand.builder()
                 .clientId(1L)
                 .placementDate(placementDate)
@@ -76,10 +76,10 @@ class OrderServiceImplTest {
                 .description("test")
                 .phase(1)
                 .build();
-        //when
+
         when(clientRepository.findById(any(Long.class))).thenReturn(Optional.empty());
 
-        //then
+
         assertThrows(CreateOrderException.class, () -> orderService.createOrder(createOrderCommand));
     }
 }
