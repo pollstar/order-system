@@ -1,29 +1,17 @@
 package academy.softserve.os.api;
 
-import academy.softserve.os.api.dto.JwtResponseDTO;
-import academy.softserve.os.api.dto.command.CreateUserCommandDTO;
-import academy.softserve.os.api.dto.command.LoginCommandDTO;
 import academy.softserve.os.api.config.jwt.JwtUtils;
-import academy.softserve.os.mapper.UserMapper;
-import academy.softserve.os.model.Role;
-import academy.softserve.os.model.RoleAssignment;
+import academy.softserve.os.api.dto.JwtResponseDTO;
+import academy.softserve.os.api.dto.command.LoginCommandDTO;
 import academy.softserve.os.model.UserDetailsImpl;
-import academy.softserve.os.service.UserService;
-import academy.softserve.os.service.exception.WrongRoleNameException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -33,9 +21,7 @@ import java.util.stream.Collectors;
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
-    private final UserService userService;
     private final JwtUtils jwtUtils;
-    private final UserMapper userMapper;
 
     @PostMapping("/signin")
     public ResponseEntity<JwtResponseDTO> authUser(@RequestBody LoginCommandDTO loginCommandDTO) {
@@ -58,23 +44,5 @@ public class AuthController {
                 userDetails.getId(),
                 userDetails.getUsername(),
                 roles));
-    }
-
-    @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody @Valid CreateUserCommandDTO createUserCommandDTO) {
-        throwIfRolesAreWrong(createUserCommandDTO.getRoles());
-        userService.createUser(userMapper.toCreateUserCommand(createUserCommandDTO));
-        return ResponseEntity.ok("User created");
-    }
-
-    private void throwIfRolesAreWrong(Set<String> roles) {
-        try {
-            roles.forEach(roleName -> new RoleAssignment(Role.valueOf(roleName)));
-            if (roles.contains(Role.ROLE_ADMIN.name())){
-                throw new WrongRoleNameException("You are permitted only to create Worker user");
-            }
-        } catch (IllegalArgumentException illegalArgumentException) {
-            throw new WrongRoleNameException();
-        }
     }
 }

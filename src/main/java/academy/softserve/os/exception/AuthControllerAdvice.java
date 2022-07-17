@@ -1,7 +1,6 @@
 package academy.softserve.os.exception;
 
 import academy.softserve.os.api.AuthController;
-import academy.softserve.os.service.exception.WrongRoleNameException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +21,6 @@ public class AuthControllerAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity<String> handleLoginIsNotUnique(LoginIsNotUniqueException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
-
-    @ExceptionHandler(WrongRoleNameException.class)
-    public ResponseEntity<String> handWrongRoleName(WrongRoleNameException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         return ex.getBindingResult().getAllErrors().stream()
