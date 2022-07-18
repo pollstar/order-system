@@ -1,24 +1,28 @@
 package academy.softserve.os.api.dto.command;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CreateOrderCommandDTO {
 
     @NotNull(message = "Field a clientId cannot be null")
     private Long clientId;
 
-    private Date placementDate;
+    private LocalDateTime placementDate;
 
-    private Date closingDate;
+    private LocalDateTime closingDate;
 
     private Integer phase;
 

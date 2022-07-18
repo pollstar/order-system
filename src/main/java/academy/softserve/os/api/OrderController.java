@@ -4,9 +4,11 @@ import academy.softserve.os.api.dto.OrderDTO;
 import academy.softserve.os.api.dto.command.CreateOrderCommandDTO;
 import academy.softserve.os.mapper.OrderMapper;
 import academy.softserve.os.service.OrderService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +27,9 @@ public class OrderController {
     private final OrderMapper mapper;
 
     @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
+    @Operation(summary = "Create a new Order")
     public ResponseEntity<OrderDTO> createOrder(@Valid @RequestBody CreateOrderCommandDTO orderCommandDTO) {
 
         var order = orderService.createOrder(mapper.toModel(orderCommandDTO));

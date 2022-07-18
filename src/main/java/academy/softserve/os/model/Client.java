@@ -1,6 +1,8 @@
 package academy.softserve.os.model;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,8 +17,10 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,3 +35,4 @@ public class Client {
     @OneToMany(mappedBy = "client")
     private List<Order> orders;
 }
+
