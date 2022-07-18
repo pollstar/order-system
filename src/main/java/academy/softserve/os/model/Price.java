@@ -1,6 +1,9 @@
 package academy.softserve.os.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +20,8 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Price {
@@ -35,5 +40,6 @@ public class Price {
 
     @ManyToOne
     @JoinColumn(name = "job_id")
+    @JsonIgnore
     private Job job;
 }
