@@ -38,7 +38,6 @@ class JobServiceImplTest {
         when(repository.save(any(Job.class))).then(returnsFirstArg());
         var job = jobService.createJob(createJobCommand);
 
-        System.out.println(job);
         assertEquals("Some job.", job.getDescription());
     }
 
