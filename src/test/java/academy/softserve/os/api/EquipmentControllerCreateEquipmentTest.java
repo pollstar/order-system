@@ -134,4 +134,5 @@ class EquipmentControllerCreateEquipmentTest {
                 .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.message").value("Create equipment error. "));
     }
+
 }
