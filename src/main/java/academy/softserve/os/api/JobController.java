@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
-
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/jobs")
@@ -27,8 +25,6 @@ public class JobController {
     public ResponseEntity<JobDTO> createJob(@RequestBody CreateJobCommandDTO commandDTO) {
         var job = jobService.createJob(jobMapper.toModel(commandDTO));
         var jobDto = jobMapper.toDto(job);
-        return Optional.of(jobDto)
-                .map(jobDTO -> ResponseEntity.status(HttpStatus.CREATED).body(jobDTO))
-                .orElseGet(() -> ResponseEntity.badRequest().build());
+        return ResponseEntity.status(HttpStatus.CREATED).body(jobDto);
     }
 }
