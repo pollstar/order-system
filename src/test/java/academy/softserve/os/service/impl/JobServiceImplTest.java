@@ -2,16 +2,14 @@ package academy.softserve.os.service.impl;
 
 import academy.softserve.os.model.Job;
 import academy.softserve.os.repository.JobRepository;
+import academy.softserve.os.repository.PriceRepository;
 import academy.softserve.os.service.JobService;
-import academy.softserve.os.service.PriceService;
 import academy.softserve.os.service.command.CreateJobCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
@@ -21,13 +19,12 @@ import static org.mockito.Mockito.when;
 class JobServiceImplTest {
     private JobRepository repository;
     private JobService jobService;
-    private PriceService priceService;
 
     @BeforeEach
     void init(){
         repository = Mockito.mock(JobRepository.class);
-        priceService = Mockito.mock(PriceService.class);
-        jobService = new JobServiceImpl(repository, priceService);
+        PriceRepository priceRepository = Mockito.mock(PriceRepository.class);
+        jobService = new JobServiceImpl(repository, priceRepository);
     }
 
     @Test
@@ -40,7 +37,6 @@ class JobServiceImplTest {
 
         when(repository.save(any(Job.class))).then(returnsFirstArg());
         var job = jobService.createJob(createJobCommand);
-
 
         System.out.println(job);
         assertEquals("Some job.", job.getDescription());
