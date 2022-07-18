@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -25,11 +26,10 @@ public class CreateTaskCommandDTO {
     @NotNull(message = "You should specify worker id")
     private Long workerId;
 
-    @NotNull(message = "You should specify part factor id")
+    @NotNull(message = "You should specify part factor")
     @Max(value = 1, message = "Part factor value is supposed to be within 0 and 1")
     @Min(value = 0, message = "Part factor value is supposed to be within 0 and 1")
     private Double partFactor;
 
-    @NotNull(message = "You should specify comment")
     private String comment;
 }

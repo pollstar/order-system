@@ -23,17 +23,21 @@ public class TaskController {
 
     private final TaskService taskService;
     private final TaskMapper taskMapper;
-
     @PostMapping("/api/task")
     @PreAuthorize("hasAnyRole('WORKER')")
     public ResponseEntity<TaskDTO> createTask(@RequestBody @Valid CreateTaskCommandDTO createTaskCommandDTO,
                                               @AuthenticationPrincipal UserDetails userDetails) {
         var createTaskCommand = taskMapper.toCreateTaskCommand(createTaskCommandDTO);
-
-        var userId = ((UserDetailsImpl) userDetails).getId();
-        createTaskCommand.setCreateWorkerId(userId);
-
-        var taskDTO = taskMapper.toTaskDTO(taskService.createTask(createTaskCommand));
+        System.out.println("command = " + createTaskCommand);
+        System.out.println("commandDTO = "+ createTaskCommandDTO);
+        if (userDetails instanceof UserDetailsImpl){
+            var userId = ((UserDetailsImpl) userDetails).getId();
+            createTaskCommand.setCreateWorkerId(userId);
+        }
+        var user = taskService.createTask(createTaskCommand);
+        System.out.println(user);
+        var taskDTO = taskMapper.toTaskDTO(user);
+        System.out.println(taskDTO);
         return new ResponseEntity<>((taskDTO), HttpStatus.CREATED);
     }
 
