@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,5 +42,10 @@ public class JobServiceImpl implements JobService {
     @Override
     public List<Job> getAllJob() {
         return jobRepository.findAll();
+    }
+
+    @Override
+    public Optional<Job> getJobById(Long id) {
+        return jobRepository.findById(id);
     }
 }
