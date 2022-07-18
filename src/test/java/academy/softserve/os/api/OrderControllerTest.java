@@ -2,7 +2,6 @@ package academy.softserve.os.api;
 
 import academy.softserve.os.api.dto.command.CreateOrderCommandDTO;
 import academy.softserve.os.exception.CreateOrderException;
-import academy.softserve.os.mapper.OrderMapper;
 import academy.softserve.os.model.Client;
 import academy.softserve.os.model.Order;
 import academy.softserve.os.service.OrderService;
@@ -12,25 +11,26 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@AutoConfigureMockMvc(addFilters = false)
-@WebMvcTest(value = {OrderController.class, OrderMapper.class})
+@SpringBootTest
 class OrderControllerTest {
 
-    @Autowired
     private MockMvc mockMvc;
     @MockBean
     private OrderService orderService;
@@ -39,9 +39,17 @@ class OrderControllerTest {
     private LocalDateTime closingDate;
     private LocalDateTime placementDate;
     private CreateOrderCommandDTO createOrderCommandDTO;
+    @Autowired
+    private WebApplicationContext context;
+
+    @BeforeEach
+    public void setup() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
+    }
 
     @BeforeEach
     public void init() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
         objectMapper.registerModule(new JavaTimeModule());
         client = new Client();
         client.setId(1L);
@@ -56,6 +64,7 @@ class OrderControllerTest {
                 .build();
     }
 
+    @WithMockUser(value = "someuser", roles = "ADMIN")
     @Test
     void givenValidCreateOrderCommandDTO_createOrder_shouldCreateNewOrderAndReturnOKResponse() throws Exception {
 
@@ -78,6 +87,16 @@ class OrderControllerTest {
                 .andExpect(jsonPath("$.clientId").value(1L));
     }
 
+    @WithMockUser(value = "someuser", roles = "WORKER")
+    @Test
+    void givenValidCreateOrderCommandDTO_createOrder_shouldReturn403() throws Exception {
+        mockMvc.perform(post("/api/order")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createOrderCommandDTO)))
+                .andExpect(status().isForbidden());
+    }
+
+    @WithMockUser(value = "someuser", roles = "ADMIN")
     @Test
     void givenCreateOrderCommandDTO_createOrder_shouldFailBecauseOrderCannotBeCreated() throws Exception {
 
@@ -89,6 +108,7 @@ class OrderControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @WithMockUser(value = "someuser", roles = "ADMIN")
     @Test
     void givenCreateOrderCommandDTOWithNullClientId_createOrder_shouldReturnErrorMessageBecauseClientIdCannotBeNull() throws Exception {
 
@@ -108,6 +128,7 @@ class OrderControllerTest {
                 .andExpect(jsonPath("$.details[0]").value("Field a clientId cannot be null"));
     }
 
+    @WithMockUser(value = "someuser", roles = "ADMIN")
     @Test
     void givenCreateOrderCommandDTOWWithTooLongDescriptionInBody_createOrder_shouldReturnErrorMessage() throws Exception {
 

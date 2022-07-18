@@ -18,20 +18,23 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@AutoConfigureMockMvc(addFilters = false)
-@WebMvcTest(value = {EquipmentController.class, EquipmentMapper.class})
+@SpringBootTest
 class EquipmentControllerCreateEquipmentTest {
-    @Autowired
     private MockMvc mockMvc;
 
     @Autowired
@@ -43,8 +46,12 @@ class EquipmentControllerCreateEquipmentTest {
     private final ObjectMapper mapper = new ObjectMapper();
     private CreateEquipmentCommandDTO commandDTO;
 
+    @Autowired
+    private WebApplicationContext context;
+
     @BeforeEach
     void setUp() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
         commandDTO = CreateEquipmentCommandDTO.builder()
                 .description("Кондиціонер1")
                 .clientId(1L)
@@ -52,6 +59,16 @@ class EquipmentControllerCreateEquipmentTest {
                 .build();
     }
 
+    @WithMockUser(value = "someuser", roles = "WORKER")
+    @Test
+    void givenValidCreateEquipmentCommandDTO_createEquipment_shouldReturn403() throws Exception {
+        mockMvc.perform(post("/api/admin/equipment")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(commandDTO)))
+                .andExpect(status().isForbidden());
+    }
+
+    @WithMockUser(value = "someuser", roles = "ADMIN")
     @Test
     void givenValidCreateEquipmentCommandDTO_createEquipment_shouldCreateNewEquipmentAndReturnOkResponse() throws Exception {
 
@@ -89,6 +106,7 @@ class EquipmentControllerCreateEquipmentTest {
                 .andExpect(jsonPath("$.address.room").value(equipment.getAddress().getRoom()));
     }
 
+    @WithMockUser(value = "someuser", roles = "ADMIN")
     @Test
     void givenCreateNotValidEquipmentCommand_createEquipment_shouldReturnExceptionErrorMessage() throws Exception {
 
@@ -101,6 +119,7 @@ class EquipmentControllerCreateEquipmentTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @WithMockUser(value = "someuser", roles = "ADMIN")
     @Test
     void givenCreateEquipmentCommandDTOWithNullFieldStreet_createEquipment_shouldReturnErrorMessageBecauseFieldStreetCannotBeNull() throws Exception {
 

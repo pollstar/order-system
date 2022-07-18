@@ -12,20 +12,23 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@AutoConfigureMockMvc(addFilters = false)
-@WebMvcTest(value = {AddressController.class, AddressMapper.class})
+@SpringBootTest
 class AddressControllerCreateAddressTest {
-    @Autowired
     private MockMvc mockMvc;
 
     @MockBean
@@ -34,8 +37,12 @@ class AddressControllerCreateAddressTest {
     private final ObjectMapper mapper = new ObjectMapper();
     private CreateAddressCommandDTO commandDTO;
 
+    @Autowired
+    private WebApplicationContext context;
+
     @BeforeEach
     void setUp() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
         commandDTO = CreateAddressCommandDTO.builder()
                 .city("Харьков")
                 .street("Сумская")
@@ -44,6 +51,16 @@ class AddressControllerCreateAddressTest {
                 .build();
     }
 
+    @WithMockUser(value = "someuser", roles = "WORKER")
+    @Test
+    void givenValidCreateAddressCommandDTO_createAddress_shouldReturn403() throws Exception {
+        mockMvc.perform(post("/api/admin/address")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(commandDTO)))
+                .andExpect(status().isForbidden());
+    }
+
+    @WithMockUser(value = "someuser", roles = "ADMIN")
     @Test
     void givenValidCreateAddressCommandDTO_createAddress_shouldCreateNewAddressAndReturnOkResponse() throws Exception {
 
@@ -69,6 +86,7 @@ class AddressControllerCreateAddressTest {
 
     }
 
+    @WithMockUser(value = "someuser", roles = "ADMIN")
     @Test
     void givenCreateAddressCommandDTOWithNullFieldCity_createAddress_shouldReturnErrorMessageBecauseFieldCityCannotBeNull() throws Exception {
 
@@ -84,6 +102,7 @@ class AddressControllerCreateAddressTest {
                 .andExpect(jsonPath("$.message").value("Error created address. " + error));
     }
 
+    @WithMockUser(value = "someuser", roles = "ADMIN")
     @Test
     void givenCreateAddressCommandDTOWithNullFieldStreet_createAddress_shouldReturnErrorMessageBecauseFieldStreetCannotBeNull() throws Exception {
 
@@ -98,6 +117,7 @@ class AddressControllerCreateAddressTest {
                 .andExpect(jsonPath("$.message").value("Error created address. null"));
     }
 
+    @WithMockUser(value = "someuser", roles = "ADMIN")
     @Test
     void givenCreateAddressCommandDTOWithNullFieldHouse_createAddress_shouldReturnErrorMessageBecauseFieldHouseCannotBeNull() throws Exception {
 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="1656075873551-8" author="Anatoliy Zhilko">
+        <insert tableName="users">
+            <column name="login" value="admin"/>
+            <!--            password = 12345678-->
+            <column name="password_hash" value="$2a$10$IUsLbzWq55njBJQpEtMK9ucNH.FjjVyeCWZYMEzZ9ToZ8YLTpE8p."/>
+        </insert>
+        <insert tableName="role_assignment">
+            <column name="role" value="ROLE_ADMIN"/>
+            <column name="user_id" value="1"/>
+        </insert>
+
+    </changeSet>
+</databaseChangeLog>
