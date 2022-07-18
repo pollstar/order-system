@@ -7,7 +7,7 @@ import academy.softserve.os.model.Job;
 import academy.softserve.os.service.command.CreateJobCommand;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = PriceMapper.class)
 public interface JobMapper {
     CreateJobCommand toModel(CreateJobCommandDTO dto);
 
