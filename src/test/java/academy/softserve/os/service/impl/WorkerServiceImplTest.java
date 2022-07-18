@@ -53,7 +53,6 @@ class WorkerServiceImplTest {
                 .build();
 
 
-
         when(workerRepository.save(any(Worker.class))).thenAnswer(returnsFirstArg());
         when(userService.createUser(any(CreateUserCommand.class))).thenReturn(user);
         var result = workerService.createWorker(createWorkerCommand);
@@ -78,3 +77,4 @@ class WorkerServiceImplTest {
         assertThat(result.getUser().getLogin()).isEqualTo(requestWorker.getUser().getLogin());
         assertThat(result.getUser().getPasswordHash()).isEqualTo(requestWorker.getUser().getPasswordHash());
     }
+}
