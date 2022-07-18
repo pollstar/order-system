@@ -36,7 +36,7 @@ class WorkerServiceImplTest {
     @Test
     void givenWorkerService_createWorker_shouldReturnCreatedWorker() {
 
-        //given
+
         var createWorkerCommand = CreateWorkerCommand
                 .builder()
                 .firstName("John")
@@ -53,12 +53,12 @@ class WorkerServiceImplTest {
                 .build();
 
 
-        //when
+
         when(workerRepository.save(any(Worker.class))).thenAnswer(returnsFirstArg());
         when(userService.createUser(any(CreateUserCommand.class))).thenReturn(user);
         var result = workerService.createWorker(createWorkerCommand);
 
-        //then
+
         var requestUser = User
                 .builder()
                 .login("john123")
@@ -78,4 +78,3 @@ class WorkerServiceImplTest {
         assertThat(result.getUser().getLogin()).isEqualTo(requestWorker.getUser().getLogin());
         assertThat(result.getUser().getPasswordHash()).isEqualTo(requestWorker.getUser().getPasswordHash());
     }
-}

@@ -1,8 +1,8 @@
 package academy.softserve.os.api;
 
 import academy.softserve.os.api.dto.command.CreateAddressCommandDTO;
-import academy.softserve.os.api.mapper.AddressMapper;
-import academy.softserve.os.service.exception.CreateAddressException;
+import academy.softserve.os.mapper.AddressMapper;
+import academy.softserve.os.exception.CreateAddressException;
 import academy.softserve.os.model.Address;
 import academy.softserve.os.service.AddressService;
 import academy.softserve.os.service.command.CreateAddressCommand;
@@ -63,7 +63,7 @@ class AddressControllerCreateAddressTest {
     @WithMockUser(value = "someuser", roles = "ADMIN")
     @Test
     void givenValidCreateAddressCommandDTO_createAddress_shouldCreateNewAddressAndReturnOkResponse() throws Exception {
-        //given
+
         var address = Address.builder()
                 .id(1L)
                 .city("ХАРЬКОВ")
@@ -71,9 +71,9 @@ class AddressControllerCreateAddressTest {
                 .house("10")
                 .room("КУХНЯ")
                 .build();
-        //when
+
         when(service.createAddress(any(CreateAddressCommand.class))).thenReturn(address);
-        //then
+
         mockMvc.perform(post("/api/admin/address")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(mapper.writeValueAsString(commandDTO)))
@@ -89,45 +89,46 @@ class AddressControllerCreateAddressTest {
     @WithMockUser(value = "someuser", roles = "ADMIN")
     @Test
     void givenCreateAddressCommandDTOWithNullFieldCity_createAddress_shouldReturnErrorMessageBecauseFieldCityCannotBeNull() throws Exception {
-        //given
+
         commandDTO.setCity("");
-        //when
-        when(service.createAddress(any(CreateAddressCommand.class))).thenThrow(CreateAddressException.class);
-        //then
+        String error = "Error";
+
+        when(service.createAddress(any(CreateAddressCommand.class))).thenThrow(new CreateAddressException(error));
+
         mockMvc.perform(post("/api/admin/address")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(commandDTO)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Error created address"));
+                .andExpect(jsonPath("$.message").value("Error created address. " + error));
     }
 
     @WithMockUser(value = "someuser", roles = "ADMIN")
     @Test
     void givenCreateAddressCommandDTOWithNullFieldStreet_createAddress_shouldReturnErrorMessageBecauseFieldStreetCannotBeNull() throws Exception {
-        //given
+
         commandDTO.setStreet("");
-        //when
+
         when(service.createAddress(any(CreateAddressCommand.class))).thenThrow(CreateAddressException.class);
-        //then
+
         mockMvc.perform(post("/api/admin/address")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(commandDTO)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Error created address"));
+                .andExpect(jsonPath("$.message").value("Error created address. null"));
     }
 
     @WithMockUser(value = "someuser", roles = "ADMIN")
     @Test
     void givenCreateAddressCommandDTOWithNullFieldHouse_createAddress_shouldReturnErrorMessageBecauseFieldHouseCannotBeNull() throws Exception {
-        //given
+
         commandDTO.setHouse("");
-        //when
+
         when(service.createAddress(any(CreateAddressCommand.class))).thenThrow(CreateAddressException.class);
-        //then
+
         mockMvc.perform(post("/api/admin/address")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(commandDTO)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Error created address"));
+                .andExpect(jsonPath("$.message").value("Error created address. null"));
     }
 }

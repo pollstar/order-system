@@ -17,10 +17,10 @@ import java.util.List;
 
 @Getter
 @Setter
+@Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Entity
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,3 +35,4 @@ public class Client {
     @OneToMany(mappedBy = "client")
     private List<Order> orders;
 }
+

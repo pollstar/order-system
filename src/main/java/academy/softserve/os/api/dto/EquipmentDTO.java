@@ -11,15 +11,13 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddressDTO {
+public class EquipmentDTO {
 
     private Long id;
 
-    private String city;
+    private String description;
 
-    private String street;
+    private ClientDTO client;
 
-    private String house;
-
-    private String room;
+    private AddressDTO address;
 }
