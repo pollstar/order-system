@@ -5,8 +5,6 @@ import academy.softserve.os.model.Client;
 import academy.softserve.os.repository.AddressRepository;
 import academy.softserve.os.repository.ClientRepository;
 import academy.softserve.os.repository.EquipmentRepository;
-import academy.softserve.os.service.command.CreateAddressCommand;
-import academy.softserve.os.service.command.CreateClientCommand;
 import academy.softserve.os.service.command.CreateEquipmentCommand;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,12 +13,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -45,7 +39,7 @@ class EquipmentServiceIntegrationTest {
     static List<String> descriptionEquipment;
 
     @BeforeAll
-    static void initForAll () {
+    static void initForAll() {
         address = Address.builder()
                 .city("City")
                 .street("Street")
