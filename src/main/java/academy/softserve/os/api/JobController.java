@@ -50,6 +50,6 @@ public class JobController {
     public ResponseEntity<JobDTO> getJobById(@PathVariable("job-id") long id){
         var job = jobService.getJobById(id).orElseThrow(JobFindException::new);
         var jobDto = jobMapper.toDto(job);
-        return ResponseEntity.status(HttpStatus.FOUND).body(jobDto);
+        return ResponseEntity.status(HttpStatus.OK).body(jobDto);
     }
 }
