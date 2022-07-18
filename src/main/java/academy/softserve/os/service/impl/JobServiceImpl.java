@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -35,5 +36,10 @@ public class JobServiceImpl implements JobService {
         job.setPrices(priceList);
 
         return job;
+    }
+
+    @Override
+    public List<Job> getAllJob() {
+        return jobRepository.findAll();
     }
 }
