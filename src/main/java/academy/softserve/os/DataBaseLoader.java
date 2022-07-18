@@ -1,9 +1,12 @@
 package academy.softserve.os;
 
+import academy.softserve.os.mapper.EquipmentMapper;
 import academy.softserve.os.model.Address;
 import academy.softserve.os.model.Client;
+import academy.softserve.os.model.Equipment;
 import academy.softserve.os.repository.AddressRepository;
 import academy.softserve.os.repository.ClientRepository;
+import academy.softserve.os.repository.EquipmentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -13,11 +16,44 @@ import org.springframework.stereotype.Component;
 public class DataBaseLoader implements CommandLineRunner {
     private final AddressRepository addressRepository;
     private final ClientRepository clientRepository;
+    private final EquipmentRepository equipmentRepository;
 
     @Override
     public void run(String... args) {
         tableAddressLoader();
         tableClientLoader();
+        tableEquipmentLoader();
+    }
+
+    private void tableEquipmentLoader() {
+        equipmentRepository.save(
+                Equipment.builder()
+                        .description("Кондиционер 1")
+                        .client(clientRepository.findById(1L).get())
+                        .address(addressRepository.findById(4L).get())
+                        .build()
+        );
+        equipmentRepository.save(
+                Equipment.builder()
+                        .description("Кондиционер 1")
+                        .client(clientRepository.findById(1L).get())
+                        .address(addressRepository.findById(2L).get())
+                        .build()
+        );
+        equipmentRepository.save(
+                Equipment.builder()
+                        .description("Охолоджувач")
+                        .client(clientRepository.findById(2L).get())
+                        .address(addressRepository.findById(3L).get())
+                        .build()
+        );
+        equipmentRepository.save(
+                Equipment.builder()
+                        .description("Осушувач")
+                        .client(clientRepository.findById(3L).get())
+                        .address(addressRepository.findById(1L).get())
+                        .build()
+        );
     }
 
     private void tableClientLoader() {

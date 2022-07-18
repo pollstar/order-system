@@ -1,4 +1,4 @@
-package academy.softserve.os.api.exception;
+package academy.softserve.os.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

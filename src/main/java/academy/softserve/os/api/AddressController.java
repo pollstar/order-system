@@ -2,7 +2,7 @@ package academy.softserve.os.api;
 
 import academy.softserve.os.api.dto.AddressDTO;
 import academy.softserve.os.api.dto.command.CreateAddressCommandDTO;
-import academy.softserve.os.api.mapper.AddressMapper;
+import academy.softserve.os.mapper.AddressMapper;
 import academy.softserve.os.service.AddressService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

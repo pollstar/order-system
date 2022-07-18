@@ -1,6 +1,6 @@
 package academy.softserve.os.service;
 
-import academy.softserve.os.service.exception.CreateAddressException;
+import academy.softserve.os.exception.CreateAddressException;
 import academy.softserve.os.model.Address;
 import academy.softserve.os.repository.AddressRepository;
 import academy.softserve.os.service.command.CreateAddressCommand;
@@ -44,7 +44,7 @@ public class AddressService {
         if (command.getCity().isBlank() || Objects.isNull(command.getCity()) ||
                 command.getStreet().isBlank() || Objects.isNull(command.getStreet()) ||
                 command.getHouse().isBlank() || Objects.isNull(command.getHouse())) {
-            throw new CreateAddressException();
+            throw new CreateAddressException("Address not valid");
         }
     }
 

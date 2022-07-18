@@ -36,7 +36,7 @@ class WorkerServiceImplTest {
     @Test
     void givenWorkerService_createWorker_shouldReturnCreatedWorker() {
 
-        //given
+
         var createWorkerCommand = CreateWorkerCommand
                 .builder()
                 .firstName("John")
@@ -46,11 +46,11 @@ class WorkerServiceImplTest {
                 .build();
 
 
-        //when
+
         when(workerRepository.save(any(Worker.class))).thenAnswer(returnsFirstArg());
         var result = workerService.createWorker(createWorkerCommand);
 
-        //then
+
         var requestUser = User
                 .builder()
                 .login("john123")
@@ -74,9 +74,9 @@ class WorkerServiceImplTest {
     @Test
     void givenWorkerService_createWorker_shouldThrowLoginIsNotUniqueException() {
 
-        //when
+
         when(workerRepository.findByUserLogin(any())).thenReturn(Optional.of(new Worker()));
-        //then
+
         assertThatThrownBy(() -> workerService.createWorker(new CreateWorkerCommand()))
                 .isInstanceOf(LoginIsNotUniqueException.class);
     }

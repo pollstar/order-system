@@ -47,16 +47,16 @@ public class WorkerMapperTest {
                 .lastName(worker.getLastName())
                 .build();
 
-        //when
+
         var workerDTO = workerMapper.toWorkerDTO(worker);
 
-        //then
+
         assertThat(workerDTO).isEqualTo(expectedWorkerDTO);
     }
 
     @Test
     void givenCreateWorkerCommandDTO_toCreateWorkerCommand_shouldReturnCreateWorkerCommandDTO(){
-        //given
+
         var expectedCreateWorkerCommand = CreateWorkerCommand
                 .builder()
                 .login("John_123")
@@ -73,10 +73,10 @@ public class WorkerMapperTest {
                 .password("1234567")
                 .build();
 
-        //when
+
         var createWorkerCommand = workerMapper.toCreateWorkerCommand(createWorkerCommandDTO);
 
-        //then
+
         assertThat(createWorkerCommand).isEqualTo(expectedCreateWorkerCommand);
     }
 }

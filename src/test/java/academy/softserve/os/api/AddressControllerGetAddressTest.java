@@ -1,6 +1,6 @@
 package academy.softserve.os.api;
 
-import academy.softserve.os.api.mapper.AddressMapper;
+import academy.softserve.os.mapper.AddressMapper;
 import academy.softserve.os.model.Address;
 import academy.softserve.os.service.AddressService;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +12,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
@@ -52,11 +51,11 @@ class AddressControllerGetAddressTest {
 
     @Test
     void givenApiGetAddress_getAddress_shouldReturnJsonListAddressAndReturnOkResponse() throws Exception {
-        //given
+
         var addresses = Arrays.asList(address1, address2);
-        //when
+
         when(service.findAddresses()).thenReturn(addresses);
-        //then
+
         mockMvc.perform(get("/api/address"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(1L))
@@ -69,7 +68,7 @@ class AddressControllerGetAddressTest {
 
     @Test
     void givenApiGetAddressWithId_getAddressByIs_shouldReturnJsonAddressAndReturnOkResponse() throws Exception {
-        //given
+
         var address1 = Address.builder()
                 .id(1L)
                 .city("ХАРЬКОВ")
@@ -77,9 +76,9 @@ class AddressControllerGetAddressTest {
                 .house("10")
                 .room("КУХНЯ")
                 .build();
-        //when
+
         when(service.getAddressById(address1.getId())).thenReturn(Optional.of(address1));
-        //then
+
         mockMvc.perform(get("/api/address/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L))
