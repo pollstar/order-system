@@ -3,8 +3,8 @@ package academy.softserve.os.service.impl;
 import academy.softserve.os.model.Job;
 import academy.softserve.os.model.Price;
 import academy.softserve.os.repository.JobRepository;
+import academy.softserve.os.repository.PriceRepository;
 import academy.softserve.os.service.JobService;
-import academy.softserve.os.service.PriceService;
 import academy.softserve.os.service.command.CreateJobCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class JobServiceImpl implements JobService {
     private final JobRepository jobRepository;
-    private final PriceService priceService;
+    private final PriceRepository priceRepository;
 
     @Override
     public Job createJob(CreateJobCommand command) {
@@ -28,9 +28,9 @@ public class JobServiceImpl implements JobService {
                 .dateSince(LocalDate.now())
                 .job(job).build();
 
-        priceService.createPrice(price);
+        priceRepository.save(price);
 
-        var priceList = priceService.getAllPrice(job);
+        var priceList = priceRepository.findAllByJobId(job.getId());
 
         job.setPrices(priceList);
 
