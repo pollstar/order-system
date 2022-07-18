@@ -1,5 +1,7 @@
 package academy.softserve.os.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,10 +14,13 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 public class Task {
     @Id
@@ -26,7 +31,7 @@ public class Task {
     private Double partFactor;
 
     @Column(name = "time_create")
-    private Instant timeCreate;
+    private LocalDateTime timeCreate;
 
     @Column(name = "comment")
     private String comment;
