@@ -23,7 +23,7 @@ class JobServiceImplTest {
     @BeforeEach
     void init(){
         repository = Mockito.mock(JobRepository.class);
-        PriceRepository priceRepository = Mockito.mock(PriceRepository.class);
+        var priceRepository = Mockito.mock(PriceRepository.class);
         jobService = new JobServiceImpl(repository, priceRepository);
     }
 
