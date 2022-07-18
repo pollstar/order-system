@@ -13,9 +13,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel = "spring",
-        uses = {ClientMapper.class, AddressMapper.class})
-public interface `EquipmentMapper {
+@Mapper(componentModel = "spring")
+public interface EquipmentMapper {
     @Mapping(source = "client", target = "client", qualifiedByName = "clientToClientDto")
     @Mapping(source = "address", target = "address", qualifiedByName = "addressToAddressDto")
     EquipmentDTO toEquipmentDTO(Equipment equipment);
