@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 @Component
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
-
+    private final ObjectMapper objectMapper = new ObjectMapper();
     @Override
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
@@ -27,8 +27,7 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
         body.put("message", authException.getMessage());
         body.put("path", request.getServletPath());
 
-        final var mapper = new ObjectMapper();
-        mapper.writeValue(response.getOutputStream(), body);
+        objectMapper.writeValue(response.getOutputStream(), body);
     }
 
 }
