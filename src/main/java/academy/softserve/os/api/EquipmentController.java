@@ -37,7 +37,7 @@ public class EquipmentController {
 
     @GetMapping("/equipment")
     public ResponseEntity<List<EquipmentDTO>> getEquipmentByDescription(@RequestParam(required = false) String description) {
-        var equipment = service.findEquipment(description).stream()
+        var equipment = service.findEquipmentByDescription(description).stream()
                 .map(mapper::toEquipmentDTO)
                 .collect(Collectors.toList());
         return new ResponseEntity<>(equipment, HttpStatus.OK);

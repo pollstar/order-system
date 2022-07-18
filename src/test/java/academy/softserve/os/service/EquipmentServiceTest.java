@@ -12,13 +12,9 @@ import academy.softserve.os.service.command.CreateEquipmentCommand;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.data.domain.Example;
 
 import java.util.List;
 import java.util.Optional;
@@ -220,50 +216,9 @@ class EquipmentServiceTest {
         var equipments = List.of(equipment1, equipment2, equipment3);
         //when
         when(equipmentRepository.findAll()).thenReturn(equipments);
-        var result = equipmentService.findEquipment(null);
+        var result = equipmentService.findEquipmentByDescription(null);
         assertEquals(equipments.size(), result.size());
-        result = equipmentService.findEquipment("");
+        result = equipmentService.findEquipmentByDescription("");
         assertEquals(equipments.size(), result.size());
-    }
-
-    static Stream<Arguments> initParameters() {
-        return Stream.of(
-                Arguments.of("con", 2),
-                Arguments.of("1", 1),
-                Arguments.of("HVAC", 0)
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("initParameters")
-    void givenFindEquipmentByDescriptionExample_findEquipment_returnListEquipment(String testExample, Integer size){
-        //given
-        var equipment1 = Equipment.builder()
-                .id(1L)
-                .description("Condition 2")
-                .build();
-        var equipment2 = Equipment.builder()
-                .id(1L)
-                .description("Watercoller")
-                .build();
-        var equipment3 = Equipment.builder()
-                .id(1L)
-                .description("Condition 1")
-                .build();
-        var equipments = List.of(equipment1, equipment2, equipment3);
-
-        var equipmentTest = Equipment.builder()
-                .description(testExample).build();
-        var example = Example.of(equipmentTest);
-
-        var reslist = equipments
-                .stream().filter(e -> e.getDescription()
-                        .toLowerCase().contains(testExample))
-                .collect(Collectors.toList());
-
-        when(equipmentRepository.findAll(any(Example.class))).thenReturn(reslist);
-
-        var result = equipmentService.findEquipment(equipmentTest.getDescription());
-        assertEquals(size, result.size());
     }
 }

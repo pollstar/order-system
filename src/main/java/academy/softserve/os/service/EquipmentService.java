@@ -59,15 +59,16 @@ public class EquipmentService {
         return equipmentRepository.findById(id);
     }
 
-    public List<Equipment> findEquipment(String description) {
+    public List<Equipment> findEquipmentByDescription(String description) {
         if (description == null || description.isEmpty()) {
             return equipmentRepository.findAll();
         }
-        Equipment equipment = new Equipment();
+        var equipment = new Equipment();
         equipment.setDescription(description);
-        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAny().withIgnoreCase()
+        var caseInsensitiveExampleMatcher = ExampleMatcher.matchingAny()
+                .withIgnoreCase()
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
-        Example<Equipment> example = Example.of(equipment, caseInsensitiveExampleMatcher);
+        var example = Example.of(equipment, caseInsensitiveExampleMatcher);
 
         return equipmentRepository.findAll(example);
     }
