@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ public class ClientController {
     private final ClientService clientService;
     private final ClientMapper mapper;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     @Transactional
     @Operation(summary = "Create a new Client")
@@ -38,6 +40,7 @@ public class ClientController {
         return ResponseEntity.status(HttpStatus.CREATED).body(clientDto);
     }
 
+    @PreAuthorize("hasAnyRole('WORKER', 'ADMIN')")
     @GetMapping("/{id}")
     @Transactional
     @Operation(summary = "Find Client by ID")
@@ -48,6 +51,7 @@ public class ClientController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
+    @PreAuthorize("hasAnyRole('WORKER', 'ADMIN')")
     @GetMapping
     @Transactional
     @Operation(summary = "Find all Clients by Name")

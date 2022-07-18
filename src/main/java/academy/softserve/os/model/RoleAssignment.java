@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @ToString
 @NoArgsConstructor
 @Entity
-@Table(name = "roles")
+@Table(name = "role_assignment")
 public class RoleAssignment {
 
     @Id

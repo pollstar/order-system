@@ -7,6 +7,7 @@ import academy.softserve.os.service.EquipmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +23,7 @@ public class EquipmentController {
 
     @Transactional
     @PostMapping("/admin/equipment")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<EquipmentDTO> createEquipment(@RequestBody CreateEquipmentCommandDTO commandDTO) {
         return new ResponseEntity<>(mapper.toEquipmentDTO(service.createEquipment(mapper.toCommand(commandDTO))),
                 HttpStatus.CREATED);

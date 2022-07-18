@@ -9,13 +9,18 @@ import academy.softserve.os.service.command.CreateClientCommand;
 import academy.softserve.os.service.exception.ClientNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,22 +29,41 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@AutoConfigureMockMvc(addFilters = false)
-@WebMvcTest(value = {ClientController.class, ClientMapper.class})
+@SpringBootTest
 class ClientControllerTest {
 
-    @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private ClientService clientService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    @Autowired
+    private WebApplicationContext context;
+
+    @BeforeEach
+    public void init() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
+    }
+
+    @WithMockUser(value = "someuser", roles = "WORKER")
+    @Test
+    void givenValidCreateClientCommandDTO_createClient_shouldReturn403() throws Exception {
+        var createCommandClientDTO = new CreateClientCommandDTO("Pol");
+        //then
+        mockMvc.perform(post("/api/clients")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createCommandClientDTO)))
+                .andExpect(status().isForbidden());
+    }
+
+    @WithMockUser(value = "someuser", roles = "ADMIN")
     @Test
     void givenValidCreateClientCommandDTO_createClient_shouldCreateNewClientAndReturnOKResponse() throws Exception {
         //given
@@ -59,6 +83,7 @@ class ClientControllerTest {
                 .andExpect(jsonPath("$.name").value("Pol"));
     }
 
+    @WithMockUser(value = "someuser", roles = "ADMIN")
     @Test
     void givenCreateClientCommandDTOWithNullName_createClient_shouldReturnErrorMessageBecauseNameCannotBeNull() throws Exception {
         //given
@@ -72,6 +97,7 @@ class ClientControllerTest {
                 .andExpect(jsonPath("$.message").value("Validation failed!"));
     }
 
+    @WithMockUser(value = "someuser", roles = "ADMIN")
     @Test
     void givenCreateClientCommandDTOWithEmptyName_createClient_shouldReturnErrorMessageBecauseNameCannotBeEmpty() throws Exception {
         //given
@@ -85,6 +111,7 @@ class ClientControllerTest {
                 .andExpect(jsonPath("$.message").value("Validation failed!"));
     }
 
+    @WithMockUser(value = "someuser", roles = "WORKER")
     @Test
     void givenClientId_findClientById_shouldReturnClient() throws Exception {
         //given
@@ -101,6 +128,7 @@ class ClientControllerTest {
                 .andExpect(jsonPath("$.name").value("Pol"));
     }
 
+    @WithMockUser(value = "someuser", roles = "WORKER")
     @Test
     void givenClientId_findClientById_shouldThrowExceptionBecauseNoClientWithSuchIdExists() throws Exception {
         //when
@@ -111,6 +139,7 @@ class ClientControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @WithMockUser(value = "someuser", roles = "WORKER")
     @Test
     void givenClientName_findAllClientsByName_shouldReturnAllClientsMatchesByName() throws Exception {
         //given
