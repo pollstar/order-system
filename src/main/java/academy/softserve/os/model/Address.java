@@ -1,6 +1,5 @@
 package academy.softserve.os.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,6 +38,5 @@ public class Address {
     private String room;
 
     @OneToMany(mappedBy = "address")
-    @JsonIgnore
     private List<Equipment> equipments;
 }

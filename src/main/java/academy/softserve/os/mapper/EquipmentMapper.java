@@ -13,8 +13,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel = "spring",
-        uses = {ClientMapper.class, AddressMapper.class})
+@Mapper(componentModel = "spring")
 public interface EquipmentMapper {
     @Mapping(source = "client", target = "client", qualifiedByName = "clientToClientDto")
     @Mapping(source = "address", target = "address", qualifiedByName = "addressToAddressDto")
