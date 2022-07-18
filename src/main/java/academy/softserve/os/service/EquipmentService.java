@@ -6,8 +6,9 @@ import academy.softserve.os.repository.ClientRepository;
 import academy.softserve.os.repository.EquipmentRepository;
 import academy.softserve.os.service.command.CreateEquipmentCommand;
 import academy.softserve.os.exception.CreateEquipmentException;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessException;
+
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
@@ -65,7 +66,7 @@ public class EquipmentService {
         Equipment equipment = new Equipment();
         equipment.setDescription(description);
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAny().withIgnoreCase()
-            .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
         Example<Equipment> example = Example.of(equipment, caseInsensitiveExampleMatcher);
 
         return equipmentRepository.findAll(example);

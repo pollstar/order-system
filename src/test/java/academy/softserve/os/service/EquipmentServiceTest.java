@@ -7,30 +7,20 @@ import academy.softserve.os.model.Equipment;
 import academy.softserve.os.repository.AddressRepository;
 import academy.softserve.os.repository.ClientRepository;
 import academy.softserve.os.repository.EquipmentRepository;
-import academy.softserve.os.service.command.CreateAddressCommand;
 import academy.softserve.os.service.command.CreateEquipmentCommand;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.AdditionalAnswers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-import org.springframework.dao.DataAccessException;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Pageable;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -98,7 +88,7 @@ class EquipmentServiceTest {
 
         var equipment1 = equipmentService.createEquipment(command);
 
-        assertEquals(equipment1.getDescription() , equipment.getDescription());
+        assertEquals(equipment1.getDescription(), equipment.getDescription());
     }
 
     @Test
@@ -246,7 +236,7 @@ class EquipmentServiceTest {
 
     @ParameterizedTest
     @MethodSource("initParameters")
-    void givenFindEquipmentByDescriptionExample_findEquipment_returnListEquipment(String testExample, Integer size) throws Exception{
+    void givenFindEquipmentByDescriptionExample_findEquipment_returnListEquipment(String testExample, Integer size){
         //given
         var equipment1 = Equipment.builder()
                 .id(1L)
@@ -266,20 +256,12 @@ class EquipmentServiceTest {
                 .description(testExample).build();
         var example = Example.of(equipmentTest);
 
-        var answer = new Answer<List<Equipment>>() {
-            @Override
-            public List<Equipment> answer(InvocationOnMock invocation) {
-                var ex = invocation.getArgument(0, Example.class);
-                var testString = ((Equipment) ex.getProbe()).getDescription().toLowerCase();
-                var reslist = equipments
-                        .stream().filter(e -> e.getDescription()
-                                .toLowerCase().contains(testString))
-                        .collect(Collectors.toList());
-                return reslist;
-            }
-        };
+        var reslist = equipments
+                .stream().filter(e -> e.getDescription()
+                        .toLowerCase().contains(testExample))
+                .collect(Collectors.toList());
 
-        when(equipmentRepository.findAll(example)).then(answer);
+        when(equipmentRepository.findAll(any(Example.class))).thenReturn(reslist);
 
         var result = equipmentService.findEquipment(equipmentTest.getDescription());
         assertEquals(size, result.size());

@@ -34,12 +34,6 @@ public class EquipmentController {
         return new ResponseEntity<>(mapper.toEquipmentDTO(service.createEquipment(mapper.toCommand(commandDTO))),
                 HttpStatus.CREATED);
     }
-//
-//    public ResponseEntity<EquipmentDTO> createAddress(@RequestBody CreateEquipmentCommandDTO commandDTO) {
-//        return service.createEquipment(mapper.toCommand(commandDTO))
-//                .map(equipment -> new ResponseEntity<>(mapper.toEquipmentDTO(equipment), HttpStatus.OK))
-//                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
-//    }
 
     @GetMapping("/equipment")
     public ResponseEntity<List<EquipmentDTO>> getEquipmentByDescription(@RequestParam(required = false) String description) {
