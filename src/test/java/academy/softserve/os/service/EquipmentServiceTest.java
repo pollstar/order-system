@@ -268,7 +268,7 @@ class EquipmentServiceTest {
 
         var answer = new Answer<List<Equipment>>() {
             @Override
-            public List<Equipment> answer(InvocationOnMock invocation) throws Throwable {
+            public List<Equipment> answer(InvocationOnMock invocation) {
                 var ex = invocation.getArgument(0, Example.class);
                 var testString = ((Equipment) ex.getProbe()).getDescription().toLowerCase();
                 var reslist = equipments
@@ -278,8 +278,7 @@ class EquipmentServiceTest {
                 return reslist;
             }
         };
-        //when
-//        when(equipmentRepository.findAll()).thenReturn(equipments);
+
         when(equipmentRepository.findAll(example)).then(answer);
 
         var result = equipmentService.findEquipment(equipmentTest.getDescription());
