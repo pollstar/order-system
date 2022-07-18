@@ -2,19 +2,18 @@ package academy.softserve.os.service.impl;
 
 import academy.softserve.os.service.ClientService;
 import academy.softserve.os.service.command.CreateClientCommand;
-import academy.softserve.os.service.exception.ClientNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@Transactional
 class ClientServiceImplIntegrationTest {
 
     @Autowired
@@ -30,9 +29,11 @@ class ClientServiceImplIntegrationTest {
         clientService.createClient(new CreateClientCommand("Ron Poll"));
     }
 
+
+
     @Test
     void givenClientName_findClientByName_shouldReturnListOfClientsWithMatchingName() {
-        var clients = clientService.findAllClientsByName("pol");
+        var clients = clientService.findAllClientsByName("Pol");
 
         assertEquals(3, clients.size());
     }
