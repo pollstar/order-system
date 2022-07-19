@@ -7,8 +7,8 @@ import academy.softserve.os.model.Equipment;
 import academy.softserve.os.repository.AddressRepository;
 import academy.softserve.os.repository.ClientRepository;
 import academy.softserve.os.repository.EquipmentRepository;
-import academy.softserve.os.service.command.CreateAddressCommand;
 import academy.softserve.os.service.command.CreateEquipmentCommand;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.any;
@@ -29,9 +32,7 @@ class EquipmentServiceTest {
     private EquipmentRepository equipmentRepository;
     private ClientRepository clientRepository;
     private AddressRepository addressRepository;
-    private AddressService addressService;
     private EquipmentService equipmentService;
-    private CreateAddressCommand addressCommand;
 
     private Address address;
     private Equipment equipment;
@@ -83,7 +84,7 @@ class EquipmentServiceTest {
 
         var equipment1 = equipmentService.createEquipment(command);
 
-        assertEquals(equipment1.getDescription() , equipment.getDescription());
+        assertEquals(equipment1.getDescription(), equipment.getDescription());
     }
 
     @Test
@@ -195,5 +196,29 @@ class EquipmentServiceTest {
         var thrown = Assertions.assertThrows(CreateEquipmentException.class,
                 () -> equipmentService.createEquipment(command));
         assertEquals("Create equipment error. Description not present.", thrown.getMessage());
+    }
+
+    @Test
+    void givenDescriptionNullAndEmpty_findEquipment_returnListAllEquipment() {
+        //given
+        var equipment1 = Equipment.builder()
+                .id(1L)
+                .description("Condition 2")
+                .build();
+        var equipment2 = Equipment.builder()
+                .id(1L)
+                .description("Watercoller")
+                .build();
+        var equipment3 = Equipment.builder()
+                .id(1L)
+                .description("Condition 1")
+                .build();
+        var equipments = List.of(equipment1, equipment2, equipment3);
+        //when
+        when(equipmentRepository.findAll()).thenReturn(equipments);
+        var result = equipmentService.findEquipmentByDescription(null);
+        assertEquals(equipments.size(), result.size());
+        result = equipmentService.findEquipmentByDescription("");
+        assertEquals(equipments.size(), result.size());
     }
 }
