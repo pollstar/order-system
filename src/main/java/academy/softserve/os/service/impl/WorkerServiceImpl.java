@@ -48,7 +48,6 @@ public class WorkerServiceImpl implements WorkerService {
         }else {
             return workerRepository.findWorkersByFirstNameIgnoreCaseAndLastNameIgnoreCase(nameArgumentsList[0], nameArgumentsList[1]);
         }
-
     }
 
     private CreateUserCommand getCreateUserCommand(CreateWorkerCommand createWorkerCommand) {
