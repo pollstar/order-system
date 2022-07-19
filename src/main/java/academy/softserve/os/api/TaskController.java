@@ -20,9 +20,9 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 public class TaskController {
-
     private final TaskService taskService;
     private final TaskMapper taskMapper;
+    
     @PostMapping("/api/task")
     @PreAuthorize("hasAnyRole('WORKER')")
     public ResponseEntity<TaskDTO> createTask(@RequestBody @Valid CreateTaskCommandDTO createTaskCommandDTO,
