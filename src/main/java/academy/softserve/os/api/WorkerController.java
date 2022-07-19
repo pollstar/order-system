@@ -44,18 +44,15 @@ public class WorkerController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("api/admin/worker")
     public ResponseEntity<List<WorkerDTO>> getWorkersByName(@RequestParam(name = "name", required = false) String name) {
-
-        List<WorkerDTO> workerList;
         if (name == null) {
-            workerList = workerService.getAllWorkers().stream().map(WORKER_MAPPER::toWorkerDTO).collect(Collectors.toList());
+            return ResponseEntity.status(HttpStatus.OK).body(workerService.getAllWorkers().stream().map(WORKER_MAPPER::toWorkerDTO).collect(Collectors.toList()));
         } else {
             var nameArray = name.split(" ");
             if (nameArray.length == 1) {
-                workerList = workerService.getAllWorkersByName(name, name).stream().map(WORKER_MAPPER::toWorkerDTO).collect(Collectors.toList());
+               return ResponseEntity.status(HttpStatus.OK).body(workerService.getAllWorkersByName(name, name).stream().map(WORKER_MAPPER::toWorkerDTO).collect(Collectors.toList()));
             } else {
-                workerList = workerService.getAllWorkersByName(nameArray[0], nameArray[1]).stream().map(WORKER_MAPPER::toWorkerDTO).collect(Collectors.toList());
+                return  ResponseEntity.status(HttpStatus.OK).body(workerService.getAllWorkersByName(nameArray[0], nameArray[1]).stream().map(WORKER_MAPPER::toWorkerDTO).collect(Collectors.toList()));
             }
         }
-        return ResponseEntity.status(HttpStatus.OK).body(workerList);
     }
 }
