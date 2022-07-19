@@ -18,15 +18,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @Transactional
- class JobServiceImplIntegrationTest {
+class JobServiceImplIntegrationTest {
 
     @Autowired
     private JobService jobService;
-    private Job jobExpect;
 
     @BeforeEach
     public void init() {
-        jobExpect = jobService.createJob(new CreateJobCommand("test-1", new BigDecimal(10), new BigDecimal(12)));
+        jobService.createJob(new CreateJobCommand("test-1", new BigDecimal(10), new BigDecimal(12)));
         jobService.createJob(new CreateJobCommand("test-2", new BigDecimal(11), new BigDecimal(15)));
         jobService.createJob(new CreateJobCommand("tes3", new BigDecimal(10), new BigDecimal(13)));
     }
@@ -40,7 +39,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
     @Test
     void getJobById_shouldBeReturnJob() {
-        var job = jobService.getJobById(1L);
+        var jobExpect = jobService.createJob(new CreateJobCommand("test-1", new BigDecimal(10), new BigDecimal(12)));
+        var job = jobService.getJobById(jobExpect.getId());
 
         assertEquals(job, Optional.of(jobExpect));
     }
