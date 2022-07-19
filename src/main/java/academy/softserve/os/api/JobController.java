@@ -41,7 +41,9 @@ public class JobController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<JobDTO>> getAllJobs() {
-        var jobList = jobService.getAllJob().stream().map(jobMapper::toDto).collect(Collectors.toList());
+        var jobList = jobService.getAllJob().stream()
+                .map(jobMapper::toDto)
+                .collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.OK).body(jobList);
     }
 
