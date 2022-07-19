@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface JobService {
     Job createJob(CreateJobCommand command);
 
-    List<Job> getAllJob();
+    List<Job> findAllJob();
 
-    Optional<Job> getJobById(Long id);
+    Optional<Job> findJobById(Long id);
 }
