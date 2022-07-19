@@ -44,7 +44,9 @@ public class WorkerController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("api/admin/worker")
     public ResponseEntity<List<WorkerDTO>> getWorkersByName(@RequestParam(name = "name", required = false) String name) {
-        var workersDtoList = workerService.findWorkersByName(name).stream().map(WORKER_MAPPER::toWorkerDTO).collect(Collectors.toList());
+        var workersDtoList = workerService.findWorkersByName(name).stream()
+                .map(WORKER_MAPPER::toWorkerDTO)
+                .collect(Collectors.toList());
 
         return ResponseEntity.status(HttpStatus.OK).body(workersDtoList);
     }

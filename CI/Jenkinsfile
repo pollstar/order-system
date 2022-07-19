@@ -13,7 +13,7 @@ def setCommitStatus(String status) {
 
 def updateSonarProject() {
     sh 'mvn sonar:sonar ' +
-            '-Dsonar.host.url=http://ec2-18-157-180-97.eu-central-1.compute.amazonaws.com:9000 ' +
+            '-Dsonar.host.url=http://ec2-3-70-209-4.eu-central-1.compute.amazonaws.com:9000 ' +
             '-Dsonar.projectKey=ORDER_SYSTEM ' +
             '-Dsonar.projectName=ORDER_SYSTEM ' +
             '-Dsonar.login=$SONAR_TOKEN'
