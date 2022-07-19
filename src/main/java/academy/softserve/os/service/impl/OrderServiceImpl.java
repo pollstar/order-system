@@ -46,7 +46,9 @@ public class OrderServiceImpl implements OrderService {
         if (description == null) {
             return findAllOrders();
         }
-        return findAllOrders().stream().filter(order -> order.getDescription().toLowerCase().contains(description.toLowerCase())).collect(Collectors.toList());
+        return findAllOrders().stream()
+                .filter(order -> order.getDescription().toLowerCase().contains(description.toLowerCase()))
+                .collect(Collectors.toList());
     }
 
     private List<Order> findAllOrders() {
