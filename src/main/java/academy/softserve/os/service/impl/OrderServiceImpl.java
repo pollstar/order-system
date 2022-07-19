@@ -37,17 +37,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Optional<Order> getOrderById(Long id) {
+    public Optional<Order> findOrderById(Long id) {
         return orderRepository.findById(id);
     }
 
     @Override
-    public List<Order> getOrdersByDescription(String description) {
-        return getAllOrders().stream().filter(order -> order.getDescription().toLowerCase().contains(description.toLowerCase())).collect(Collectors.toList());
+    public List<Order> findOrdersByDescription(String description) {
+        return findAllOrders().stream().filter(order -> order.getDescription().toLowerCase().contains(description.toLowerCase())).collect(Collectors.toList());
     }
 
     @Override
-    public List<Order> getAllOrders() {
+    public List<Order> findAllOrders() {
         return orderRepository.findAll();
     }
 }

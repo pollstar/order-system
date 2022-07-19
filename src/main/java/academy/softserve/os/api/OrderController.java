@@ -1,10 +1,7 @@
 package academy.softserve.os.api;
 
-import academy.softserve.os.api.dto.JobDTO;
 import academy.softserve.os.api.dto.OrderDTO;
-import academy.softserve.os.api.dto.WorkerDTO;
 import academy.softserve.os.api.dto.command.CreateOrderCommandDTO;
-import academy.softserve.os.exception.JobFindException;
 import academy.softserve.os.exception.OrderNotFoundException;
 import academy.softserve.os.mapper.OrderMapper;
 import academy.softserve.os.service.OrderService;
@@ -52,7 +49,7 @@ public class OrderController {
     @GetMapping("{id}")
     @Operation(summary = "Get Order by id")
     public ResponseEntity<OrderDTO> getJobById(@PathVariable("id") long id) {
-        var order = orderService.getOrderById(id).orElseThrow(OrderNotFoundException::new);
+        var order = orderService.findOrderById(id).orElseThrow(OrderNotFoundException::new);
         return ResponseEntity.status(HttpStatus.OK).body(mapper.toDTO(order));
     }
 
@@ -62,9 +59,9 @@ public class OrderController {
     public ResponseEntity<List<OrderDTO>> getOrderByDescription(@RequestParam(name = "description", required = false, defaultValue = "not set description") String description) {
         List<OrderDTO> orderDTOList;
         if (description.equals("not set description")) {
-            orderDTOList = orderService.getAllOrders().stream().map(mapper::toDTO).collect(Collectors.toList());
+            orderDTOList = orderService.findAllOrders().stream().map(mapper::toDTO).collect(Collectors.toList());
         } else {
-            orderDTOList = orderService.getOrdersByDescription(description).stream().map(mapper::toDTO).collect(Collectors.toList());
+            orderDTOList = orderService.findOrdersByDescription(description).stream().map(mapper::toDTO).collect(Collectors.toList());
         }
         return ResponseEntity.status(HttpStatus.OK).body(orderDTOList);
     }

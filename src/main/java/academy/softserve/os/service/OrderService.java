@@ -10,10 +10,10 @@ public interface OrderService {
 
    Order createOrder(CreateOrderCommand command);
 
-   Optional<Order> getOrderById(Long id);
+   Optional<Order> findOrderById(Long id);
 
-   List<Order> getOrdersByDescription(String description);
+   List<Order> findOrdersByDescription(String description);
 
-   List<Order> getAllOrders();
+   List<Order> findAllOrders();
 
 }
