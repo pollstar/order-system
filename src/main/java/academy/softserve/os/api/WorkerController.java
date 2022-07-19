@@ -43,19 +43,9 @@ public class WorkerController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("api/admin/worker")
-    @Operation(summary = "Get Worker by name")
-    public ResponseEntity<List<WorkerDTO>> getWorkersByName(@RequestParam(name = "name", required = false, defaultValue = "not set") String name) {
-        List<WorkerDTO> workerList;
-        if (name.equals("not set")) {
-            workerList = workerService.getAllWorkers().stream().map(WORKER_MAPPER::toWorkerDTO).collect(Collectors.toList());
-        } else {
-            var nameArray = name.split(" ");
-            if (nameArray.length == 1) {
-                workerList = workerService.getAllWorkersByName(name, name).stream().map(WORKER_MAPPER::toWorkerDTO).collect(Collectors.toList());
-            } else {
-                workerList = workerService.getAllWorkersByName(nameArray[0], nameArray[1]).stream().map(WORKER_MAPPER::toWorkerDTO).collect(Collectors.toList());
-            }
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(workerList);
+    public ResponseEntity<List<WorkerDTO>> getWorkersByName(@RequestParam(name = "name", required = false) String name) {
+        var workersDtoList = workerService.findWorkersByName(name).stream().map(WORKER_MAPPER::toWorkerDTO).collect(Collectors.toList());
+
+        return ResponseEntity.status(HttpStatus.OK).body(workersDtoList);
     }
 }

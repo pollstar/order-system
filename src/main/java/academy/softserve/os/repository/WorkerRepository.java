@@ -2,8 +2,8 @@ package academy.softserve.os.repository;
 
 import academy.softserve.os.model.Worker;
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 
 public interface WorkerRepository extends JpaRepository<Worker, Long> {
 
@@ -14,4 +14,5 @@ public interface WorkerRepository extends JpaRepository<Worker, Long> {
     List<Worker> findWorkersByFirstNameIgnoreCaseAndLastNameIgnoreCase(String firstName, String lastName);
 
     Optional<Worker> findByUserId(Long id);
+
 }

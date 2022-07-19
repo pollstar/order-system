@@ -38,17 +38,31 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
-    public List<Worker> getAllWorkers() {
+    public List<Worker> findWorkersByName(String name) {
+        if (name == null){
+            return workerRepository.findAll();
+        }
+        var nameArgumentsList = name.split(" ");
+        if (nameArgumentsList.length == 1){
+            return workerRepository.findWorkersByFirstNameIgnoreCaseOrLastNameIgnoreCase(nameArgumentsList[0], nameArgumentsList[0]);
+        }else {
+            return workerRepository.findWorkersByFirstNameIgnoreCaseAndLastNameIgnoreCase(nameArgumentsList[0], nameArgumentsList[1]);
+        }
+
+    }
+
+    @Override
+    public List<Worker> findAllWorkers() {
         return workerRepository.findAll();
     }
 
     @Override
-    public List<Worker> getAllWorkersByName(String firstName, String lastName) {
+    public List<Worker> findAllWorkersByName(String firstName, String lastName) {
         return workerRepository.findWorkersByFirstNameIgnoreCaseOrLastNameIgnoreCase(firstName, lastName);
     }
 
     @Override
-    public List<Worker> getAllWorkersByFirstNameAndLastName(String firstName, String lastName) {
+    public List<Worker> findAllWorkersByFirstNameAndLastName(String firstName, String lastName) {
         return workerRepository.findWorkersByFirstNameIgnoreCaseAndLastNameIgnoreCase(firstName, lastName);
     }
 
