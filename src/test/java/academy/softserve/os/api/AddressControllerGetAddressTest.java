@@ -100,6 +100,5 @@ class AddressControllerGetAddressTest {
                 .andExpect(jsonPath("$.street").value("СУМСКАЯ"))
                 .andExpect(jsonPath("$.house").value("10"))
                 .andExpect(jsonPath("$.room").value("КУХНЯ"));
-
     }
 }

@@ -6,6 +6,9 @@ import academy.softserve.os.mapper.ClientMapper;
 import academy.softserve.os.mapper.EquipmentMapper;
 import academy.softserve.os.model.Address;
 import academy.softserve.os.model.Client;
+import academy.softserve.os.api.dto.command.CreateEquipmentCommandDTO;
+import academy.softserve.os.exception.CreateEquipmentException;
+import academy.softserve.os.mapper.EquipmentMapper;
 import academy.softserve.os.model.Equipment;
 import academy.softserve.os.service.EquipmentService;
 import academy.softserve.os.service.command.CreateEquipmentCommand;
@@ -131,4 +134,5 @@ class EquipmentControllerCreateEquipmentTest {
                 .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.message").value("Create equipment error. "));
     }
+
 }

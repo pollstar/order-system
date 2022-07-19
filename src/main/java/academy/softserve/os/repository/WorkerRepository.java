@@ -7,6 +7,5 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface WorkerRepository extends JpaRepository<Worker, Long> {
-
-    Optional<Worker> findByUserLogin(String login);
+    Optional<Worker> findByUserId(Long id);
 }

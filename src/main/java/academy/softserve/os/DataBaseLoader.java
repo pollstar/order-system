@@ -35,7 +35,7 @@ public class DataBaseLoader implements CommandLineRunner {
         );
         equipmentRepository.save(
                 Equipment.builder()
-                        .description("Кондиционер 1")
+                        .description("Кондиционер 2")
                         .client(clientRepository.findById(1L).get())
                         .address(addressRepository.findById(2L).get())
                         .build()
