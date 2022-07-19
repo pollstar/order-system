@@ -51,8 +51,8 @@ public class OrderController {
     public ResponseEntity<OrderDTO> getJobById(@PathVariable("id") long id) {
         return orderService.findOrderById(id)
                 .map(mapper::toDTO)
-                .map(it -> new ResponseEntity(it, HttpStatus.OK)
-                .orElseGet(() -> new ResponseEntity(HttpStatus.NOT_FOUND)
+                .map(it -> new ResponseEntity<>(it, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
