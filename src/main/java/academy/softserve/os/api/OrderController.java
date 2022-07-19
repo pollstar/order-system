@@ -57,12 +57,12 @@ public class OrderController {
     @GetMapping
     @Operation(summary = "Get Order by description")
     public ResponseEntity<List<OrderDTO>> getOrderByDescription(@RequestParam(name = "description", required = false, defaultValue = "not set description") String description) {
-        List<OrderDTO> orderDTOList;
         if (description.equals("not set description")) {
-            orderDTOList = orderService.findAllOrders().stream().map(mapper::toDTO).collect(Collectors.toList());
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(orderService.findAllOrders().stream().map(mapper::toDTO).collect(Collectors.toList()));
         } else {
-            orderDTOList = orderService.findOrdersByDescription(description).stream().map(mapper::toDTO).collect(Collectors.toList());
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(orderService.findOrdersByDescription(description).stream().map(mapper::toDTO).collect(Collectors.toList()));
         }
-        return ResponseEntity.status(HttpStatus.OK).body(orderDTOList);
     }
 }
