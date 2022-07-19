@@ -13,4 +13,8 @@ public interface WorkerService {
     List<Worker> findAllWorkersByName(String firstName, String lastName);
 
     List<Worker> findAllWorkersByFirstNameAndLastName(String firstName, String lastName);
+
+    List<Worker> findWorkersByName(String name);
+
+
 }
