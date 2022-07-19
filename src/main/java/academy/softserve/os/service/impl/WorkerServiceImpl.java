@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -34,6 +35,16 @@ public class WorkerServiceImpl implements WorkerService {
         var worker = getWorkerFromCommand(createWorkerCommand);
         worker.setUser(user);
         return workerRepository.save(worker);
+    }
+
+    @Override
+    public List<Worker> getAllWorkers() {
+        return workerRepository.findAll();
+    }
+
+    @Override
+    public List<Worker> getAllWorkersByName(String name) {
+        return workerRepository.findWorkersByFirstNameIgnoreCaseOrLastNameIgnoreCase(name, name);
     }
 
     private CreateUserCommand getCreateUserCommand(CreateWorkerCommand createWorkerCommand) {
