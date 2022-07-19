@@ -49,8 +49,10 @@ public class OrderController {
     @GetMapping("{id}")
     @Operation(summary = "Get Order by id")
     public ResponseEntity<OrderDTO> getJobById(@PathVariable("id") long id) {
-        var order = orderService.findOrderById(id).orElseThrow(OrderNotFoundException::new);
-        return ResponseEntity.status(HttpStatus.OK).body(mapper.toDTO(order));
+        return orderService.findOrderById(id)
+                .map(mapper::toDTO)
+                .map(it -> new ResponseEntity(it, HttpStatus.OK)
+                .orElseGet(() -> new ResponseEntity(HttpStatus.NOT_FOUND)
     }
 
     @PreAuthorize("hasRole('ADMIN')")
