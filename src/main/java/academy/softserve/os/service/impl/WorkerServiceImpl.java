@@ -43,7 +43,7 @@ public class WorkerServiceImpl implements WorkerService {
             return workerRepository.findAll();
         }
         var nameArgumentsList = name.split(" ");
-        if (nameArgumentsList.length == 1){
+        if (nameArgumentsList.length == 1) {
             return workerRepository.findWorkersByFirstNameIgnoreCaseOrLastNameIgnoreCase(nameArgumentsList[0], nameArgumentsList[0]);
         }else {
             return workerRepository.findWorkersByFirstNameIgnoreCaseAndLastNameIgnoreCase(nameArgumentsList[0], nameArgumentsList[1]);
