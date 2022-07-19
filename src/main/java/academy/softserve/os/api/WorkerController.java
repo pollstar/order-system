@@ -49,11 +49,13 @@ public class WorkerController {
         if (name.equals("not set")) {
             workerList = workerService.getAllWorkers().stream().map(WORKER_MAPPER::toWorkerDTO).collect(Collectors.toList());
         } else {
-            workerList = workerService.getAllWorkersByName(name).stream().map(WORKER_MAPPER::toWorkerDTO).collect(Collectors.toList());
+            var nameArray = name.split(" ");
+            if (nameArray.length == 1) {
+                workerList = workerService.getAllWorkersByName(name, name).stream().map(WORKER_MAPPER::toWorkerDTO).collect(Collectors.toList());
+            } else {
+                workerList = workerService.getAllWorkersByName(nameArray[0], nameArray[1]).stream().map(WORKER_MAPPER::toWorkerDTO).collect(Collectors.toList());
+            }
         }
         return ResponseEntity.status(HttpStatus.OK).body(workerList);
-
     }
-
-
 }

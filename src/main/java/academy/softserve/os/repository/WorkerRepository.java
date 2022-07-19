@@ -10,4 +10,6 @@ public interface WorkerRepository extends JpaRepository<Worker, Long> {
     Optional<Worker> findByUserLogin(String login);
 
     List<Worker> findWorkersByFirstNameIgnoreCaseOrLastNameIgnoreCase(String firstName, String lastName);
+
+    List<Worker> findWorkersByFirstNameIgnoreCaseAndLastNameIgnoreCase(String firstName, String lastName);
 }

@@ -43,8 +43,13 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
-    public List<Worker> getAllWorkersByName(String name) {
-        return workerRepository.findWorkersByFirstNameIgnoreCaseOrLastNameIgnoreCase(name, name);
+    public List<Worker> getAllWorkersByName(String firstName, String lastName) {
+        return workerRepository.findWorkersByFirstNameIgnoreCaseOrLastNameIgnoreCase(firstName, lastName);
+    }
+
+    @Override
+    public List<Worker> getAllWorkersByFirstNameAndLastName(String firstName, String lastName) {
+        return workerRepository.findWorkersByFirstNameIgnoreCaseAndLastNameIgnoreCase(firstName, lastName);
     }
 
     private CreateUserCommand getCreateUserCommand(CreateWorkerCommand createWorkerCommand) {

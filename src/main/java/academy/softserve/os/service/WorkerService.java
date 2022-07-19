@@ -10,7 +10,9 @@ public interface WorkerService {
 
     List<Worker> getAllWorkers();
 
-    List<Worker> getAllWorkersByName(String name);
+    List<Worker> getAllWorkersByName(String firstName, String lastName);
+
+    List<Worker> getAllWorkersByFirstNameAndLastName(String firstName, String lastName);
 
 
 }
