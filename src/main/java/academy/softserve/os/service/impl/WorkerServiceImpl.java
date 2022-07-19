@@ -39,7 +39,7 @@ public class WorkerServiceImpl implements WorkerService {
 
     @Override
     public List<Worker> findWorkersByName(String name) {
-        if (name == null){
+        if (name == null) {
             return workerRepository.findAll();
         }
         var nameArgumentsList = name.split(" ");
