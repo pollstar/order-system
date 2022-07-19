@@ -33,7 +33,7 @@ public class TaskServiceImpl implements TaskService {
         var order = orderRepository.findById(command.getOrderId()).get();
         var job = jobRepository.findById(command.getJobId()).get();
         var creatorWorker = workerRepository
-                .findByUserId(command.getCreateWorkerId())
+                .findById(command.getCreateWorkerId())
                 .get();
 
         var task = Task.builder()

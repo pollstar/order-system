@@ -3,8 +3,10 @@ package academy.softserve.os.api;
 import academy.softserve.os.api.dto.TaskDTO;
 import academy.softserve.os.api.dto.command.CreateTaskCommandDTO;
 import academy.softserve.os.mapper.TaskMapper;
+import academy.softserve.os.model.User;
 import academy.softserve.os.model.UserDetailsImpl;
 import academy.softserve.os.service.TaskService;
+import academy.softserve.os.service.WorkerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +26,14 @@ public class TaskController {
     private final TaskMapper taskMapper;
     
     @PostMapping("/api/task")
-    @PreAuthorize("hasAnyRole('WORKER')")
+    @PreAuthorize("hasRole('WORKER')")
     public ResponseEntity<TaskDTO> createTask(@RequestBody @Valid CreateTaskCommandDTO createTaskCommandDTO,
                                               @AuthenticationPrincipal UserDetails userDetails) {
         var createTaskCommand = taskMapper.toCreateTaskCommand(createTaskCommandDTO);
         if (userDetails instanceof UserDetailsImpl){
-            var userId = ((UserDetailsImpl) userDetails).getId();
-            createTaskCommand.setCreateWorkerId(userId);
+
+            var workerId = ((UserDetailsImpl) userDetails).getWorkerId();
+            createTaskCommand.setCreateWorkerId(workerId);
         }
         var user = taskService.createTask(createTaskCommand);
         var taskDTO = taskMapper.toTaskDTO(user);

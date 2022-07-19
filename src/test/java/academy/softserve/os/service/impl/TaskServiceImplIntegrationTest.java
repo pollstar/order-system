@@ -66,7 +66,7 @@ public class TaskServiceImplIntegrationTest {
                 .jobId(job.getId())
                 .orderId(order.getId())
                 .workerId(worker.getId())
-                .createWorkerId(worker.getUser().getId())
+                .createWorkerId(worker.getId())
                 .comment("Some comments for task")
                 .partFactor(0.7)
                 .build();
