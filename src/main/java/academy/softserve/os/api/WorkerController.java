@@ -43,10 +43,10 @@ public class WorkerController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("api/admin/worker")
-    public ResponseEntity<List<WorkerDTO>> getWorkersByName(@RequestParam(name = "name", required = false, defaultValue = "not set") String name) {
+    public ResponseEntity<List<WorkerDTO>> getWorkersByName(@RequestParam(name = "name", required = false) String name) {
 
         List<WorkerDTO> workerList;
-        if (name.equals("not set")) {
+        if (name == null) {
             workerList = workerService.getAllWorkers().stream().map(WORKER_MAPPER::toWorkerDTO).collect(Collectors.toList());
         } else {
             var nameArray = name.split(" ");
