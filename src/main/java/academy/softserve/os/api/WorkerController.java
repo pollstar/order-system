@@ -9,17 +9,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class WorkerController {
     private static final WorkerMapper WORKER_MAPPER = WorkerMapper.INSTANCE;
     private final WorkerService workerService;
+
     @Autowired
     WorkerController(WorkerService workerService) {
         this.workerService = workerService;
@@ -34,5 +39,15 @@ public class WorkerController {
         var worker = workerService.createWorker(createWorkerCommand);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(WORKER_MAPPER.toWorkerDTO(worker));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("api/admin/worker")
+    public ResponseEntity<List<WorkerDTO>> getWorkersByName(@RequestParam(name = "name", required = false) String name) {
+        var workersDtoList = workerService.findWorkersByName(name).stream()
+                .map(WORKER_MAPPER::toWorkerDTO)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.status(HttpStatus.OK).body(workersDtoList);
     }
 }
