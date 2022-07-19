@@ -34,4 +34,10 @@ public class OrderControllerAdvice extends ResponseEntityExceptionHandler {
         String message = e.getMessage();
         return ResponseEntity.badRequest().body(new ErrorResponse("Failed to create an order", message == null ? null : List.of(message)));
     }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<Object> orderFindException(OrderNotFoundException e){
+        return ResponseEntity.noContent().build();
+    }
 }

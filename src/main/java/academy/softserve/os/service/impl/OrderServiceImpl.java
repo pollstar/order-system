@@ -10,6 +10,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
@@ -30,5 +34,24 @@ public class OrderServiceImpl implements OrderService {
                         .build())
                 .orElseThrow(() -> new CreateOrderException("No such a client"));
         return orderRepository.save(order);
+    }
+
+    @Override
+    public Optional<Order> findOrderById(Long id) {
+        return orderRepository.findById(id);
+    }
+
+    @Override
+    public List<Order> findOrdersByDescription(String description) {
+        if (description == null) {
+            return findAllOrders();
+        }
+        return findAllOrders().stream()
+                .filter(order -> order.getDescription().toLowerCase().contains(description.toLowerCase()))
+                .collect(Collectors.toList());
+    }
+
+    private List<Order> findAllOrders() {
+        return orderRepository.findAll();
     }
 }
