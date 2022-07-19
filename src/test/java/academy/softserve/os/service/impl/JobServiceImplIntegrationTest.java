@@ -1,6 +1,5 @@
 package academy.softserve.os.service.impl;
 
-import academy.softserve.os.model.Job;
 import academy.softserve.os.service.JobService;
 import academy.softserve.os.service.command.CreateJobCommand;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +31,7 @@ class JobServiceImplIntegrationTest {
 
     @Test
     void getAllJobs_shouldBeReturnAllJobs() {
-        var jobs = jobService.getAllJob();
+        var jobs = jobService.findAllJob();
 
         assertEquals(3, jobs.size());
     }
@@ -40,7 +39,7 @@ class JobServiceImplIntegrationTest {
     @Test
     void getJobById_shouldBeReturnJob() {
         var jobExpect = jobService.createJob(new CreateJobCommand("test-1", new BigDecimal(10), new BigDecimal(12)));
-        var job = jobService.getJobById(jobExpect.getId());
+        var job = jobService.findJobById(jobExpect.getId());
 
         assertEquals(job, Optional.of(jobExpect));
     }

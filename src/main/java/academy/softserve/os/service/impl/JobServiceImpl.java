@@ -40,12 +40,12 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public List<Job> getAllJob() {
+    public List<Job> findAllJob() {
         return jobRepository.findAll();
     }
 
     @Override
-    public Optional<Job> getJobById(Long id) {
+    public Optional<Job> findJobById(Long id) {
         return jobRepository.findById(id);
     }
 }

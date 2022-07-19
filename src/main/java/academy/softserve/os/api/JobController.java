@@ -41,7 +41,7 @@ public class JobController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<JobDTO>> getAllJobs() {
-        var jobList = jobService.getAllJob().stream()
+        var jobList = jobService.findAllJob().stream()
                 .map(jobMapper::toDto)
                 .collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.OK).body(jobList);
@@ -50,7 +50,7 @@ public class JobController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("{job-id}")
     public ResponseEntity<JobDTO> getJobById(@PathVariable("job-id") long id){
-        var job = jobService.getJobById(id).orElseThrow(JobFindException::new);
+        var job = jobService.findJobById(id).orElseThrow(JobFindException::new);
         var jobDto = jobMapper.toDto(job);
         return ResponseEntity.status(HttpStatus.OK).body(jobDto);
     }
