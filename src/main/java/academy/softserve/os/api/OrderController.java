@@ -56,13 +56,9 @@ public class OrderController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     @Operation(summary = "Get Order by description")
-    public ResponseEntity<List<OrderDTO>> getOrderByDescription(@RequestParam(name = "description", required = false, defaultValue = "not set description") String description) {
-        if (description.equals("not set description")) {
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(orderService.findAllOrders().stream().map(mapper::toDTO).collect(Collectors.toList()));
-        } else {
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(orderService.findOrdersByDescription(description).stream().map(mapper::toDTO).collect(Collectors.toList()));
-        }
+    public ResponseEntity<List<OrderDTO>> getOrderByDescription(@RequestParam(name = "description", required = false) String description) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(orderService.findOrdersByDescription(description).stream().map(mapper::toDTO).collect(Collectors.toList()));
+
     }
 }

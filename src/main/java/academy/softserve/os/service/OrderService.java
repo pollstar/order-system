@@ -8,12 +8,10 @@ import java.util.Optional;
 
 public interface OrderService {
 
-   Order createOrder(CreateOrderCommand command);
+    Order createOrder(CreateOrderCommand command);
 
-   Optional<Order> findOrderById(Long id);
+    Optional<Order> findOrderById(Long id);
 
-   List<Order> findOrdersByDescription(String description);
-
-   List<Order> findAllOrders();
+    List<Order> findOrdersByDescription(String description);
 
 }

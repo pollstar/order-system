@@ -43,11 +43,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> findOrdersByDescription(String description) {
+        if (description == null) {
+            return findAllOrders();
+        }
         return findAllOrders().stream().filter(order -> order.getDescription().toLowerCase().contains(description.toLowerCase())).collect(Collectors.toList());
     }
 
-    @Override
-    public List<Order> findAllOrders() {
+    private List<Order> findAllOrders() {
         return orderRepository.findAll();
     }
 }
